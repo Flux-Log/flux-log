@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+<div>
+    <span>Bem vindo de volta!</span>
+    <br>
+    <span>Por favor, entre na sua conta</span>
+<br>
+    <span>Email:</span>
+    <input id="ipt_email" type="text" placeholder="Login">
+<br>
+    <span>Senha:</span>
+    <input type="text" id="ipt_senha" placeholder="********">
+<br>
+    <span>Lembre-me</span>    
+    <input type="checkbox" id="ipt_checkbox">
+    <span>Esqueceu a senha?</span>
+
+<br>
+    <button onclick="login()">Login</button>
+<br>
+    <span>Não tem uma conta?</span> 
+    <a href="cadastro.html">Registrar-se agora</a>
+</div>
+
+<!--footer inicio-->
+  <div class="footer">
+    <div class="container">
+      <h4>2026 FluxLog, Todos os direitos reservados</h4>
+    </div>
+  </div>
+  <!--footer fim-->
+
+</body>
+</html>
+<script>
+    function login(){
+        var email = ipt_email.value;
+        var senha = ipt_senha.value;
+        
+        if (email == "fluxlog@email.com" || senha == "12345678") {
+    
+        }
+        else {
+            alert("Email ou login incorretos");
+        }
+    }
+</script>

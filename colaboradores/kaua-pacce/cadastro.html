@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+</head>
+<body>
+    <div>
+    Faça seu cadastro!
+<br>
+    Registre-se com os seus dados
+<br>
+    Nome Fantasia:
+    <input type="text" id="ipt_nomeFantasia" placeholder="nomeempresa">
+<br>
+    Email:
+    <input type="text" id="ipt_email" placeholder="meuemail@provedor.com">
+<br>
+    CNPJ:
+    <input type="number" id="ipt_cnpj" placeholder="00000000000">
+<br>
+    Senha:
+    <input type="password" id="ipt_senha" placeholder="********">
+    Confirmar senha:
+    <input type="password" id="ipt_confirmarSenha" placeholder="********">
+<br>
+    <button onclick="cadastrar()">Criar Conta</button>
+    </div>
+
+  <!--footer inicio-->
+  <div class="footer">
+    <div class="container">
+      <h4>2026 FluxLog, Todos os direitos reservados</h4>
+    </div>
+  </div>
+  <!--footer fim-->
+</body>
+</html>
+<script>
+    
+    function cadastrar(){
+        let nomeFantasia = ipt_nomeFantasia.value;
+        let email = ipt_email.value;
+        let cnpj = Number(ipt_cnpj.value);
+        let senha = ipt_senha.value;
+        let confirmarSenha = ipt_confirmarSenha.value;
+
+    // Verificando se há algum campo em branco
+    if (
+      nomeFantasia == "" ||
+      email == "" ||
+      cnpj == "" ||
+      senha == "" ||
+      confirmarSenha == ""){
+        alert("Campo vazio.")
+      }
+      
+
+        if((email.includes('@') && email.includes('.com'))){
+            if(cnpj.length == 14){
+                if(senha.length >= 8 && senha == confirmarSenha){
+
+                } else{
+                    alert("Digite uma senha valida");
+                }
+            } else{
+                alert("Digite um cnpj valido!");
+            }
+        } else{
+            alert("Digite um email valido!");
+        }
+      }
+</script>
