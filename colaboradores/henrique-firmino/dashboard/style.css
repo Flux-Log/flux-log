@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Google Sans", sans-serif;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    height: 45px;
+    padding: 42px;
+    border-bottom: 1px solid #E0E2E4;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+}
