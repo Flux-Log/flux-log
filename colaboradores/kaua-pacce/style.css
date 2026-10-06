@@ -1,0 +1,165 @@
+/* Geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Google Sans Code', monospace;
+    background-color: #fffde8;
+    color: #162937;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: #162937;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.logo {
+    height: 40px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-login {
+    padding: 6px 25px;
+    border: 2px solid #ff7b00;
+    border-radius: 6px;
+    color: #ff7b00;
+}
+
+.btn-cadastro {
+    padding: 6px 25px;
+    border: 2px solid #ff7b00;
+    border-radius: 6px;
+    background-color: #ff7b00;
+    color: white;
+}
+
+/* Imagem + Formulário */
+.principal {
+    display: flex;
+    flex: 1;
+}
+
+.imagem {
+    width: 50%;
+    background-image: url('imagens/armazem.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.formulario {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.caixa {
+    width: 320px;
+}
+
+.formulario h1 {
+    font-size: 28px;
+    color: #ff7b00;
+}
+
+.formulario label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ff7b00;
+}
+
+.formulario input {
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    font-family: inherit;
+    border: 2px solid #ff7b00;
+    border-radius: 8px;
+    background-color: #fffde8;
+}
+
+.linha-senhas {
+    display: flex;
+    gap: 20px;
+}
+
+.linha-senhas div {
+    width: 50%;
+}
+
+.formulario button {
+    width: 100%;
+    height: 40px;
+    margin-top: 20px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #ff7b00;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Footer */
+.footer {
+    padding: 25px 40px;
+    background-color: #0f1c26;
+    color: white;
+    font-size: 12px;
+}
+
+.footer .logo {
+    height: 30px;
+}
+
+.footer a {
+    color: white;
+}
+
+.footer-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #162937;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-base {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+}
+
+.footer-base a {
+    margin-left: 20px;
+    text-decoration: underline;
+}

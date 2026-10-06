@@ -1,74 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>
-    Faça seu cadastro!
-<br>
-    Registre-se com os seus dados
-<br>
-    Nome Fantasia:
-    <input type="text" id="ipt_nomeFantasia" placeholder="nomeempresa">
-<br>
-    Email:
-    <input type="text" id="ipt_email" placeholder="meuemail@provedor.com">
-<br>
-    CNPJ:
-    <input type="number" id="ipt_cnpj" placeholder="00000000000">
-<br>
-    Senha:
-    <input type="password" id="ipt_senha" placeholder="********">
-    Confirmar senha:
-    <input type="password" id="ipt_confirmarSenha" placeholder="********">
-<br>
-    <button onclick="cadastrar()">Criar Conta</button>
+
+    <!--header inicio-->
+    <div class="header">
+        <img src="imagens/logoAzul.png" class="logo" alt="FluxLog">
+        <div class="menu">
+            <a href="">Home</a>
+            <a href="">Calculadora</a>
+            <a href="">Sobre nós</a>
+            <a href="">Contato</a> 
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="" class="btn-cadastro">Cadastro</a>
+        </div>
+    </div>
+    <!--header fim-->
+
+    <div class="principal">
+        <div class="imagem"></div>
+
+        <div class="formulario">
+            <div class="caixa">
+            <h1>Faça seu cadastro!</h1>
+            <p class="subtitulo">Registre-se com os seus dados</p>
+
+            <label for="ipt_nomeFantasia">Nome Fantasia:</label>
+            <input type="text" id="ipt_nomeFantasia" placeholder="nomeempresa">
+
+            <label for="ipt_email">Email:</label>
+            <input type="text" id="ipt_email" placeholder="meuemail@provedor.com">
+
+            <label for="ipt_cnpj">CNPJ:</label>
+            <input type="text" id="ipt_cnpj" placeholder="00000000000000">
+
+            <div class="linha-senhas">
+                <div>
+                    <label for="ipt_senha">Senha:</label>
+                    <input type="password" id="ipt_senha" placeholder="********">
+                </div>
+                <div>
+                    <label for="ipt_confirmarSenha">Confirmar senha:</label>
+                    <input type="password" id="ipt_confirmarSenha" placeholder="********">
+                </div>
+            </div>
+
+            <button onclick="cadastrar()">Criar Conta</button>
+            </div>
+        </div>
     </div>
 
-  <!--footer inicio-->
-  <div class="footer">
-    <div class="container">
-      <h4>2026 FluxLog, Todos os direitos reservados</h4>
+    <!--footer inicio-->
+    <div class="footer">
+        <div class="footer-topo">
+            <img src="imagens/logoBranco.png" class="logo" alt="FluxLog">
+            <div class="footer-links">
+                <a href="">Sobre Nós</a>
+                <a href="">Redes Sociais</a>
+                <a href="">Contate o Suporte</a>
+            </div>
+        </div>
+        <div class="footer-base">
+            <span>© 2026 FluxLog, Todos os direitos reservados</span>
+            <span>
+                <a href="">Política de Privacidade</a>
+                <a href="">Termos de Serviço</a>
+            </span>
+        </div>
     </div>
-  </div>
-  <!--footer fim-->
+    <!--footer fim-->
+
+    <script>
+        function cadastrar(){
+            let nomeFantasia = ipt_nomeFantasia.value;
+            let email = ipt_email.value;
+            let cnpj = ipt_cnpj.value;
+            let senha = ipt_senha.value;
+            let confirmarSenha = ipt_confirmarSenha.value;
+
+            // Verificando se há algum campo em branco
+            if(nomeFantasia == ""){
+                alert("Nome Fantasia está vazio, preencha o campo.");
+            } else if(email == "" || !email.includes('@') || !email.includes('.com') || email.includes(' ') || email.length < 7){
+                alert("Email está vazio ou incorreto, digite um email valido.");
+            } else if(cnpj == "" || cnpj.length != 14){
+                alert("CNPJ está vazio ou incorreto, digite um CNPJ valido.");
+            } else if(senha == "" || senha.length < 8){
+                alert("Senha está vazia ou não atende os requisitos");
+            } else if(senha != confirmarSenha){
+                alert("As senhas não são as mesmas.");
+            } else{
+                alert("Conta cadastrada com sucesso!");
+            }
+        }
+    </script>
 </body>
 </html>
-<script>
-    
-    function cadastrar(){
-        let nomeFantasia = ipt_nomeFantasia.value;
-        let email = ipt_email.value;
-        let cnpj = Number(ipt_cnpj.value);
-        let senha = ipt_senha.value;
-        let confirmarSenha = ipt_confirmarSenha.value;
-
-    // Verificando se há algum campo em branco
-    if (
-      nomeFantasia == "" ||
-      email == "" ||
-      cnpj == "" ||
-      senha == "" ||
-      confirmarSenha == ""){
-        alert("Campo vazio.")
-      }
-      
-
-        if((email.includes('@') && email.includes('.com'))){
-            if(cnpj.length == 14){
-                if(senha.length >= 8 && senha == confirmarSenha){
-
-                } else{
-                    alert("Digite uma senha valida");
-                }
-            } else{
-                alert("Digite um cnpj valido!");
-            }
-        } else{
-            alert("Digite um email valido!");
-        }
-      }
-</script>
