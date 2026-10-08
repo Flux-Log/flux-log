@@ -37,17 +37,18 @@ a {
     gap: 20px;
 }
 
-.btn-login {
-    padding: 6px 25px;
-    border: 2px solid #ff7b00;
-    border-radius: 6px;
-    color: #ff7b00;
-}
-
+.btn-login,
 .btn-cadastro {
     padding: 6px 25px;
     border: 2px solid #ff7b00;
     border-radius: 6px;
+}
+
+.btn-login {
+    color: #ff7b00;
+}
+
+.btn-cadastro {
     background-color: #ff7b00;
     color: white;
 }
@@ -162,4 +163,49 @@ a {
 .footer-base a {
     margin-left: 20px;
     text-decoration: underline;
+}
+
+/* Login */
+.subtitulo {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.linha-lembrar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.linha-lembrar div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* checkbox */
+.formulario .linha-lembrar input {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    accent-color: #ff7b00;
+}
+
+.linha-lembrar a,
+.link-cadastro a {
+    color: #ff7b00;
+}
+
+.link-cadastro {
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.link-cadastro a {
+    display: block;
+    margin-top: 4px;
+    font-weight: bold;
 }
