@@ -72,6 +72,12 @@ main {
     min-height: calc(100vh - 78px);
 }
 
+.title-subtitle {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .dash-kpis {
     display: flex;
     flex-direction: column;
@@ -222,4 +228,24 @@ p {
 .state-title {
     font-weight: bold;
     margin-bottom: 5px;
+}
+
+.title-graph {
+    margin-top: 32px;
+}
+
+.title-graph h1 {
+    margin-bottom: 24px;
+}
+
+.graph-wrapper {
+    background-color: var(--bg-white);
+    padding: 32px;
+    border-radius: 5px;
+
+    border: 1px solid var(--border-gray);
+
+    width: 40vw;
+    height: 40vh;
+    
 }
