@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Dashboard FluxLog</title>
 </head>
+
 <body>
     <header class="header">
         <img src="./assets/logo-fluxlog-dashboard.png" alt="">
@@ -18,13 +22,76 @@
             <span>GERAL</span>
         </div>
         <div class="dash-kpis">
-            <h1>
-                Olá, Gestor!
-            </h1>
-            <span>
-                Veja agora quais setores estão com maior tempo de congestionamento
-            </span>
+            <div class="title-subtitle">
+                <h1>
+                    Olá, Gestor!
+                </h1>
+                <span>
+                    Veja agora quais setores estão com maior tempo de congestionamento
+                </span>
+            </div>
+
+            <div class="kpis">
+
+                <div class="kpi-01">
+                    <span>Prolongado</span>
+                    <div class="sector-amount">
+                        <h2>Setores:</h2>
+                        <h2 class="amount-danger">5</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Atenção</span>
+                    <div class="sector-amount">
+                        <h2>Setores:</h2>
+                        <h2 class="amount-attention">5</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Normal</span>
+                    <div class="sector-amount">
+                        <h2>Setores:</h2>
+                        <h2 class="amount-success">5</h2>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sector-state">
+
+                <div class="kpi-states">
+                    <span>Prolongados</span>
+                    <div class="sector-status">
+                        <p>Limite: 5 min</p>
+
+                        <span>Setor - Bebidas</span>
+
+                        <span>Duração: 08:32</span>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Atenção</span>
+                    <div class="sector-amount">
+                        <h2>Setores:</h2>
+                        <h2 class="amount-attention">5</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Normal</span>
+                    <div class="sector-amount">
+                        <h2>Setores:</h2>
+                        <h2 class="amount-success">5</h2>
+                    </div>
+                </div>
+                
+            </div>
+
         </div>
     </main>
 </body>
+
 </html>
