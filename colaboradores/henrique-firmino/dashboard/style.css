@@ -103,6 +103,11 @@ main {
     min-width: 0;
 }
 
+.kpi-01 span {
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .sector-amount {
     display: flex;
     align-items: center;
@@ -160,6 +165,8 @@ main {
     scrollbar-width: thin;
     scrollbar-color: #d2d2d2 transparent;
 }
+
+
 
 .kpi-states::-webkit-scrollbar {
     width: 5px;
@@ -245,7 +252,6 @@ p {
 
     border: 1px solid var(--border-gray);
 
-    width: 40vw;
-    height: 40vh;
-    
+    width: 40.5vw;
+    height: 40.5vh;
 }
