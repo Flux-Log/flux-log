@@ -75,6 +75,8 @@ main {
     border-radius: 5px;
     border: 1px solid var(--border-gray);
 
+    width: 220px;
+
 }
 
 .sector-amount {
@@ -135,11 +137,25 @@ main {
     border-radius: 5px;
     border: 1px solid var(--border-gray);
 
-    width: 209px;
+    width: 220px;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: #d2d2d2 transparent;
 
 }
 
-.sector-status {
+.kpi-states::-webkit-scrollbar {
+    width: 5px;
+}
+
+.kpi-states::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sector-danger {
     display: flex;
     flex-direction: column;
     margin-top: 16px;
@@ -152,6 +168,51 @@ main {
 
 }
 
+.sector-attention {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+
+    background-color: var(--bg-attention);
+    border: 1px solid var(--border-attention);
+
+    padding: 8px;
+    border-radius: 5px;
+
+}
+
+.sector-normal {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+
+    background-color: var(--bg-success);
+    border: 1px solid var(--border-success);
+
+    padding: 8px;
+    border-radius: 5px;
+
+}
+
 p {
-    font-size: 16px;
+    font-size: 14px;
+    color: var(--font-danger);
+    font-weight: bold;
+
+    margin-bottom: 14px;
+}
+
+.sector-attention p {
+    color: var(--font-attention);
+    font-weight: bold;
+}
+
+.sector-normal p {
+    color: var(--font-success);  
+    font-weight: bold;  
+}
+
+.state-title {
+    font-weight: bold;
+    margin-bottom: 5px;
 }
