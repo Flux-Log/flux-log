@@ -1,6 +1,8 @@
 :root {
   --bg-gray: #f7f7f7;
   --border-gray: #E0E2E4;
+
+  --color-black: #0000;
   --bg-white: #ffff;
 
   --bg-danger: #FAE9E9;
@@ -39,10 +41,36 @@ body {
     flex-direction: column;
     width: 300px;
 
+    gap: 32px;
+
+
     padding: 42px 52px;
 
     border-right: 1px solid var(--border-gray);
 }
+
+.menu span {
+    color: #b9b9b9;
+
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.active {
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
 
 main {
     display: flex;
