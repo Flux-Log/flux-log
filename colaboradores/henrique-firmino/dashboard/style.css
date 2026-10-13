@@ -241,6 +241,13 @@ p {
     margin-top: 32px;
 }
 
+.graphs {
+    display: flex;
+    width: 100%;
+
+    gap: 24px;
+}
+
 .title-graph h1 {
     margin-bottom: 24px;
 }
@@ -254,4 +261,5 @@ p {
 
     width: 40.5vw;
     height: 40.5vh;
+    flex: 1;
 }
