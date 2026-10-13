@@ -1,3 +1,8 @@
+:root {
+  --bg-cinza: #f7f7f7;
+  --border-cinza: #E0E2E4;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,10 +18,30 @@ body {
     align-items: center;
     height: 45px;
     padding: 42px;
-    border-bottom: 1px solid #E0E2E4;
+    border-bottom: 1px solid var(--border-cinza);
 }
 
 .menu {
     display: flex;
     flex-direction: column;
+    width: 300px;
+
+    padding: 42px 52px;
+
+    border-right: 1px solid var(--border-cinza);
+}
+
+main {
+    display: flex;
+}
+
+.dash-kpis {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-cinza);
+
+    padding: 64px 48px;
+
+    height: 100vh;
+    width: 100%;
 }
