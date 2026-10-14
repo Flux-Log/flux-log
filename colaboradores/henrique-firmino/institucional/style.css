@@ -242,22 +242,27 @@ label {
     margin-top: -5px;
 }
 
-.botao-calcular {
+.button-calculate {
     width: 100%;
     max-width: 510px;
     height: 55px;
     background-color: #FF7B00;
     color: white;
-    font-size: 25px;
+    font-size: 20px;
     border: none;
     border-radius: 5px;
     margin-top: 64px;
+    cursor: pointer;
+}
+
+.button-calculate:hover {
+    background-color: #b75600;
 }
 
 .calculator-content {
     display: flex;
     align-items: center;
-    gap: 100px;
+    gap: 300px;
 }
 
 .calculator-inputs {
@@ -302,122 +307,94 @@ label {
     font-weight: 50;
 }
 
-.terceira-parte {
-    height: 852px;
+.dash-specification {
+    display: flex;
+    flex-direction: column;
     background-color: #F2F9FF;
+    padding: 89px 190px;
+
 }
 
-.titulo-terceira-parte {
-    width: 90%;
-    max-width: 1432px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 131px;
+.dash-specification-title {
+    align-self: start;
     font-size: 36px;
     font-weight: 700;
+    margin-bottom: 16px;
 }
 
-.texto-terceira-parte {
-    width: 90%;
-    max-width: 1432px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 26px;
-    font-size: 20px;
+.dash-cards-and-solution {
+    display: flex;
+    gap: 32px;
+    margin-top: 52px;
+
 }
+
+.dash-solution-text {
+    background-color: white;
+    border: 1px solid #0f1c263d;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+    padding: 50px;
+}
+
+.solution-text-1 {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 0px 0px 20px 0px;
+    border-bottom: 1px solid #0F1C26;
+}
+
+.solution-text-2 {
+    font-size: 32px;
+    color: #FF7B00;
+    font-weight: bold;
+    padding: 0px 0px 20px 0px;
+    border-bottom: 1px solid #0F1C26;
+}
+
+.solution-text-3 {
+    font-size: 32px;
+    color: #0F1C26;
+    font-weight: bold;
+    padding: 0px 0px 20px 0px;
+    border-bottom: 1px solid #0F1C26;
+}
+
+
 
 .cards-terceira-parte {
     display: flex;
-    justify-content: space-between;
-    width: 90%;
-    max-width: 1432px;
-    margin: auto;
 }
 
-.card1 {
-    width: 272px;
-    background-color: white;
-    margin-top: 74px;
-    border-radius: 50px;
-    height: 384px;
+.dash-cards {
+    border-radius: 5px;
+    margin-top: 52px;
+    display: flex;
+    gap: 32px;
 }
 
-.card2 {
-    width: 272px;
-    background-color: white;
-    margin-top: 74px;
-    border-radius: 50px;
-    height: 384px;
+.dash-cards-title {
+    background-color: #0F1C26;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
 }
 
-.card3 {
-    width: 272px;
-    background-color: white;
-    margin-top: 74px;
-    border-radius: 50px;
-    height: 384px;
+.dash-cards-title span {
+    font-size: 36px;
+    color: white;
+    font-weight: bold;
+    align-self: start;
 }
 
-.card4 {
-    width: 272px;
-    background-color: white;
-    margin-top: 74px;
-    border-radius: 50px;
-    height: 384px;
+.dash-card {
+    width: 240px;
 }
 
-.titulo-cad1 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-left: 29px;
-    margin-top: 21px;
-}
-
-.titulo-cad2 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-left: 29px;
-    margin-top: 21px;
-}
-
-.titulo-cad3 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-left: 29px;
-    margin-top: 21px;
-}
-
-.titulo-cad4 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-left: 29px;
-    margin-top: 21px;
-}
-
-.texto-card1 {
-    font-size: 18px;
-    margin-left: 29px;
-    margin-top: 22px;
-
-}
-
-.texto-card2 {
-    font-size: 18px;
-    margin-left: 29px;
-    margin-top: 22px;
-}
-
-.texto-card3 {
-    font-size: 18px;
-    margin-left: 29px;
-    margin-top: 22px;
-}
-
-.texto-card4 {
-    font-size: 18px;
-    margin-left: 29px;
-    margin-top: 22px;
-}
 
 .imagemParte3-1 {
     width: 72px;
