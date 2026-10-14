@@ -31,6 +31,7 @@ a {
     text-decoration: none;
     color: black;
     font-size: 20px;
+    transition: all 0.2s;
 }
 
 a:hover {
@@ -95,6 +96,11 @@ button {
     padding: 187px 100px;
 }
 
+.text-and-buttons {
+    display: flex;
+    flex-direction: column;
+}
+
 .hero-text {
     display: flex;
     flex-direction: column;
@@ -103,13 +109,15 @@ button {
 .hero-title {
     font-size: 54px;
     font-weight: 100;
+    margin-bottom: 16px;
+
 }
 
 .orange-bold {
     font-size: 54px;
     font-weight: bold;
     color: #FF7B00;
-    margin-bottom: 26px;
+    margin-bottom: 42px;
 }
 
 .paragraph-hero {
@@ -122,7 +130,7 @@ button {
     font-size: 20px;
 }
 
-.botao-inicio {
+.meet-solution-btn {
     width: 390px;
     font-size: 20px;
     height: 50px;
@@ -131,9 +139,10 @@ button {
     border-radius: 5px;
     border: none;
     font-weight: bold;
+    cursor: pointer;
 }
 
-.botao-inicio:hover {
+.meet-solution-btn:hover {
     background-color: #b75600;
 }
 
@@ -144,7 +153,7 @@ button {
     margin-top: 64px;
 }
 
-.botao-fale-conosco {
+.contact-btn {
     width: 179px;
     height: 50px;
     border-radius: 5px;
@@ -154,7 +163,7 @@ button {
     cursor: pointer;
 }
 
-.botao-fale-conosco:hover {
+.contact-btn:hover {
     background-color: #0F1C26;
     color: white;
 }
@@ -173,8 +182,7 @@ button {
     flex-direction: column;
     align-items: center;
     background-color: #0F1C26;
-    padding: 89px 190px;
-
+    padding: 100px 190px;
 }
 
 label {
@@ -309,24 +317,21 @@ label {
 
 .dash-specification {
     display: flex;
+    align-items: center;
     flex-direction: column;
     background-color: #F2F9FF;
-    padding: 89px 190px;
-
+    padding: 100px 190px;
 }
 
 .dash-specification-title {
-    align-self: start;
     font-size: 36px;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 42px;
 }
 
 .dash-cards-and-solution {
     display: flex;
     gap: 32px;
-    margin-top: 52px;
-
 }
 
 .dash-solution-text {
@@ -344,7 +349,7 @@ label {
     font-size: 32px;
     font-weight: bold;
     padding: 0px 0px 20px 0px;
-    border-bottom: 1px solid #0F1C26;
+    border-bottom: 1px solid #0f1c263d;
 }
 
 .solution-text-2 {
@@ -352,7 +357,7 @@ label {
     color: #FF7B00;
     font-weight: bold;
     padding: 0px 0px 20px 0px;
-    border-bottom: 1px solid #0F1C26;
+    border-bottom: 1px solid #0f1c263d;
 }
 
 .solution-text-3 {
@@ -360,7 +365,7 @@ label {
     color: #0F1C26;
     font-weight: bold;
     padding: 0px 0px 20px 0px;
-    border-bottom: 1px solid #0F1C26;
+    border-bottom: 1px solid #0f1c263d;
 }
 
 
@@ -424,9 +429,42 @@ label {
     margin-left: 29px;
 }
 
-.quarta-parte {
+.about-us {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: #0F1C26;
-    height: 745px;
+    padding: 100px 190px;
+
+}
+
+.about-us h1 {
+    color: white;
+    margin-bottom: 42px;
+}
+
+.members {
+    display: flex;
+    gap: 20px;
+}
+
+.team-member {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid #FF7B00;
+    border-radius: 8px;
+    padding: 50px 50px 100px 50px;
+    gap: 20px;
+}
+
+.team-member img {
+    background-color: #162937;
+    border-radius: 8px;
+    padding: 10px;
+    width: 130px;
+    height: 130px;
 }
 
 .conteudo-quarta-parte {
