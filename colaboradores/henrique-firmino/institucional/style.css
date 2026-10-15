@@ -592,64 +592,33 @@ label {
 
 .footer {
     background-color: #0F1C26;
-    height: 547px;
-    padding: 5px 5%;
-}
-
-.conteudo-footer {
-    margin: auto;
-    width: 90%;
-    max-width: 1432px;
-}
-
-.parte-cima-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 100px;
+    padding: 125px 100px;
 }
 
 .logo-footer {
     display: flex;
     align-items: center;
-}
-
-.carrinho-branco {
-    width: 120px;
-}
-
-.fluxlogBranco {
-    width: 160px;
-}
-
-.menu-footer {
-    display: flex;
-    gap: 60px;
-    color: white;
-    font-size: 20px;
-}
-
-.frase-footer {
-    color: white;
-    font-size: 20px;
-    padding-top: 100px;
-    padding-bottom: 15px;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: white;
-}
-
-.parte-baixo-footer {
-    color: white;
-    font-size: 20px;
-    display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
-.links-footer {
+.footer-menu {
     display: flex;
-    gap: 40px;
-    color: white;
-    font-size: 20px;
+    gap: 20px;
 }
+
+.footer-menu a {
+    color: white;
+    text-decoration: underline;
+}
+
+.footer-menu a:hover {
+    color: #FF7802;
+}
+
+.footer-rights {
+    margin-top: 190px;
+    color: white;
+    border-top: 1px solid white;
+    padding: 32px 0px 0px 0px;
+}
+
