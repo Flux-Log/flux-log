@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>Dashboard FluxLog</title>
+</head>
+
+<body>
+    <header class="header">
+        <img src="./assets/logo-fluxlog-dashboard.png" alt="">
+    </header>
+    <main>
+        <div class="menu">
+            <span>GERAL</span>
+            <nav>
+                <a href="./dashboard.html">Início</a>
+                <a href="./historico.html" class="active">Histórico</a>
+            </nav>
+        </div>
+        <div class="dash-kpis">
+            <div class="title-subtitle">
+                <h1>
+                    Histórico
+                </h1>
+                <span>
+                    Registro de ocorrências de congestionamento prolongado
+                </span>
+            </div>
+
+            <div class="kpis">
+                <div class="kpi-01">
+                    <span>Ocorrências</span>
+                    <div class="sector-amount">
+                        <h2>Total:</h2>
+                        <h2 class="amount-danger">32</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Tempo excedente:</span>
+                    <div class="sector-amount">
+                        <h2>Total:</h2>
+                        <h2 class="amount-danger">1h24min</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
