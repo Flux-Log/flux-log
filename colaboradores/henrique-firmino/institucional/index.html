@@ -54,7 +54,6 @@
 
     <div class="calculator-wrapper" id="calculator">
         <div class="calculator-content">
-
             <div class="calculator-inputs">
                 <h2 class="calculator-solution">Veja quanto o congestionamento <br> no seu estoque pode custar</h2>
 
@@ -79,16 +78,11 @@
             <div class="calculator-result">
                 <h1 class="title-result">Resultado:</h1>
 
-                <div id="div_msg" class="result-wrapper">
-                    <p class="result-phrase1" id="main_result">
-                        Resultado da calculadora aqui
-                    </p>
-
-                    <p class="result-phrase2" id="detail_result">
-                        Preencha os dados para visualizar
-                        <br>
-                        o impacto estimado na sua produção
-                    </p>
+                <div class="result-wrapper" id="detail_result">
+                    <div class="result-phrase1" >
+                        <span>Preencha os dados para visualizar
+                            o impacto estimado na sua produção</span>
+                    </div>
                 </div>
             </div>
 
@@ -216,27 +210,59 @@
         </div>
     </div>
 </body>
+
 </html>
 <script>
     function calculate() {
-    let minutos = Number(input_minutes.value);
-    let custo_hora = Number(input_hour.value);
-    let funcionarios = Number(input_qtt_worker.value);
+        let minutos = Number(input_minutes.value);
+        let custo_hora = Number(input_hour.value);
+        let funcionarios = Number(input_qtt_worker.value);
 
-    if (input_minutes.value == "" || input_hour.value == "" || input_qtt_worker.value == "") {
-        main_result.innerHTML = "Preencha todos os campos";
-        detail_result.innerHTML = "Selecione um cenário e informe os dados do estoque.";
-    } else if (custo_hora <= 0 || funcionarios <= 0) {
-        main_result.innerHTML = "Confira os valores informados";
-        detail_result.innerHTML = "O custo por hora e a quantidade de funcionários devem ser maiores que zero.";
-    } else {
-        let minutos_excedentes = minutos - 5;
-        let custo_congestionamento = (minutos_excedentes / 60) * custo_hora * funcionarios;
-        let prejuizo_anual = custo_congestionamento * 365;
+        if (input_minutes.value == "" || input_hour.value == "" || input_qtt_worker.value == "") {
+            main_result.innerHTML = "Preencha todos os campos";
+            detail_result.innerHTML = "Selecione um cenário e informe os dados do estoque.";
+        } else if (custo_hora <= 0 || funcionarios <= 0) {
+            main_result.innerHTML = "Confira os valores informados";
+            detail_result.innerHTML = "O custo por hora e a quantidade de funcionários devem ser maiores que zero.";
+        } else {
+            let minutos_excedentes = minutos - 5;
+            let custo_congestionamento = (minutos_excedentes / 60) * custo_hora * funcionarios;
+            let prejuizo_anual = custo_congestionamento * 365;
 
-        main_result.innerHTML = `R$ ${prejuizo_anual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            // main_result.innerHTML = `R$ ${prejuizo_anual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-        detail_result.innerHTML = `Com ${funcionarios} funcionário(s), cada congestionamento de ${minutos} minutos gera um custo estimado de R$ ${custo_congestionamento.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}. Considerando uma ocorrência diária, o custo anual estimado é de R$ ${prejuizo_anual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}.`;
+            detail_result.innerHTML = `<div class="result-calculator">
+                <div class="label-result">
+                    <span class="label-result">Quantidade de funcionários:</span>
+                    <span class="result1">${funcionarios}</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Tempo de congestionamento:</span>
+                    <span class="result1">${minutos} minutos</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Tempo excedente:</span>
+                    <span class="result1">${minutos_excedentes} minutos</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Custo por hora:</span>
+                    <span class="result1">R$ ${custo_hora.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Custo diário estimado:</span>
+                    <span class="result1">R$ ${custo_congestionamento.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Custo anual estimado:</span>
+                    <span class="result2">R$ ${prejuizo_anual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+
+            </div>`;
+        }
     }
-}
 </script>

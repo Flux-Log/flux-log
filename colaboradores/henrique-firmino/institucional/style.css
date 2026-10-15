@@ -336,24 +336,65 @@ label {
 .result-wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 26px;
     align-items: center;
-    text-align: center;
     background-color: #162937;
+    min-width: 500px;
+    height: 500px;
+
     border-radius: 5px;
-    padding: 168px 26px;
+    padding: 50px 20px;
+}
+
+.result-calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.label-result {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    gap: 8px;
+}
+
+.label-result {
+    font-weight: bold;
+}
+
+.result1 {
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #FF7B00;
+    align-self: start;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.result2 {
+    font-size: 42px;
+    font-weight: bold;
+    background-color: rgb(211, 0, 0);
+    align-self: start;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.money {
+    font-size: 62px;
+    color: greenyellow;
 }
 
 .result-phrase1 {
     font-size: 22px;
-    color: white;
-    font-weight: bold;
 }
 
-.result-phrase2 {
-    font-size: 20px;
+.result-phrase1 span {
+    display: flex;
     color: white;
-    font-weight: 50;
+    text-align: center;
 }
 
 .dash-specification {
@@ -653,8 +694,5 @@ label {
     padding: 32px 0px 0px 0px;
 }
 
-.money {
-    font-size: 62px;
-    color: greenyellow;
-}
+
 
