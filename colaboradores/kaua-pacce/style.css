@@ -102,6 +102,18 @@ a {
     background-color: #fffde8;
 }
 
+.linha-endereco {
+    display: flex;
+    gap: 20px;
+}
+
+.linha-enderecoCep {
+    width: 30%;
+}
+.linha-enderecoLogradouro{
+    width: 70%;
+}
+
 .linha-senhas {
     display: flex;
     gap: 20px;

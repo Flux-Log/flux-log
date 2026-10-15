@@ -30,19 +30,33 @@
             <div class="caixa">
             <h1>Faça seu cadastro!</h1>
             <p class="subtitulo">Registre-se com os seus dados</p>
-            
-            <label for="">Razão Social</label>
-            
-            <label for="ipt_cnpj">CNPJ:</label>
-            <input type="text" id="ipt_cnpj" placeholder="00000000000000">
 
-            <label for="ipt_nomeFantasia">Nome Fantasia:</label>
-            <input type="text" id="ipt_nomeFantasia" placeholder="nomeempresa">
+            <label for="ipt_nomeCompleto">Nome Completo:</label>
+            <input type="text" id="ipt_nomeCompleto" placeholder="Seu Nome Completo">
 
             <label for="ipt_email">Email:</label>
             <input type="text" id="ipt_email" placeholder="meuemail@provedor.com">
+            
+            <label for="ipt_nomeFantasia">Nome Fantasia:</label>
+            <input type="text" id="ipt_nomeFantasia" placeholder="Nome Empresa">
 
+            <label for="ipt_razaoSocial">Razão Social:</label>
+            <input type="text" id="ipt_razaoSocial" placeholder="Razão Social">
 
+            <label for="ipt_cnpj">CNPJ:</label>
+            <input type="text" id="ipt_cnpj" placeholder="00000000000000">
+
+            <div class="linha-endereco">
+                <div class="linha-enderecoCep">
+                    <label for="ipt_cep">CEP:</label>
+                    <input type="text" id="ipt_cep" placeholder="00000000">
+                </div>
+                <div class="linha-enderecoLogradouro">
+                    <label for="ipt_logradouro">Logradouro:</label>
+                    <input type="text" id="ipt_logradouro" placeholder="Rua Haddock Lobo 595">
+                </div>
+            </div>
+            
             <div class="linha-senhas">
                 <div>
                     <label for="ipt_senha">Senha:</label>
@@ -81,8 +95,8 @@
 
     <script>
         function cadastrar(){
-            let nomeFantasia = ipt_nomeFantasia.value;
             let email = ipt_email.value;
+            let nomeFantasia = ipt_nomeFantasia.value;
             let cnpj = ipt_cnpj.value;
             let senha = ipt_senha.value;
             let confirmarSenha = ipt_confirmarSenha.value;
