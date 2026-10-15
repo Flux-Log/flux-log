@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+        rel="stylesheet">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href=""><img src="./assets/logo-fluxlog-dashboard.png"></a>
+        </div>
+
+        <div class="menu">
+            <nav class="menu-items">
+                <a href="#calculator">Calculadora</a>
+                <a href="#dashboard">Solução</a>
+                <a href="#about-us">Sobre nós</a>
+                <a href="#contact">Contato</a>
+            </nav>
+            <div class="buttons">
+                <a class="login" href="../login - cadastro/login.html">Login</a>
+                <a class="cadastro" href="../login - cadastro/cadastro.html">Cadastro</a>
+            </div>
+        </div>
+    </header>
+    <div class="hero-wrapper">
+        <div class="text-and-buttons">
+            <div class="hero-text">
+                <span class="hero-title">Descubra qual estoque do<br> seu supermercado está parado</span>
+                <span class="orange-bold">e quanto isso custa.</span>
+                <span class="paragraph-hero">A FluxLog registra cada congestionamento e mostra no dashboard quanto <br>
+                    tempo da
+                    operação ele compromete e quanto isso pode custar.</span>
+            </div>
+
+            <div class="buttons-hero">
+                <a class="meet-solution-btn" href="#dashboard">Veja o benefício da nossa solução</a>
+                <a class="contact-btn" href="#contact">Fale conosco</a>
+            </div>
+        </div>
+        <div class="imagem-inicio">
+            <img class="imagem-parte1" src="./assets/imagemParte1.jpeg">
+        </div>
+    </div>
+
+    <div class="calculator-wrapper" id="calculator">
+        <div class="calculator-content">
+            <div class="calculator-inputs">
+                <h2 class="calculator-solution">Veja quanto o congestionamento <br> no seu estoque pode custar</h2>
+
+                <label for="input_minutes" class="label1">Tempo de congestionamento no estoque (estimativa)</label>
+                <select class="input1" name="" id="input_minutes">
+                    <option value="" selected disabled>Selecione um cenário</option>
+                    <option value="7">7 minutos</option>
+                    <option value="12">12 minutos</option>
+                    <option value="20">20 minutos</option>
+                </select>
+                <label for="input_hour" class="label2">Qual é o custo por hora de um funcionário? (R$)</label>
+                <input id="input_hour" class="input2" type="text" placeholder="Ex: 25">
+
+                <label for="input_qtt_worker" class="label3">Quantos funcionários trabalham no estoque?</label>
+                <input id="input_qtt_worker" class="input3" type="text" placeholder="Ex: 11">
+
+                <button class="button-calculate" onclick="calculate()">
+                    Calcular
+                </button>
+            </div>
+
+            <div class="calculator-result">
+                <h1 class="title-result">Resultado:</h1>
+
+                <div class="result-wrapper" id="detail_result">
+                    <div class="result-phrase1" >
+                        <span>Preencha os dados para visualizar
+                            o impacto estimado na sua produção</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="dash-specification" id="dashboard">
+        <h1 class="dash-specification-title">Mais visibilidade. Menos congestionamento no seu estoque.</h1>
+        <div class="dash-cards-and-solution">
+            <div class="dash-cards-title">
+                <span>Visão geral dos setores</span>
+                <div class="dash-cards">
+                    <img class="dash-card" src="./assets/Group 18.png" alt="">
+
+                    <img class="dash-card" src="./assets/Group 20.png" alt="">
+
+                    <img class="dash-card" src="./assets/Group 22.png" alt="">
+                </div>
+            </div>
+
+            <div class="dash-solution-text">
+                <span class="solution-text-1">
+                    A FluxLog monitora a movimentação do seu estoque
+                </span>
+                <span class="solution-text-2">
+                    Identifica
+                    congestionamentos
+                    prolongados
+                </span>
+                <span class="solution-text-3">
+                    E transforma ocorrências em informações para apoiar decisões operacionais
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="about-us" id="about-us">
+        <h1>Conheça nossa equipe:</h1>
+        <div class="members">
+            <div class="team-member">
+                <img src="./assets/imagemParte3-1.png" alt="">
+                <div>
+                    <span>Henrique Firmino</span>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <img src="./assets/imagemParte3-1.png" alt="">
+                <div>
+                    <span>Larissa Queiroz</span>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <img src="./assets/imagemParte3-1.png" alt="">
+                <div>
+                    <span>Yasmin</span>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <img src="./assets/imagemParte3-1.png" alt="">
+                <div>
+                    <span>Adriano Oliveira</span>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <img src="./assets/imagemParte3-1.png" alt="">
+                <div>
+                    <span>Guilherme Zanin</span>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <img src="./assets/imagemParte3-1.png" alt="">
+                <div>
+                    <span>Kaua Pacce</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contact-us" id="contact">
+        <div class="contact-us-wrapper">
+            <div class="contact-us-call">
+                <h2 class="contact-title">Contato</h2>
+
+                <h1 class="contact-call">Veja o fluxo do seu estoque de <br> uma nova maneira</h1>
+
+                <p class="contact-text">Quer entender onde o fluxo do seu estoque trava? Entre em contato <br>
+                    conosco e
+                    descubra como a FluxLog pode ajudar sua operação.</p>
+
+                <img class="contact-img" src="./assets/imagemParte4.png">
+            </div>
+            <div class="contact-form-wrapper">
+                <label>Nome:</label>
+                <input class="input-name" type="text" placeholder="Digite seu nome aqui!">
+
+                <label>Email:</label>
+                <input class="input-email" type="text" placeholder="Digite seu nome aqui!">
+
+                <label>Telefone:</label>
+                <input class="input-tel" type="text" placeholder="Digite seu nome aqui!">
+
+                <label>Mensagem:</label>
+                <input class="input-msg" type="text" placeholder="Fale um pouco sobre o que você precisa...">
+
+                <button class="contact-btn2">Quero conhecer a solução</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="logo-footer">
+            <img src="./assets/Group 63.png" alt="">
+
+            <nav class="footer-menu">
+                <a href="">Início</a>
+                <a href="#calculator">Calculadora</a>
+                <a href="#dashboard">Solução</a>
+                <a href="#contact">Contato</a>
+            </nav>
+
+        </div>
+        <div class="footer-rights">
+            <span>© 2026 FluxLog. Todos os direitos reservados.</span>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    function calculate() {
+        let minutos = Number(input_minutes.value);
+        let custo_hora = Number(input_hour.value);
+        let funcionarios = Number(input_qtt_worker.value);
+
+        if (input_minutes.value == "" || input_hour.value == "" || input_qtt_worker.value == "") {
+            main_result.innerHTML = "Preencha todos os campos";
+            detail_result.innerHTML = "Selecione um cenário e informe os dados do estoque.";
+        } else if (custo_hora <= 0 || funcionarios <= 0) {
+            main_result.innerHTML = "Confira os valores informados";
+            detail_result.innerHTML = "O custo por hora e a quantidade de funcionários devem ser maiores que zero.";
+        } else {
+            let minutos_excedentes = minutos - 5;
+            let custo_congestionamento = (minutos_excedentes / 60) * custo_hora * funcionarios;
+            let prejuizo_anual = custo_congestionamento * 365;
+
+            // main_result.innerHTML = `R$ ${prejuizo_anual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            detail_result.innerHTML = `<div class="result-calculator">
+                <div class="label-result">
+                    <span class="label-result">Quantidade de funcionários:</span>
+                    <span class="result1">${funcionarios}</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Tempo de congestionamento:</span>
+                    <span class="result1">${minutos} minutos</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Tempo excedente:</span>
+                    <span class="result1">${minutos_excedentes} minutos</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Custo por hora:</span>
+                    <span class="result1">R$ ${custo_hora.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Custo diário estimado:</span>
+                    <span class="result1">R$ ${custo_congestionamento.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+
+                <div class="label-result">
+                    <span>Custo anual estimado:</span>
+                    <span class="result2">R$ ${prejuizo_anual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+
+            </div>`;
+        }
+    }
+</script>
