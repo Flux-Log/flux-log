@@ -94,7 +94,8 @@
 
         // Validação das credenciais
         if (email == "fluxlog@email.com" && senha == "12345678") {
-            alert("Login realizado com sucesso!");
+            alert("Login realizado com sucesso!")
+            location.href = "dashboard.html"; // direciona para a dashboard
         } else {
             tentativas--;
             if (tentativas > 0) {
