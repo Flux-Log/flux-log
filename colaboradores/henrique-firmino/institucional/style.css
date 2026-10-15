@@ -158,14 +158,18 @@ button {
     height: 50px;
     border-radius: 5px;
     font-size: 20px;
-    background-color: transparent;
-    border: 1px solid #0F1C26;
     cursor: pointer;
+    border: 1px solid #0F1C26;
+    background-color: transparent;
 }
 
 .contact-btn:hover {
     background-color: #0F1C26;
     color: white;
+}
+
+.contact-form-wrapper input::placeholder {
+    color: #0f1c264d;
 }
 
 .imagem-inicio {
@@ -187,6 +191,8 @@ button {
 
 label {
     margin-bottom: 16px;
+    color: white;
+    font-size: 20px;
 }
 
 .calculator-solution {
@@ -276,6 +282,10 @@ label {
 .calculator-inputs {
     display: flex;
     flex-direction: column;
+}
+
+.calculator-inputs input::placeholder {
+    color: rgba(255, 255, 255, 0.527);
 }
 
 .calculator-result {
@@ -453,7 +463,7 @@ label {
     align-items: center;
     flex-direction: column;
     background-color: white;
-    border: 1px solid #FF7B00;
+    border: 1px solid #ff7b007b;
     border-radius: 8px;
     padding: 50px 50px 100px 50px;
     gap: 20px;
@@ -467,174 +477,117 @@ label {
     height: 130px;
 }
 
-.conteudo-quarta-parte {
-    width: 90%;
-    max-width: 1432px;
-    margin: auto;
+.contact-us {
     display: flex;
-}
-
-.imagemParte4 {
-    width: 745px;
-    height: 745px;
-    margin: auto;
-}
-
-.titulo1-quarta-parte {
-    font-size: 36px;
-    color: #DFF1FF;
-    margin-top: 166px;
-    margin-left: 80px;
-    font-weight: 500;
-}
-
-.titulo2-quarta-parte {
-    font-size: 36px;
-    color: #FF7B00;
-    margin-top: 1px;
-    margin-left: 80px;
-    font-weight: 700;
-}
-
-.paragrafo1-quarta-parte {
-    font-size: 20px;
-    color: #DFF1FF;
-    margin-left: 80px;
-    margin-top: 64px;
-    font-weight: 200;
-
-}
-
-.paragrafo2-quarta-parte {
-    font-size: 20px;
-    color: #DFF1FF;
-    margin-left: 80px;
-    margin-top: 50px;
-    font-weight: 200;
-}
-
-.quinta-parte {
+    align-items: center;
+    justify-content: center;
     background-color: #F2F9FF;
-    height: 1083px;
+    padding: 100px 190px;
 }
 
-.conteudo-quinta-parte {
+.contact-us-wrapper {
     display: flex;
-    margin: auto;
-    width: 90%;
-    max-width: 1432px;
-    justify-content: space-between;
+    align-items: center;
 }
 
-.contato-parte5 {
+.contact-us-call {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-title {
     font-size: 26px;
-    margin-top: 149px;
     color: #FF7802;
-    font-weight: 350;
+    font-weight: 100;
+    margin-bottom: 16px;
 }
 
-.titulo-parte5 {
-    margin-top: 9px;
-    font-weight: 700;
+.contact-call {
+    font-weight: 700; 
+    margin-bottom: 24px;
+
 }
 
-.paragrafo-parte5 {
+.contact-text {
     font-size: 20px;
     width: 700px;
     font-weight: 250;
+    margin-bottom: 64px;
 }
 
-.imagemParte5 {
+.contact-img {
     width: 507px;
     height: 507px;
-    margin-top: 71px;
+    border-radius: 8px;
 }
 
-.lado-direito {
-    width: 608px;
-    height: 920px;
+.contact-form-wrapper {
+    display: flex;
+    flex-direction: column;
     background-color: #0F1C26;
-    margin-top: 83px;
     border-radius: 10px;
+    padding: 80px 64px;
 }
 
 .nome {
     font-size: 20px;
     color: white;
-    margin-top: 69px;
-    margin-left: 88px;
 }
 
-.input-nome {
+.input-name {
     height: 55px;
     width: 432px;
-    margin-left: 88px;
     border-radius: 5px;
     font-size: 20px;
-    padding-left: 26px;
-}
-
-.email {
-    font-size: 20px;
-    color: white;
-    margin-top: 69px;
-    margin-left: 88px;
-    margin-top: 30px;
+    margin-bottom: 24px;
+    padding: 0px 0px 0px 16px;
+    border: none;
 }
 
 .input-email {
     height: 55px;
     width: 432px;
-    margin-left: 88px;
     border-radius: 5px;
     font-size: 20px;
-    padding-left: 26px;
+    margin-bottom: 24px;
+    padding: 0px 0px 0px 16px;
+    border: none;
 }
 
-.telefone {
-    font-size: 20px;
-    color: white;
-    margin-top: 69px;
-    margin-left: 88px;
-    margin-top: 30px;
-}
-
-.input-telefone {
+.input-tel {
     height: 55px;
     width: 432px;
-    margin-left: 88px;
     border-radius: 5px;
     font-size: 20px;
-    padding-left: 26px;
+    margin-bottom: 24px;
+    padding: 0px 0px 0px 16px;
+    border: none;
 }
 
-.mensagem {
-    font-size: 20px;
-    color: white;
-    margin-top: 69px;
-    margin-left: 88px;
-    margin-top: 30px;
-}
-
-.input-mensagem {
+.input-msg {
     height: 290px;
     width: 432px;
-    margin-left: 88px;
     border-radius: 5px;
     font-size: 20px;
-    padding-left: 26px;
+    margin-bottom: 24px;
+    padding: 0px 0px 0px 16px;
+    border: none;
 }
-.botao-contato{
+.contact-btn2 {
+    align-self: center;
     background-color: #FF7B00;
-    margin-top: 32px;
     height: 55px;
     width: 362px;
-    font-size: 25px;
     color: white;
-    font-weight: 700;
+    font-weight: bold;
+    font-size: 18px;
     border: none;
     border-radius: 5px;
-    margin-left: 125px;
+    cursor: pointer;
+}
+
+.contact-btn2:hover {
+    background-color: #b75600;
 }
 
 .footer {
