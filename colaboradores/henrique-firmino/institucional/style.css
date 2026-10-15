@@ -4,12 +4,30 @@
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: #F2F9FF;
     font-family: "Google Sans", sans-serif;
 }
 
+.calculator-wrapper {
+    scroll-margin-top: 100px;
+}
+
+.dash-specification {
+    scroll-margin-top: 30px;
+}
+
+.about-us {
+    scroll-margin-top: 100px;
+}
+
 .header {
+    position: fixed;
+    width: 100%;
     background-color: white;
     height: 92px;
 
