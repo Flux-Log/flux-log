@@ -74,7 +74,7 @@
                 <label for="input_qtt_worker" class="label3">Quantos funcionários trabalham no estoque?</label>
                 <input id="input_qtt_worker" class="input3" type="text" placeholder="Ex: 11">
 
-                <label for="ipt_media_congestionamento"class="label4">A partir de quantos minutos já é considerado congestionamento ? (sujeito à análise)</label>
+                <label for="ipt_media_congestionamento"class="label4">Qual é o limite de tempo para considerar um congestionamento prolongado?</label>
                 <input type="text" id="ipt_media_congestionamento" class="input4"  placeholder="Ex: 5">
 
                 <button class="button-calculate" onclick="calculate()">
@@ -237,8 +237,6 @@
             let custo_congestionamento = (minutos_excedentes / 60) * custo_hora * funcionarios;
             let prejuizo_anual = custo_congestionamento * 365;
 
-            // main_result.innerHTML = `R$ ${prejuizo_anual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
             detail_result.innerHTML = `<div class="result-calculator">
                 <div class="label-result">
                     <span>Custo anual estimado:</span>
@@ -268,9 +266,6 @@
                     <span>Custo diário estimado:</span>
                     <span class="result1">R$ ${custo_congestionamento.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
-
-                
-
             </div>`;
         }
     }
