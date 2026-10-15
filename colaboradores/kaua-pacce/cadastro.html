@@ -94,28 +94,41 @@
     <!--footer fim-->
 
     <script>
-        function cadastrar(){
-            let email = ipt_email.value;
-            let nomeFantasia = ipt_nomeFantasia.value;
-            let cnpj = ipt_cnpj.value;
-            let senha = ipt_senha.value;
-            let confirmarSenha = ipt_confirmarSenha.value;
+    function cadastrar() {
+        let nomeCompleto = ipt_nomeCompleto.value;
+        let email = ipt_email.value;
+        let nomeFantasia = ipt_nomeFantasia.value;
+        let razaoSocial = ipt_razaoSocial.value;
+        let cnpj = ipt_cnpj.value;
+        let cep = ipt_cep.value;
+        let logradouro = ipt_logradouro.value;
+        let senha = ipt_senha.value;
+        let confirmarSenha = ipt_confirmarSenha.value;
 
-            // Verificando se há algum campo em branco
-            if(nomeFantasia == ""){
-                alert("Nome Fantasia está vazio, preencha o campo.");
-            } else if(email == "" || !email.includes('@') || !email.includes('.com') || email.includes(' ') || email.length < 7){
-                alert("Email está vazio ou incorreto, digite um email valido.");
-            } else if(cnpj == "" || cnpj.length != 14){
-                alert("CNPJ está vazio ou incorreto, digite um CNPJ valido.");
-            } else if(senha == "" || senha.length < 8){
-                alert("Senha está vazia ou não atende os requisitos");
-            } else if(senha != confirmarSenha){
-                alert("As senhas não são as mesmas.");
-            } else{
-                alert("Conta cadastrada com sucesso!");
-            }
+    // Verificando se há algum campo em branco ou inválido
+        if (nomeCompleto == "") {
+            alert("Nome Completo está vazio, preencha o campo.");
+        } else if (email == "" || !email.includes('@') || !email.includes('.com') || email.includes(' ') || email.length < 7) {
+            alert("Email está vazio ou incorreto, digite um email válido.");
+        } else if (nomeFantasia == "") {
+            alert("Nome Fantasia está vazio, preencha o campo.");
+        } else if (razaoSocial == "") {
+            alert("Razão Social está vazia, preencha o campo.");
+        } else if (cnpj.length != 14 || isNaN(cnpj) || cnpj.includes(' ')) {
+            alert("CNPJ está vazio ou incorreto, digite um CNPJ válido.");
+        } else if (cep.length != 8 || isNaN(cep) || cep.includes(' ')) {
+            alert("CEP está vazio ou incorreto, digite um CEP válido.");
+        } else if (logradouro == "") {
+            alert("Logradouro está vazio, preencha o campo.");
+        } else if (senha == "" || senha.length < 8) {
+            alert("Senha está vazia ou não atende os requisitos (mínimo 8 caracteres).");
+        } else if (senha != confirmarSenha) {
+            alert("As senhas não são as mesmas.");
+        } else {
+            alert("Conta cadastrada com sucesso!");
+            location.href = "login.html";
         }
+    }
     </script>
 </body>
 </html>
