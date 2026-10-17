@@ -54,8 +54,45 @@
                     </div>
                 </div>
             </div>
+
+            <div class="grafico">
+                <canvas id="grafico1"></canvas>
+            </div>
+
+            </div>
         </div>
     </main>
 </body>
 
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('grafico1');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
+        datasets: [{
+            label: 'SetorA',
+            data: [4, 3, 5, 7, 8, 10, 12],
+            borderWidth: 3 
+            }
+            ,
+            {
+            label: 'SetorB',
+            data: [6, 3, 4, 8, 10, 11, 9],
+            borderWidth: 3
+        }]
+      },
+       options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+    })
+</script>
