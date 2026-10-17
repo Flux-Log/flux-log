@@ -250,6 +250,7 @@ p {
 
 .title-graph h1 {
     margin-bottom: 24px;
+
 }
 
 .graph-wrapper {
@@ -264,3 +265,10 @@ p {
     flex: 1;
 }
 
+.grafico{
+    display: flex;
+    position: relative;
+    padding-top: 18px;
+    width: 700px;
+    height: 600px;
+}
