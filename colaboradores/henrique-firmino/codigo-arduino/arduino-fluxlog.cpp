@@ -1,7 +1,7 @@
 #include "Ultrasonic.h"
 
-int pinoTrigger = 12;
-int pinoEcho = 13;
+int pinoTrigger = 2;
+int pinoEcho = 3;
 
 HC_SR04 sensor(pinoTrigger, pinoEcho);
 
