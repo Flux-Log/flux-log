@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FluxLog - Monitoramento</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <h1>Monitoramento do sensor</h1>
+
+    <h2 id="statusSensor">Aguardando leitura...</h2>
+
+    <div style="width: 80%; margin: auto;">
+        <canvas id="sensorDigital"></canvas>
+    </div>
+
+    <script>
+        var sensorDigital = new Chart(
+            document.getElementById('sensorDigital').getContext('2d'),
+            {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Estado do sensor (0 = livre, 1 = detectado)',
+                        borderColor: '#0762C8',
+                        backgroundColor: '#0762C8',
+                        data: [],
+                        stepped: true
+                    }]
+                },
+                options: {
+                    animation: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Leituras'
+                            }
+                        },
+                        y: {
+                            min: 0,
+                            max: 1,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            title: {
+                                display: true,
+                                text: 'Estado do sensor'
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        var tempo = 0;
+
+        function obterDados() {
+            fetch('http://localhost:3300/sensores/digital')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao acessar a API');
+                    }
+
+                    return response.json();
+                })
+                .then(valores => {
+                    if (valores.length > 0) {
+                        var leitura = Number(valores[valores.length - 1].digital);
+
+                        document.getElementById('statusSensor').innerHTML =
+                            leitura === 1
+                                ? 'Objeto detectado!'
+                                : 'Nenhum objeto detectado';
+
+                        sensorDigital.data.labels.push(tempo++);
+                        sensorDigital.data.datasets[0].data.push(leitura);
+
+                        if (sensorDigital.data.labels.length > 20) {
+                            sensorDigital.data.labels.shift();
+                            sensorDigital.data.datasets[0].data.shift();
+                        }
+
+                        sensorDigital.update();
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao obter dados:', error);
+
+                    document.getElementById('statusSensor').innerHTML =
+                        'Erro ao conectar com a API';
+                });
+        }
+
+        obterDados();
+        setInterval(obterDados, 1000);
+    </script>
+
+</body>
+
+</html>
