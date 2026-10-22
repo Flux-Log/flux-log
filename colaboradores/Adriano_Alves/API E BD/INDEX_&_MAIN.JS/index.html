@@ -1,0 +1,145 @@
+
+<!doctype html>
+<html>
+
+<head>
+    <title>Flux-Log</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <h1>Setor Limpeza - Sensor 17</h1>
+    <div style="width: 50%;">
+        <canvas id="sensor17"></canvas>
+    </div>
+
+    <h1>Setor Limpeza - Sensor 18</h1>
+    <div style="width: 50%;">
+        <canvas id="sensor18"></canvas>
+    </div>
+
+    <h1>Setor Arroz - Sensor 19</h1>
+    <div style="width: 50%;">
+        <canvas id="sensor19"></canvas>
+    </div>
+
+    <h1>Setor Arroz - Sensor 20</h1>
+    <div style="width: 50%;">
+        <canvas id="sensor20"></canvas>
+    </div>
+
+    <h1>Setor Pet - Sensor 21</h1>
+    <div style="width: 50%;">
+        <canvas id="sensor21"></canvas>
+    </div>
+
+    <h1>Setor Pet - Sensor 22</h1>
+    <div style="width: 50%;">
+        <canvas id="sensor22"></canvas>
+    </div>
+
+    <h1>Setor Bebidas - Sensor 23</h1>
+    <div style="width: 50%;">
+        <canvas id="sensor23"></canvas>
+    </div>
+
+    <h1>Setor Bebidas - Sensor 24</h1>
+    <div style="width: 50%;">
+        <canvas id="sensor24"></canvas>
+    </div>
+
+    <script>
+
+        function criarGrafico(id, cor) {
+            return new Chart(
+                document.getElementById(id).getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Estado do Sensor',
+                            borderColor: cor,
+                            backgroundColor: '#0762C8',
+                            data: []
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            },
+                            y: {
+                                min: 0,
+                                max: 1,
+                                title: {
+                                    display: true,
+                                    text: 'Fluxo Livre | Congestionado'
+                                },
+                                ticks: {
+                                    stepSize: 1
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        var sensores = {
+            17: criarGrafico('sensor17', '#0762C8'),
+            18: criarGrafico('sensor18', '#63B1BC'),
+            19: criarGrafico('sensor19', '#0762C8'),
+            20: criarGrafico('sensor20', '#63B1BC'),
+            21: criarGrafico('sensor21', '#0762C8'),
+            22: criarGrafico('sensor22', '#63B1BC'),
+            23: criarGrafico('sensor23', '#0762C8'),
+            24: criarGrafico('sensor24', '#63B1BC')
+        };
+
+        var paginacao = {};
+        var tempo = {};
+
+        function obterDados(grafico, endpoint, idSensor) {
+            fetch('http://localhost:3300/sensores/' + endpoint)
+                .then(response => response.json())
+                .then(valores => {
+                    if (paginacao[idSensor] == null) {
+                        paginacao[idSensor] = 0;
+                    }
+
+                    if (tempo[idSensor] == null) {
+                        tempo[idSensor] = 0;
+                    }
+
+                    var ultimaPaginacao = paginacao[idSensor];
+                    paginacao[idSensor] = valores.length;
+                    valores = valores.slice(ultimaPaginacao);
+
+                    valores.forEach(valor => {
+                        if (grafico.data.labels.length >= 10) {
+                            grafico.data.labels.shift();
+                            grafico.data.datasets[0].data.shift();
+                        }
+
+                        grafico.data.labels.push(tempo[idSensor]++);
+                        grafico.data.datasets[0].data.push(Number(valor));
+                    });
+
+                    grafico.update();
+                })
+                .catch(error => console.error('Erro ao obter dados:', error));
+        }
+
+        setInterval(() => {
+    [17, 18, 19, 20, 21, 22, 23, 24].forEach(id => {
+        obterDados(sensores[id], id, id);
+    });
+}, 1000);
+
+    </script>
+</body>
+
+</html>
