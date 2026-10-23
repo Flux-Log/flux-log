@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+</head>
+
+<body>
+    <div class="form-mercado">
+        <h3>Cadastrar mercado</h3>
+        <label for="ipt_nomeMercado">Nome do mercado</label>
+        <input type="text" id="ipt_nomeMercado">
+
+        <label for="ipt_qtdSetores">Quantidade de setores</label>
+        <input type="text" id="ipt_qtdSetores">
+
+        <label for="ipt_tempoAtencao">Tempo total em Atenção (min)</label>
+        <input type="text" id="ipt_tempoAtencao">
+
+        <label for="ipt_tempoAlerta">Tempo total em Alerta (min)</label>
+        <input type="text" id="ipt_tempoAlerta">
+
+        <label for="ipt_tempoNormal">Tempo total em Normal (min)</label>
+        <input type="text" id="ipt_tempoNormal">
+
+        <button onclick="cadastrarMercado()">Cadastrar</button>
+    </div>
+
+    <div>
+        <h1>Mercados cadastrados</h1>
+        <div id="div_mercados"></div>
+    </div>
+
+    <div class="form-gestor">
+        <h3>Cadastrar gestor</h3>
+
+        <label for="ipt_nomeGestor">Nome completo</label>
+        <input type="text" id="ipt_nomeGestor">
+
+        <label for="ipt_emailGestor">Email</label>
+        <input type="text" id="ipt_emailGestor">
+
+        <label for="ipt_senhaGestor">Senha</label>
+        <input type="password" id="ipt_senhaGestor">
+
+        <label for="ipt_mercado">Mercado</label>
+        <select id="ipt_mercado"></select>
+
+        <button onclick="cadastrarGestor()">Cadastrar gestor</button>
+    </div>
+
+    <div>
+        <h1>Gestores cadastrados</h1>
+        <div id="div_gestores"></div>
+    </div>
+</body>
+
+</html>
+<script>
+    let mercados = [];
+    let gestores = [];
+
+    function cadastrarMercado() {
+        let nomeMercado = ipt_nomeMercado.value;
+        let qtdSetores = Number(ipt_qtdSetores.value);
+        let tempoAtencao = Number(ipt_tempoAtencao.value);
+        let tempoAlerta = Number(ipt_tempoAlerta.value);
+        let tempoNormal = Number(ipt_tempoNormal.value);
+
+        let valido = true;
+
+        if (nomeMercado == "" || qtdSetores <= 0 || tempoAtencao <= 0 || tempoAlerta <= 0 || tempoNormal <= 0) {
+            alert("Preencha todos os campos corretamente.");
+            valido = false;
+        }
+
+        if (valido == true) {
+            let novoMercado = {
+                id: mercados.length + 1,
+                nomeMercado: nomeMercado,
+                qtdSetores: qtdSetores,
+                tempoAtencao: tempoAtencao,
+                tempoAlerta: tempoAlerta,
+                tempoNormal: tempoNormal
+            };
+
+            let novaLista = [];
+            let inserido = false;
+
+            let cont = 0;
+            while (cont < mercados.length) {
+                if (inserido == false && novoMercado.tempoAtencao > mercados[cont].tempoAtencao) {
+                    novaLista.push(novoMercado);
+                    inserido = true;
+                }
+                novaLista.push(mercados[cont]);
+                cont++;
+            }
+
+            if (inserido == false) {
+                novaLista.push(novoMercado);
+            }
+
+            mercados = novaLista;
+
+            div_mercados.innerHTML = "";
+
+            cont = 0;
+            while (cont < mercados.length) {
+                div_mercados.innerHTML += `<br> ${mercados[cont].nomeMercado} - ${mercados[cont].qtdSetores} setores - Atenção: ${mercados[cont].tempoAtencao} min 
+                - Alerta: ${mercados[cont].tempoAlerta} min - Normal: ${mercados[cont].tempoNormal} min`;
+                cont++;
+            }
+
+            ipt_mercado.innerHTML = "";
+
+            cont = 0;
+            while (cont < mercados.length) {
+                ipt_mercado.innerHTML += `<option value="${mercados[cont].id}">${mercados[cont].nomeMercado}</option>`;
+                cont++;
+            }
+        }
+    }
+
+    function cadastrarGestor() {
+        let nomeGestor = ipt_nomeGestor.value;
+        let emailGestor = ipt_emailGestor.value;
+        let senhaGestor = ipt_senhaGestor.value;
+        let idMercado = Number(ipt_mercado.value);
+
+        let valido = true;
+
+        if (nomeGestor == "" || !emailGestor.includes("@") || senhaGestor.length < 8 || idMercado == 0) {
+            alert("Preencha todos os campos corretamente.");
+            valido = false;
+        }
+
+        if (valido == true) {
+            gestores.push({
+                id: gestores.length + 1,
+                nomeGestor: nomeGestor,
+                emailGestor: emailGestor,
+                senhaGestor: senhaGestor,
+                idMercado: idMercado
+            });
+
+            div_gestores.innerHTML = "";
+
+            let cont = 0;
+            while (cont < gestores.length) {
+                let nomeMercado = "";
+                let busca = 0;
+                while (busca < mercados.length) {
+                    if (mercados[busca].id == gestores[cont].idMercado) {
+                        nomeMercado = mercados[busca].nomeMercado;
+                    }
+                    busca++;
+                }
+
+                div_gestores.innerHTML += `<br> ${gestores[cont].nomeGestor} - ${gestores[cont].emailGestor} - Mercado ${nomeMercado}`;
+                cont++;
+            }
+        }
+    }
+</script>
