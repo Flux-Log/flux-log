@@ -35,9 +35,9 @@
                     Veja agora quais setores estão com maior tempo de congestionamento nos respectivos mercados
                 </span>
             </div>
-            <div class="kpis">
+            <div class="kpis"> 
                 <div class="kpi-01">
-                    <span>Prolongado</span>
+                    <span>Prolongado</span> 
                     <div class="sector-amount">
                         <h2 class="amount-danger">Mais que 5 minutos</h2>
                     </div>
@@ -53,7 +53,7 @@
                 <div class="kpi-01">
                     <span>Normal</span>
                     <div class="sector-amount">
-                        <h2 class="amount-success">Menor que ${}2 minutos</h2>
+                        <h2 class="amount-success">Menor que 2 minutos</h2>
                     </div>
                 </div>
 
@@ -126,17 +126,17 @@
 
             <h2>Cadastrar Funcionário</h2>
 
-            <label for="ipt_nomeGestor">Nome completo</label>
-            <input type="text" id="ipt_nomeGestor">
+            <label for="ipt_nomeFuncionario">Nome completo</label>
+            <input type="text" id="ipt_nomeFuncionario">
 
-            <label for="ipt_emailGestor">Email</label>
-            <input type="text" id="ipt_emailGestor">
+            <label for="ipt_emailFuncionario">Email</label>
+            <input type="text" id="ipt_emailFuncionario">
 
-            <label for="ipt_senhaGestor">Senha</label>
-            <input type="password" id="ipt_senhaGestor">
+            <label for="ipt_senhaFuncionario">Senha</label>
+            <input type="password" id="ipt_senhaFuncionario">
 
-            <label for="ipt_cargo">Cargo</label>
-            <input type="text" id="ipt_cargo">
+            <label for="ipt_cargoFuncionario">Cargo</label>
+            <input type="text" id="ipt_cargoFuncionario">
 
             <label for="ipt_mercado">Mercado</label>
             <select id="ipt_mercado"></select>
@@ -242,15 +242,15 @@
 
 
     function cadastrarFuncionario() {
-        let nomeGestor = ipt_nomeGestor.value;
-        let emailGestor = ipt_emailGestor.value;
-        let senhaGestor = ipt_senhaGestor.value;
-        //const cargoFuncionario = ipt_cargo.value;
+        let nome = ipt_nomeFuncionario.value;
+        let email = ipt_emailFuncionario.value;
+        let senha = ipt_senhaFuncionario.value;
+        let cargo = ipt_cargoFuncionario.value;
         let idMercado = Number(ipt_mercado.value);
 
         let valido = true;
 
-        if (nomeGestor == "" || !emailGestor.includes("@") || senhaGestor.length < 8 || idMercado == 0) {
+        if (nome == "" || !email.includes("@") || senha.length < 8 || cargo == "" || idMercado == 0) {
             alert("Preencha todos os campos corretamente.");
             valido = false;
         }
@@ -258,9 +258,10 @@
         if (valido == true) {
             gestores.push({
                 id: gestores.length + 1,
-                nomeGestor: nomeGestor,
-                emailGestor: emailGestor,
-                senhaGestor: senhaGestor,
+                nome: nome,
+                email: email,
+                senha: senha,
+                cargo: cargo,
                 idMercado: idMercado
             });
 
@@ -277,7 +278,7 @@
                     busca++;
                 }
 
-                div_gestores.innerHTML += `<br> ${gestores[cont].nomeGestor} - ${gestores[cont].emailGestor} - Mercado ${nomeMercado}`;
+                div_gestores.innerHTML += `<br> ${gestores[cont].nome} - ${gestores[cont].email} - ${gestores[cont].cargo} - Mercado ${nomeMercado}`;
                 cont++;
             }
         }
