@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Dashboard FluxLog</title>
+</head>
+
+<body>
+    <header class="header">
+        <img src="./assets/logo-fluxlog-dashboard.png" alt="">
+    </header>
+    <main>
+        <div class="menu">
+            <span>GERAL</span>
+            <nav>
+                <a href="./dashboard.html">Início</a>
+                <a href="./mercados.html" class="active">Mercados</a>
+                <a href="./historico.html">Histórico</a>
+            </nav>
+        </div>
+        <div class="dash-kpis">
+            <div class="title-subtitle">
+                <h1>
+                    Olá, Gerente!
+                </h1>
+                <span>
+                    Veja agora quais setores estão com maior tempo de congestionamento nos respectivos mercados
+                </span>
+            </div>
+            <div class="kpis">
+                <div class="kpi-01">
+                    <span>Prolongado</span>
+                    <div class="sector-amount">
+                        <h2 class="amount-danger">Mais que 5 minutos</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Atenção</span>
+                    <div class="sector-amount">
+                        <h2 class="amount-attention">Maior que 2 e menor que 5 minutos</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Normal</span>
+                    <div class="sector-amount">
+                        <h2 class="amount-success">Menor que 2 minutos</h2>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="markets-wrapper">
+
+                <div class="btn-wrapper">
+                    <button onclick="abrirModalMercado()">
+                        Cadastrar Mercado
+                    </button>
+
+                    <button onclick="abrirModalFuncionario()">
+                        Cadastrar Funcionário
+                    </button>
+                </div>
+
+                <div class="empty-state">
+                    <span>Você ainda não possui mercados cadastrados</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Mercado -->
+<div id="modal_mercado" class="modal">
+    <div class="modal-content">
+        <div>
+        <button onclick="fecharModalMercado()">X</button>
+        </div>
+        
+        <h2>Cadastrar Mercado</h2>
+
+        <label>Nome do mercado</label>
+        <input type="text" id="nome_mercado">
+
+        <label>CNPJ</label>
+        <input type="text" id="cnpj">
+
+        <button onclick="cadastrarMercado()">
+            Cadastrar
+        </button>
+    </div>
+</div>
+
+<!-- Modal Funcionário -->
+<div id="modal_funcionario" class="modal">
+    <div class="modal-content">
+        <div>
+        <button onclick="fecharModalFuncionario()">X</button>
+        </div>
+
+        <h2>Cadastrar Funcionário</h2>
+
+        <label>Nome completo</label>
+        <input type="text" id="nome_funcionario">
+
+        <label>E-mail</label>
+        <input type="email" id="email">
+
+        <label>Cargo</label>
+        <input type="text" id="cargo">
+
+        <button onclick="cadastrarFuncionario()">
+            Cadastrar
+        </button>
+    </div>
+</div>
+
+</body>
+
+</html>
+<script>
+    function abrirModalMercado() {
+    modal_mercado.style.display = "flex";
+}
+
+function fecharModalMercado() {
+    modal_mercado.style.display = "none";
+}
+
+function abrirModalFuncionario() {
+    modal_funcionario.style.display = "flex";
+}
+
+function fecharModalFuncionario() {
+    modal_funcionario.style.display = "none";
+}
+
+function cadastrarMercado() {
+    const nome = nome_mercado.value;
+    const cnpjMercado = cnpj.value;
+
+    if (nome == "" || cnpjMercado == "") {
+        alert("Preencha todos os campos!");
+    } else {
+        console.log("Nome do mercado:", nome);
+        console.log("CNPJ:", cnpjMercado);
+
+        alert("Mercado cadastrado com sucesso!");
+
+        fecharModalMercado();
+    }
+}
+
+function cadastrarFuncionario() {
+    const nome = nome_funcionario.value;
+    const emailFuncionario = email.value;
+    const cargoFuncionario = cargo.value;
+
+    if (nome == "" || emailFuncionario == "" || cargoFuncionario == "") {
+        alert("Preencha todos os campos!");
+    } else {
+        console.log("Nome:", nome);
+        console.log("E-mail:", emailFuncionario);
+        console.log("Cargo:", cargoFuncionario);
+
+        alert("Funcionário cadastrado com sucesso!");
+
+        fecharModalFuncionario();
+    }
+}
+</script>
