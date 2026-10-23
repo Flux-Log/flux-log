@@ -97,6 +97,9 @@
             <label for="ipt_qtdSetores">Quantidade de setores</label>
             <input type="text" id="ipt_qtdSetores">
 
+            <label for="ipt_endereco">Endereço</label>
+            <input type="text" id="ipt_endereco">
+
             <label for="ipt_tempoAtencao">Tempo total em Atenção (min)</label>
             <input type="text" id="ipt_tempoAtencao">
 
@@ -177,16 +180,17 @@
     let gestores = [];
 
     function cadastrarMercado() {
-        let nomeMercado = ipt_nomeMercado.value;
+        let nome = ipt_nomeMercado.value;
+        let cnpj = ipt_cnpj.value;
         let qtdSetores = Number(ipt_qtdSetores.value);
-        let cnpjMercado = ipt_cnpj.value;
+        let endereco = ipt_endereco.value;
         let tempoAtencao = Number(ipt_tempoAtencao.value);
         let tempoAlerta = Number(ipt_tempoAlerta.value);
         let tempoNormal = Number(ipt_tempoNormal.value);
 
         let valido = true;
 
-        if (nomeMercado == "" || qtdSetores <= 0 || tempoAtencao <= 0 || tempoAlerta <= 0 || tempoNormal <= 0) {
+        if (nome == "" || cnpj != 14  || qtdSetores <= 0 || endereco == "" || tempoAtencao <= 0 || tempoAlerta <= 0 || tempoNormal <= 0) {
             alert("Preencha todos os campos corretamente.");
             valido = false;
         }
@@ -194,8 +198,10 @@
         if (valido == true) {
             let novoMercado = {
                 id: mercados.length + 1,
-                nomeMercado: nomeMercado,
+                nome: nomeMercado,
+                cnpj: cnpj,
                 qtdSetores: qtdSetores,
+                endereco: endereco,
                 tempoAtencao: tempoAtencao,
                 tempoAlerta: tempoAlerta,
                 tempoNormal: tempoNormal
@@ -224,8 +230,8 @@
 
             cont = 0;
             while (cont < mercados.length) {
-                div_mercados.innerHTML += `<br> ${mercados[cont].nomeMercado} - ${mercados[cont].qtdSetores} setores - Atenção: ${mercados[cont].tempoAtencao} min 
-                - Alerta: ${mercados[cont].tempoAlerta} min - Normal: ${mercados[cont].tempoNormal} min`;
+                div_mercados.innerHTML += `${mercados[cont].nome} - ${mercados[cont].cnpj} - ${mercados[cont].qtdSetores} setores - Endereço: ${mercados[cont].endereco} - 
+                Atenção: ${mercados[cont].tempoAtencao} min - Alerta: ${mercados[cont].tempoAlerta} min - Normal: ${mercados[cont].tempoNormal} min <br>`;
                 cont++;
             }
 
@@ -233,7 +239,7 @@
 
             cont = 0;
             while (cont < mercados.length) {
-                ipt_mercado.innerHTML += `<option value="${mercados[cont].id}">${mercados[cont].nomeMercado}</option>`;
+                ipt_mercado.innerHTML += `<option value="${mercados[cont].id}">${mercados[cont].nome}</option>`;
                 cont++;
             }
         }
