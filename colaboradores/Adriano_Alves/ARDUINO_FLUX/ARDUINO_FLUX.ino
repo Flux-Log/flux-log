@@ -1,21 +1,21 @@
-# include "Ultrasonic.h"
+#include <Ultrasonic.h>
 
 int pinoTrigger = 12;
 int pinoEcho = 13;
 
-HC_SR04 sensor(pinoTrigger, pinoEcho);
+Ultrasonic sensor(pinoTrigger, pinoEcho);
 
 void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
-  float distancia = sensor.distance();
+  float distancia = sensor.read();
 
   if (distancia > 0 && distancia < 5) {
-    Serial.print(1);
+    Serial.println(1);
   } else {
-    Serial.print(0);
+    Serial.println(0);
   }
 
   Serial.print(" ");
@@ -23,4 +23,4 @@ void loop() {
   Serial.println(distancia);
 
   delay(1000);
-}
+} // <- O loop só deve ser fechado AQUI, no final de tudo.
