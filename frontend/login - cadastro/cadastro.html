@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!--header inicio-->
     <div class="header">
-        <img src="imagens/logoAzul.png" class="logo" alt="FluxLog">
+        <div class="logos">
+            <img src="imagens/logoCarrinho.png" class="logo" alt="FluxLog">
+            <img src="imagens/logoFluxoLog.png" class="logo_escrita" alt="FluxLog">
+        </div>
         <div class="menu">
             <a href="">Home</a>
             <a href="">Calculadora</a>
             <a href="">Sobre nós</a>
-            <a href="">Contato</a> 
+            <a href="">Contato</a>
             <a href="login.html" class="btn-login">Login</a>
             <a href="" class="btn-cadastro">Cadastro</a>
         </div>
@@ -28,47 +33,47 @@
 
         <div class="formulario">
             <div class="caixa">
-            <h1>Faça seu cadastro!</h1>
-            <p class="subtitulo">Registre-se com os seus dados</p>
+                <h1>Faça seu cadastro!</h1>
+                <p class="subtitulo">Registre-se com os seus dados</p>
 
-            <label for="ipt_nomeCompleto">Nome Completo:</label>
-            <input type="text" id="ipt_nomeCompleto" placeholder="Seu Nome Completo">
+                <label for="ipt_nomeCompleto">Nome Completo:</label>
+                <input type="text" id="ipt_nomeCompleto" placeholder="Seu Nome Completo">
 
-            <label for="ipt_email">Email:</label>
-            <input type="text" id="ipt_email" placeholder="meuemail@provedor.com">
-            
-            <label for="ipt_nomeFantasia">Nome Fantasia:</label>
-            <input type="text" id="ipt_nomeFantasia" placeholder="Nome Empresa">
+                <label for="ipt_email">Email:</label>
+                <input type="text" id="ipt_email" placeholder="meuemail@provedor.com">
 
-            <label for="ipt_razaoSocial">Razão Social:</label>
-            <input type="text" id="ipt_razaoSocial" placeholder="Razão Social">
+                <label for="ipt_nomeFantasia">Nome Fantasia:</label>
+                <input type="text" id="ipt_nomeFantasia" placeholder="Nome Empresa">
 
-            <label for="ipt_cnpj">CNPJ:</label>
-            <input type="text" id="ipt_cnpj" placeholder="00000000000000">
+                <label for="ipt_razaoSocial">Razão Social:</label>
+                <input type="text" id="ipt_razaoSocial" placeholder="Razão Social">
 
-            <div class="linha-endereco">
-                <div class="linha-enderecoCep">
-                    <label for="ipt_cep">CEP:</label>
-                    <input type="text" id="ipt_cep" placeholder="00000000">
+                <label for="ipt_cnpj">CNPJ:</label>
+                <input type="text" id="ipt_cnpj" placeholder="00000000000000">
+
+                <div class="linha-endereco">
+                    <div class="linha-enderecoCep">
+                        <label for="ipt_cep">CEP:</label>
+                        <input type="text" id="ipt_cep" placeholder="00000000">
+                    </div>
+                    <div class="linha-enderecoLogradouro">
+                        <label for="ipt_logradouro">Logradouro:</label>
+                        <input type="text" id="ipt_logradouro" placeholder="Rua Haddock Lobo 595">
+                    </div>
                 </div>
-                <div class="linha-enderecoLogradouro">
-                    <label for="ipt_logradouro">Logradouro:</label>
-                    <input type="text" id="ipt_logradouro" placeholder="Rua Haddock Lobo 595">
-                </div>
-            </div>
-            
-            <div class="linha-senhas">
-                <div>
-                    <label for="ipt_senha">Senha:</label>
-                    <input type="password" id="ipt_senha" placeholder="********">
-                </div>
-                <div>
-                    <label for="ipt_confirmarSenha">Confirmar senha:</label>
-                    <input type="password" id="ipt_confirmarSenha" placeholder="********">
-                </div>
-            </div>
 
-            <button onclick="cadastrar()">Criar Conta</button>
+                <div class="linha-senhas">
+                    <div>
+                        <label for="ipt_senha">Senha:</label>
+                        <input type="password" id="ipt_senha" placeholder="********">
+                    </div>
+                    <div>
+                        <label for="ipt_confirmarSenha">Confirmar senha:</label>
+                        <input type="password" id="ipt_confirmarSenha" placeholder="********">
+                    </div>
+                </div>
+
+                <button onclick="cadastrar()">Criar Conta</button>
             </div>
         </div>
     </div>
@@ -94,41 +99,42 @@
     <!--footer fim-->
 
     <script>
-    function cadastrar() {
-        let nomeCompleto = ipt_nomeCompleto.value;
-        let email = ipt_email.value;
-        let nomeFantasia = ipt_nomeFantasia.value;
-        let razaoSocial = ipt_razaoSocial.value;
-        let cnpj = ipt_cnpj.value;
-        let cep = ipt_cep.value;
-        let logradouro = ipt_logradouro.value;
-        let senha = ipt_senha.value;
-        let confirmarSenha = ipt_confirmarSenha.value;
+        function cadastrar() {
+            let nomeCompleto = ipt_nomeCompleto.value;
+            let email = ipt_email.value;
+            let nomeFantasia = ipt_nomeFantasia.value;
+            let razaoSocial = ipt_razaoSocial.value;
+            let cnpj = ipt_cnpj.value;
+            let cep = ipt_cep.value;
+            let logradouro = ipt_logradouro.value;
+            let senha = ipt_senha.value;
+            let confirmarSenha = ipt_confirmarSenha.value;
 
-    // Verificando se há algum campo em branco ou inválido
-        if (nomeCompleto == "") {
-            alert("Nome Completo está vazio, preencha o campo.");
-        } else if (email == "" || !email.includes('@') || !email.includes('.com') || email.includes(' ') || email.length < 7) {
-            alert("Email está vazio ou incorreto, digite um email válido.");
-        } else if (nomeFantasia == "") {
-            alert("Nome Fantasia está vazio, preencha o campo.");
-        } else if (razaoSocial == "") {
-            alert("Razão Social está vazia, preencha o campo.");
-        } else if (cnpj.length != 14 || isNaN(cnpj) || cnpj.includes(' ')) {
-            alert("CNPJ está vazio ou incorreto, digite um CNPJ válido.");
-        } else if (cep.length != 8 || isNaN(cep) || cep.includes(' ')) {
-            alert("CEP está vazio ou incorreto, digite um CEP válido.");
-        } else if (logradouro == "") {
-            alert("Logradouro está vazio, preencha o campo.");
-        } else if (senha == "" || senha.length < 8) {
-            alert("Senha está vazia ou não atende os requisitos (mínimo 8 caracteres).");
-        } else if (senha != confirmarSenha) {
-            alert("As senhas não são as mesmas.");
-        } else {
-            alert("Conta cadastrada com sucesso!");
-            location.href = "login.html";
+            // Verificando se há algum campo em branco ou inválido
+            if (nomeCompleto == "") {
+                alert("Nome Completo está vazio, preencha o campo.");
+            } else if (email == "" || !email.includes('@') || !email.includes('.com') || email.includes(' ') || email.length < 7) {
+                alert("Email está vazio ou incorreto, digite um email válido.");
+            } else if (nomeFantasia == "") {
+                alert("Nome Fantasia está vazio, preencha o campo.");
+            } else if (razaoSocial == "") {
+                alert("Razão Social está vazia, preencha o campo.");
+            } else if (cnpj.length != 14 || isNaN(cnpj) || cnpj.includes(' ')) {
+                alert("CNPJ está vazio ou incorreto, digite um CNPJ válido.");
+            } else if (cep.length != 8 || isNaN(cep) || cep.includes(' ')) {
+                alert("CEP está vazio ou incorreto, digite um CEP válido.");
+            } else if (logradouro == "") {
+                alert("Logradouro está vazio, preencha o campo.");
+            } else if (senha == "" || senha.length < 8) {
+                alert("Senha está vazia ou não atende os requisitos (mínimo 8 caracteres).");
+            } else if (senha != confirmarSenha) {
+                alert("As senhas não são as mesmas.");
+            } else {
+                alert("Conta cadastrada com sucesso!");
+                location.href = "login.html";
+            }
         }
-    }
     </script>
 </body>
+
 </html>
