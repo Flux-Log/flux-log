@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Google Sans Code', monospace;
-    background-color: #fffde8;
+    background-color: #F2F9FF;
     color: #162937;
     min-height: 100vh;
     display: flex;
@@ -25,6 +25,16 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
+}
+
+.logos {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logo_escrita {
+    height: 40px;
 }
 
 .logo {
@@ -99,7 +109,7 @@ a {
     font-family: inherit;
     border: 2px solid #ff7b00;
     border-radius: 8px;
-    background-color: #fffde8;
+    background-color: #F2F9FF;
 }
 
 .linha-endereco {
@@ -110,7 +120,8 @@ a {
 .linha-enderecoCep {
     width: 30%;
 }
-.linha-enderecoLogradouro{
+
+.linha-enderecoLogradouro {
     width: 70%;
 }
 
