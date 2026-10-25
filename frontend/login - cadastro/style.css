@@ -6,7 +6,7 @@
 }
 
 body {
-    font-family: 'Google Sans Code', monospace;
+    font-family: 'Google Sans', sans-serif;
     background-color: #F2F9FF;
     color: #162937;
     min-height: 100vh;
@@ -24,7 +24,9 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 26px 36px;
+    height: 92px;
+    background-color: white;
 }
 
 .logos {
@@ -44,22 +46,39 @@ a {
 .menu {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 26px;
 }
 
 .btn-login,
 .btn-cadastro {
-    padding: 6px 25px;
-    border: 2px solid #ff7b00;
-    border-radius: 6px;
+    height: 50px;
+    border-radius: 5px;
+    font-size: 20px;
 }
 
 .btn-login {
-    color: #ff7b00;
+    width: 109px;
+    border: 1px solid #162937;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
+.btn-login:hover{
+    background-color: #0F1C26;
+    color: white;
+}
 .btn-cadastro {
+    width: 146px;
     background-color: #ff7b00;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-cadastro:hover{
+    background-color: #b75600;
     color: white;
 }
 

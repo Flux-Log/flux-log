@@ -109,9 +109,7 @@
             <label for="ipt_tempoNormal">Tempo total em Normal (min)</label>
             <input type="text" id="ipt_tempoNormal">
 
-            <button onclick="cadastrarMercado()">
-                Cadastrar
-            </button>
+            <button onclick="cadastrarMercado()">Cadastrar</button>
         </div>
     </div>
 
@@ -144,16 +142,13 @@
             <label for="ipt_mercado">Mercado</label>
             <select id="ipt_mercado"></select>
 
-
-            <button onclick="cadastrarFuncionario()">
-                Cadastrar
-            </button>
+            <button onclick="cadastrarFuncionario()">Cadastrar</button>
         </div>
     </div>
 
     <div>
-        <h1>Gestores cadastrados</h1>
-        <div id="div_gestores"></div>
+        <h1>Funcionarios cadastrados</h1>
+        <div id="div_funcionario"></div>
     </div>
 
 </body>
@@ -177,28 +172,28 @@
     }
 
     let mercados = [];
-    let gestores = [];
+    let funcionarios = [];
 
     function cadastrarMercado() {
-        let nome = ipt_nomeMercado.value;
-        let cnpj = ipt_cnpj.value;
-        let qtdSetores = Number(ipt_qtdSetores.value);
-        let endereco = ipt_endereco.value;
-        let tempoAtencao = Number(ipt_tempoAtencao.value);
-        let tempoAlerta = Number(ipt_tempoAlerta.value);
-        let tempoNormal = Number(ipt_tempoNormal.value);
+        let nome = ipt_nomeMercado.value.trim();
+        let cnpj = ipt_cnpj.value.trim();
+        let qtdSetores = Number(ipt_qtdSetores.value.trim());
+        let endereco = ipt_endereco.value.trim();
+        let tempoAtencao = Number(ipt_tempoAtencao.value.trim());
+        let tempoAlerta = Number(ipt_tempoAlerta.value.trim());
+        let tempoNormal = Number(ipt_tempoNormal.value.trim());
 
         let valido = true;
 
-        if (nome == "" || cnpj != 14  || qtdSetores <= 0 || endereco == "" || tempoAtencao <= 0 || tempoAlerta <= 0 || tempoNormal <= 0) {
+        if (nome == "" || cnpj.length != 14  || qtdSetores <= 0 || endereco == "" || tempoAtencao <= 0 || tempoAlerta <= 0 || tempoNormal <= 0) {
             alert("Preencha todos os campos corretamente.");
             valido = false;
         }
 
-        if (valido == true) {
+        if (valido) {
             let novoMercado = {
                 id: mercados.length + 1,
-                nome: nomeMercado,
+                nome: nome,
                 cnpj: cnpj,
                 qtdSetores: qtdSetores,
                 endereco: endereco,
@@ -243,27 +238,40 @@
                 cont++;
             }
         }
-        fecharModalMercado();
+        if(valido){
+            fecharModalMercado();
+        }
     }
 
 
     function cadastrarFuncionario() {
-        let nome = ipt_nomeFuncionario.value;
-        let email = ipt_emailFuncionario.value;
-        let senha = ipt_senhaFuncionario.value;
-        let cargo = ipt_cargoFuncionario.value;
-        let idMercado = Number(ipt_mercado.value);
+        let nome = ipt_nomeFuncionario.value.trim();
+        let email = ipt_emailFuncionario.value.trim();
+        let senha = ipt_senhaFuncionario.value.trim();
+        let cargo = ipt_cargoFuncionario.value.trim();
+        let idMercado = Number(ipt_mercado.value.trim());
 
         let valido = true;
 
-        if (nome == "" || !email.includes("@") || senha.length < 8 || cargo == "" || idMercado == 0) {
+        let simbolos = "!@#$%&*_-./";
+        let senhaValida = false;
+
+        let cont = 0;
+        while(cont < simbolos.length){
+            if(senha.includes(simbolos[cont])){
+                senhaValida = true;
+            }
+            cont++  
+        }
+
+        if (nome == "" || !email.includes("@") || senha.length < 8 || !senhaValida || cargo == "" || idMercado == 0) {
             alert("Preencha todos os campos corretamente.");
             valido = false;
         }
 
-        if (valido == true) {
-            gestores.push({
-                id: gestores.length + 1,
+        if (valido) {
+            funcionarios.push({
+                id: funcionarios.length + 1,
                 nome: nome,
                 email: email,
                 senha: senha,
@@ -271,23 +279,25 @@
                 idMercado: idMercado
             });
 
-            div_gestores.innerHTML = "";
+            div_funcionario.innerHTML = "";
 
-            let cont = 0;
-            while (cont < gestores.length) {
+            cont = 0;
+            while (cont < funcionarios.length) {
                 let nomeMercado = "";
                 let busca = 0;
                 while (busca < mercados.length) {
-                    if (mercados[busca].id == gestores[cont].idMercado) {
-                        nomeMercado = mercados[busca].nomeMercado;
+                    if (mercados[busca].id == funcionarios[cont].idMercado) {
+                        nomeMercado = mercados[busca].nome;
                     }
                     busca++;
                 }
 
-                div_gestores.innerHTML += `<br> ${gestores[cont].nome} - ${gestores[cont].email} - ${gestores[cont].cargo} - Mercado ${nomeMercado}`;
+                div_funcionario.innerHTML += `<br> ${funcionarios[cont].nome} - ${funcionarios[cont].email} - ${funcionarios[cont].cargo} - Mercado: ${nomeMercado}`;
                 cont++;
             }
         }
-        fecharModalFuncionario();
+        if(valido){
+            fecharModalFuncionario();
+        }
     }
 </script>

@@ -1,0 +1,165 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #F2F9FF;
+    font-family: "Google Sans", Arial, sans-serif;
+    color: #0F1C26;
+}
+
+/* Header alinhado ao padrão FluxLog */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    height: 92px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    z-index: 1000;
+}
+
+.header .logo h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0F1C26;
+}
+
+.header .logo span {
+    color: #FF7B00;
+}
+
+/* Texto de "Monitoramento em tempo real" no Header */
+.connection-label {
+    color: #000000; /* Forçado para cor preta */
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Content Container */
+.main-container {
+    margin-top: 120px;
+    padding: 40px 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1.page-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #0F1C26;
+    margin-bottom: 30px;
+}
+
+/* Select de Unidades (MUDADO DE AZUL ESCURO PARA BRANCO) */
+.container-select {
+    background-color: #ffffff; /* Fundo alterado de #0F1C26 para branco */
+    border: 1px solid rgba(15, 28, 38, 0.15);
+    padding: 24px 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+    box-shadow: 0px 4px 12px rgba(15, 28, 38, 0.08);
+}
+
+.container-select label {
+    color: #0F1C26; /* Texto alterado de branco para escuro */
+    font-size: 20px;
+    font-weight: 600;
+}
+
+select {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #f5f7f8; /* Campo do select com fundo claro */
+    color: #0F1C26;            /* Texto da opção em escuro */
+    border: 1px solid #dce2e6;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Grid de Gráficos e Cartões */
+.container-graficos {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.box-grafico {
+    background-color: #ffffff;
+    border: 1px solid rgba(15, 28, 38, 0.15);
+    border-radius: 8px;
+    padding: 24px;
+    width: 31%;
+    min-width: 320px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.box-grafico h2 {
+    font-size: 24px;
+    color: #0F1C26;
+    margin-bottom: 12px;
+}
+
+.box-grafico h3 {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+/* Status dinâmicos */
+.status-livre {
+    background-color: #e6f7ed;
+    color: #0f8a42;
+}
+
+.status-detectado {
+    background-color: #fff0f0;
+    color: #d30000;
+}
+
+.status-aguardando {
+    background-color: #f0f0f0;
+    color: #666666;
+}
+
+canvas {
+    width: 100% !important;
+    max-height: 250px;
+}
+
+/* Footer no padrão da landing page */
+.footer {
+    background-color: #0F1C26;
+    padding: 40px 100px;
+    margin-top: 80px;
+    color: white;
+    text-align: center;
+}
+
+.footer-rights {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 20px;
+    font-size: 16px;
+}
