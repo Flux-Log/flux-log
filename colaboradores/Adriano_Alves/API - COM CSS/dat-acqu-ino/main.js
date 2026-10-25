@@ -7,6 +7,7 @@ const SERVIDOR_PORTA = 3300;
 const SERIAL_BAUD_RATE = 9600;
 const HABILITAR_OPERACAO_INSERIR = true;
 
+// Conexão com o banco de dados MySQL
 const poolBancoDados = mysql.createPool({
     host: '127.0.0.1',
     user: 'user',
@@ -15,79 +16,67 @@ const poolBancoDados = mysql.createPool({
     port: 3307
 }).promise();
 
-// Controlo dos sensores e flag de primeira execução
-const sensores = Array.from({ length: 9 }, (_, index) => ({
-    id: index + 1,
-    digital: 0,
-    ultimaLeitura: null,
-    dataHoraInicioFixada: null,
-    tempoPermanencia: 0,
-    jaExecutouPrimeiraVez: false
-}));
+// Instância global para a porta do Arduino
+let conexaoArduino = null;
 
-// Função auxiliar para calcular data/hora retroativa (apenas para a 1ª execução)
-function calcularInicioRetroativo(minutosRetroativos = 0, segundosRetroativos = 0) {
-    const totalSegundos = (minutosRetroativos * 60) + segundosRetroativos;
-    const agora = new Date();
-    agora.setSeconds(agora.getSeconds() - totalSegundos);
-    
-    const pad = (n) => String(n).padStart(2, '0');
-    return `${agora.getFullYear()}-${pad(agora.getMonth() + 1)}-${pad(agora.getDate())} ${pad(agora.getHours())}:${pad(agora.getMinutes())}:${pad(agora.getSeconds())}`;
+
+const sensores = [];
+for (let i = 0; i < 9; i++) {
+    sensores[i] = {
+        id: i + 1,
+        digital: 0,
+        ultimaLeitura: null,
+        dataHoraInicioFixada: null,
+        tempoPermanencia: 0,
+        jaExecutouPrimeiraVez: false,
+        passoSequencia: 1 // Usado para controlar a sequência de tempos específicos
+    };
 }
 
-// 1º INSERT: Grava o início do evento usando NOW() do MySQL para tempo real
-async function registrarInicioEvento(idSensor, dataHoraInicioStr = null) {
+// 1º INSERT: Grava o início do evento usando apenas o MySQL (NOW e subtração por INTERVAL)
+async function registrarInicioEvento(idSensor, segundosRetroativos = 0) {
     try {
-        if (dataHoraInicioStr) {
-            // Se passou data retroativa (1ª execução), grava o valor fornecido
+        if (segundosRetroativos > 0) {
             await poolBancoDados.execute(
                 `INSERT INTO evento (data_hora_inicio, status_evento, fk_sensor, classificacao)
-                 VALUES (?, 'EM_ANDAMENTO', ?, 'EM_ANDAMENTO')`,
-                [dataHoraInicioStr, idSensor]
+                 VALUES (NOW() - INTERVAL ? SECOND, 'EM_ANDAMENTO', ?, 'EM_ANDAMENTO')`,
+                [segundosRetroativos, idSensor]
             );
-            console.log(`[SENSOR ${idSensor}] Início retroativo gravado no banco: ${dataHoraInicioStr}`);
+            console.log(`[SENSOR ${idSensor}] Início retroativo (${segundosRetroativos}s atrás) gravado via MySQL!`);
         } else {
-            // Em tempo real, usa o NOW() direto do MySQL para zerar dessincronia
             await poolBancoDados.execute(
                 `INSERT INTO evento (data_hora_inicio, status_evento, fk_sensor, classificacao)
                  VALUES (NOW(), 'EM_ANDAMENTO', ?, 'EM_ANDAMENTO')`,
                 [idSensor]
             );
-            console.log(`[SENSOR ${idSensor}] Início em tempo real gravado com NOW() do MySQL!`);
+            console.log(`[SENSOR ${idSensor}] Início em tempo real gravado com NOW()!`);
         }
     } catch (erro) {
         console.error(`Erro ao gravar início do Sensor ${idSensor}:`, erro.message);
     }
 }
 
-// 2º INSERT: Grava a finalização calculando a diferença via MySQL
-async function registrarFimEvento(idSensor, dataHoraInicioStr = null) {
+// 2º INSERT: Grava a finalização calculando a duração via MySQL
+async function registrarFimEvento(idSensor) {
     try {
         let duracaoSegundos = 0;
+        let dataHoraInicioStr = null;
 
-        if (dataHoraInicioStr) {
-            // Para evento retroativo: calcula diferença entre a string inicial e o NOW() do banco
-            const [calc] = await poolBancoDados.execute(
-                `SELECT TIMESTAMPDIFF(SECOND, ?, NOW()) AS duracao`,
-                [dataHoraInicioStr]
-            );
-            duracaoSegundos = calc[0]?.duracao || 0;
-        } else {
-            // Para evento em tempo real: pega o último evento EM_ANDAMENTO do sensor para calcular a duração exata
-            const [calc] = await poolBancoDados.execute(
-                `SELECT TIMESTAMPDIFF(SECOND, data_hora_inicio, NOW()) AS duracao, data_hora_inicio
-                 FROM evento 
-                 WHERE fk_sensor = ? AND status_evento = 'EM_ANDAMENTO' 
-                 ORDER BY id DESC LIMIT 1`,
-                [idSensor]
-            );
-            duracaoSegundos = calc[0]?.duracao || 0;
-            if (calc[0]?.data_hora_inicio) {
+        const [calc] = await poolBancoDados.execute(
+            `SELECT TIMESTAMPDIFF(SECOND, data_hora_inicio, NOW()) AS duracao, data_hora_inicio
+             FROM evento 
+             WHERE fk_sensor = ? AND status_evento = 'EM_ANDAMENTO' 
+             ORDER BY id DESC LIMIT 1`,
+            [idSensor]
+        );
+
+        if (calc.length > 0) {
+            duracaoSegundos = calc[0].duracao || 0;
+            if (calc[0].data_hora_inicio) {
                 dataHoraInicioStr = calc[0].data_hora_inicio;
             }
         }
 
-        // Garante que o valor nunca seja menor que zero por questão de milissegundos
         if (duracaoSegundos < 0) {
             duracaoSegundos = 0;
         }
@@ -106,7 +95,6 @@ async function registrarFimEvento(idSensor, dataHoraInicioStr = null) {
             tempoExcedido = duracaoSegundos - 120;
         }
 
-        // Se dataHoraInicioStr foi recuperado do banco ou veio da memória, grava com NOW() no término
         if (dataHoraInicioStr) {
             await poolBancoDados.execute(
                 `INSERT INTO evento 
@@ -133,23 +121,28 @@ async function registrarFimEvento(idSensor, dataHoraInicioStr = null) {
 async function conectarArduino() {
     try {
         const portas = await SerialPort.list();
-        const portaArduino = portas.find(porta => 
-            porta.path === 'COM11' || porta.vendorId === '1a86'
-        );
+        let portaArduino = null;
+
+        for (let i = 0; i < portas.length; i++) {
+            if (portas[i].path === 'COM11' || portas[i].vendorId === '1a86') {
+                portaArduino = portas[i];
+                break;
+            }
+        }
 
         if (!portaArduino) return;
 
-        if (!globalThis.arduino) {
-            globalThis.arduino = new SerialPort({
+        if (!conexaoArduino) {
+            conexaoArduino = new SerialPort({
                 path: portaArduino.path,
                 baudRate: SERIAL_BAUD_RATE
             });
 
-            const parser = globalThis.arduino.pipe(
+            const parser = conexaoArduino.pipe(
                 new ReadlineParser({ delimiter: '\r\n' })
             );
 
-            globalThis.arduino.on('open', () => {
+            conexaoArduino.on('open', () => {
                 console.log('Arduino conectado na porta:', portaArduino.path);
             });
 
@@ -168,22 +161,21 @@ async function conectarArduino() {
                 if (HABILITAR_OPERACAO_INSERIR) {
                     if (leitura === 1 && sensor1.dataHoraInicioFixada === null) {
                         if (!sensor1.jaExecutouPrimeiraVez) {
-                            sensor1.dataHoraInicioFixada = calcularInicioRetroativo(3, 0);
+                            sensor1.dataHoraInicioFixada = "RETROATIVO";
                             sensor1.jaExecutouPrimeiraVez = true;
-                            await registrarInicioEvento(1, sensor1.dataHoraInicioFixada);
+                            await registrarInicioEvento(1, 180);
                         } else {
                             sensor1.dataHoraInicioFixada = "TEMPO_REAL";
-                            await registrarInicioEvento(1, null);
+                            await registrarInicioEvento(1, 0);
                         }
                     } else if (leitura === 0 && sensor1.dataHoraInicioFixada !== null) {
-                        const inicioParam = sensor1.dataHoraInicioFixada === "TEMPO_REAL" ? null : sensor1.dataHoraInicioFixada;
-                        await registrarFimEvento(1, inicioParam);
+                        await registrarFimEvento(1);
                         sensor1.dataHoraInicioFixada = null;
                     }
                 }
             });
 
-            globalThis.arduino.on('error', (erro) => {
+            conexaoArduino.on('error', (erro) => {
                 console.error('Erro na serial:', erro.message);
             });
         }
@@ -206,47 +198,136 @@ async function inserirDados() {
             continue;
         }
 
-        const deveMudar = Math.random() < 0.3;
+        let novoEstado = sensor.digital;
 
-        if (deveMudar) {
-            const novoEstado = sensor.digital === 0 ? 1 : 0;
-            
-            if (novoEstado === 1) {
-                sensor.tempoPermanencia = Math.floor(Math.random() * 9) + 4;
-            } else {
-                sensor.tempoPermanencia = Math.floor(Math.random() * 13) + 8;
+        // --- REGRAS DE TEMPOS PERSONALIZADAS PARA CADA SENSOR ---
+
+        // SENSOR 2: 4s no 0 -> 2s no 1 -> 2s no 0 -> 10s no 1
+        if (sensor.id === 2) {
+            if (sensor.passoSequencia === 1) {
+                novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2;
+            } else if (sensor.passoSequencia === 2) {
+                novoEstado = 1; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3;
+            } else if (sensor.passoSequencia === 3) {
+                novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 4;
+            } else if (sensor.passoSequencia === 4) {
+                novoEstado = 1; sensor.tempoPermanencia = 7; sensor.passoSequencia = 1;
             }
+        }
+        // SENSOR 3: 3s no 1 -> 1s no 0 -> 4 min (240s) no 1 -> 2s no 0
+        else if (sensor.id === 3) {
+            if (sensor.passoSequencia === 1) {
+                novoEstado = 1; sensor.tempoPermanencia = 2; sensor.passoSequencia = 2;
+            } else if (sensor.passoSequencia === 2) {
+                novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3;
+            } else if (sensor.passoSequencia === 3) {
+                novoEstado = 1; sensor.tempoPermanencia = 160; sensor.passoSequencia = 4;
+            } else if (sensor.passoSequencia === 4) {
+                novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 1;
+            }
+        }
+        // SENSOR 4: 10s no 0 -> 700s no 1 -> 20s no 0 -> 600s no 1
+        else if (sensor.id === 4) {
+            if (sensor.passoSequencia === 1) {
+                novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 2;
+            } else if (sensor.passoSequencia === 2) {
+                novoEstado = 1; sensor.tempoPermanencia = 467; sensor.passoSequencia = 3;
+            } else if (sensor.passoSequencia === 3) {
+                novoEstado = 0; sensor.tempoPermanencia = 13; sensor.passoSequencia = 4;
+            } else if (sensor.passoSequencia === 4) {
+                novoEstado = 1; sensor.tempoPermanencia = 400; sensor.passoSequencia = 1;
+            }
+        }
+        // SENSOR 5: 5s no 0 -> 2s no 1 -> 2s no 0 -> 3s no 1
+        else if (sensor.id === 5) {
+            if (sensor.passoSequencia === 1) {
+                novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2;
+            } else if (sensor.passoSequencia === 2) {
+                novoEstado = 1; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3;
+            } else if (sensor.passoSequencia === 3) {
+                novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 4;
+            } else if (sensor.passoSequencia === 4) {
+                novoEstado = 1; sensor.tempoPermanencia = 2; sensor.passoSequencia = 1;
+            }
+        }
+        // SENSOR 6: 7s no 0 -> 20s no 1 -> 10s no 0 -> 300s no 1
+        else if (sensor.id === 6) {
+            if (sensor.passoSequencia === 1) {
+                novoEstado = 0; sensor.tempoPermanencia = 5; sensor.passoSequencia = 2;
+            } else if (sensor.passoSequencia === 2) {
+                novoEstado = 1; sensor.tempoPermanencia = 13; sensor.passoSequencia = 3;
+            } else if (sensor.passoSequencia === 3) {
+                novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 4;
+            } else if (sensor.passoSequencia === 4) {
+                novoEstado = 1; sensor.tempoPermanencia = 200; sensor.passoSequencia = 1;
+            }
+        }
+        // SENSOR 7: 8s no 0 -> 100s no 1 -> 40s no 0 -> 250s no 1
+        else if (sensor.id === 7) {
+            if (sensor.passoSequencia === 1) {
+                novoEstado = 0; sensor.tempoPermanencia = 5; sensor.passoSequencia = 2;
+            } else if (sensor.passoSequencia === 2) {
+                novoEstado = 1; sensor.tempoPermanencia = 67; sensor.passoSequencia = 3;
+            } else if (sensor.passoSequencia === 3) {
+                novoEstado = 0; sensor.tempoPermanencia = 27; sensor.passoSequencia = 4;
+            } else if (sensor.passoSequencia === 4) {
+                novoEstado = 1; sensor.tempoPermanencia = 167; sensor.passoSequencia = 1;
+            }
+        }
+        // SENSOR 8: 10s no 0 -> 60s no 1 -> 30s no 0 -> 300s no 1
+        else if (sensor.id === 8) {
+            if (sensor.passoSequencia === 1) {
+                novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 2;
+            } else if (sensor.passoSequencia === 2) {
+                novoEstado = 1; sensor.tempoPermanencia = 40; sensor.passoSequencia = 3;
+            } else if (sensor.passoSequencia === 3) {
+                novoEstado = 0; sensor.tempoPermanencia = 20; sensor.passoSequencia = 4;
+            } else if (sensor.passoSequencia === 4) {
+                novoEstado = 1; sensor.tempoPermanencia = 200; sensor.passoSequencia = 1;
+            }
+        }
+        // SENSOR 9: 5s no 0 -> 60s no 1 -> 10s no 0 -> 450s no 1
+        else if (sensor.id === 9) {
+            if (sensor.passoSequencia === 1) {
+                novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2;
+            } else if (sensor.passoSequencia === 2) {
+                novoEstado = 1; sensor.tempoPermanencia = 40; sensor.passoSequencia = 3;
+            } else if (sensor.passoSequencia === 3) {
+                novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 4;
+            } else if (sensor.passoSequencia === 4) {
+                novoEstado = 1; sensor.tempoPermanencia = 300; sensor.passoSequencia = 1;
+            }
+        }
 
-            sensor.digital = novoEstado;
+        sensor.digital = novoEstado;
 
-            try {
-                if (novoEstado === 1 && sensor.dataHoraInicioFixada === null) {
-                    if (!sensor.jaExecutouPrimeiraVez) {
-                        let min = 0;
-                        let seg = 0;
+        try {
+            if (novoEstado === 1 && sensor.dataHoraInicioFixada === null) {
+                if (!sensor.jaExecutouPrimeiraVez) {
+                    let segundosRetroativos = 0;
 
-                        if (sensor.id === 2) { min = 15; seg = 0; }
-                        else if (sensor.id === 3) { min = 7; seg = 0; }
-                        else if (sensor.id === 4) { min = 14; seg = 55; }
-                        else if (sensor.id === 5) { min = 1; seg = 30; }
-                        else if (sensor.id === 6) { min = 5; seg = 0; }
-                        else { min = Math.floor(Math.random() * 4); }
+                    if (sensor.id === 2) { segundosRetroativos = 15 * 60; }
+                    else if (sensor.id === 3) { segundosRetroativos = 7 * 60; }
+                    else if (sensor.id === 4) { segundosRetroativos = (14 * 60) + 55; }
+                    else if (sensor.id === 5) { segundosRetroativos = (1 * 60) + 30; }
+                    else if (sensor.id === 6) { segundosRetroativos = 5 * 60; }
+                    else if (sensor.id === 7) { segundosRetroativos = 210; }
+                    else if (sensor.id === 8) { segundosRetroativos = 240; }
+                    else if (sensor.id === 9) { segundosRetroativos = 270; }
 
-                        sensor.dataHoraInicioFixada = calcularInicioRetroativo(min, seg);
-                        sensor.jaExecutouPrimeiraVez = true;
-                        await registrarInicioEvento(sensor.id, sensor.dataHoraInicioFixada);
-                    } else {
-                        sensor.dataHoraInicioFixada = "TEMPO_REAL";
-                        await registrarInicioEvento(sensor.id, null);
-                    }
-                } else if (novoEstado === 0 && sensor.dataHoraInicioFixada !== null) {
-                    const inicioParam = sensor.dataHoraInicioFixada === "TEMPO_REAL" ? null : sensor.dataHoraInicioFixada;
-                    await registrarFimEvento(sensor.id, inicioParam);
-                    sensor.dataHoraInicioFixada = null;
+                    sensor.dataHoraInicioFixada = "RETROATIVO";
+                    sensor.jaExecutouPrimeiraVez = true;
+                    await registrarInicioEvento(sensor.id, segundosRetroativos);
+                } else {
+                    sensor.dataHoraInicioFixada = "TEMPO_REAL";
+                    await registrarInicioEvento(sensor.id, 0);
                 }
-            } catch (erro) {
-                console.error(`Erro na simulação do Sensor ${sensor.id}:`, erro.message);
+            } else if (novoEstado === 0 && sensor.dataHoraInicioFixada !== null) {
+                await registrarFimEvento(sensor.id);
+                sensor.dataHoraInicioFixada = null;
             }
+        } catch (erro) {
+            console.error(`Erro na simulação do Sensor ${sensor.id}:`, erro.message);
         }
     }
 }
@@ -259,6 +340,7 @@ setInterval(async () => {
     }
 }, 1500);
 
+// Servidor Express
 const app = express();
 
 app.use((request, response, next) => {
@@ -268,15 +350,29 @@ app.use((request, response, next) => {
 });
 
 app.get('/sensores/digital', (request, response) => {
-    return response.json(sensores.map(s => ({ id: s.id, digital: s.digital })));
+    const listaSensores = [];
+    for (let i = 0; i < sensores.length; i++) {
+        listaSensores[i] = {
+            id: sensores[i].id,
+            digital: sensores[i].digital
+        };
+    }
+    return response.json(listaSensores);
 });
 
 app.get('/sensores/digital/:id', (request, response) => {
     const id = Number(request.params.id);
-    const sensor = sensores.find((item) => item.id === id);
+    let sensorEncontrado = null;
 
-    if (sensor) {
-        return response.json({ id: sensor.id, digital: sensor.digital });
+    for (let i = 0; i < sensores.length; i++) {
+        if (sensores[i].id === id) {
+            sensorEncontrado = sensores[i];
+            break;
+        }
+    }
+
+    if (sensorEncontrado) {
+        return response.json({ id: sensorEncontrado.id, digital: sensorEncontrado.digital });
     } else {
         return response.status(404).json({ mensagem: 'Sensor não encontrado' });
     }
@@ -285,16 +381,15 @@ app.get('/sensores/digital/:id', (request, response) => {
 app.listen(SERVIDOR_PORTA, () => {
     console.log(`API executada com sucesso na porta ${SERVIDOR_PORTA}`);
 });
-
-// Captura Ctrl + C no terminal e encerra os eventos pendentes no banco
+// sigint usa para finalizar os em andamento apos encerrar a bash.
 process.once('SIGINT', async () => {
     console.log('\n[API] Ctrl+C detectado! Finalizando eventos em andamento no banco...');
 
     try {
-        for (const sensor of sensores) {
+        for (let i = 0; i < sensores.length; i++) {
+            const sensor = sensores[i];
             if (sensor.digital === 1 && sensor.dataHoraInicioFixada !== null) {
-                const inicioParam = sensor.dataHoraInicioFixada === "TEMPO_REAL" ? null : sensor.dataHoraInicioFixada;
-                await registrarFimEvento(sensor.id, inicioParam);
+                await registrarFimEvento(sensor.id);
                 console.log(`[SENSOR ${sensor.id}] Evento pendente encerrado com sucesso.`);
             }
         }
