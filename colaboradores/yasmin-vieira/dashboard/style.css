@@ -272,3 +272,76 @@ p {
     width: 700px;
     height: 600px;
 }
+
+.graficos{
+    display: flex;
+    gap: 30px;
+    
+}
+
+.title-graph h3{
+    margin-bottom: 20px;
+}
+
+.grafico_linha{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--border-gray);
+}
+
+.grafico_barra{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--border-gray);
+}
+
+.grafico_pizza{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--border-gray);
+    width: 400px;
+}
+
+.markets-wrapper{
+
+    background-color: #DB0000;
+}
+.btn-wrapper{
+
+    background-color: #009874;
+    border: var(--border-gray);
+    display: flex;
+    gap: 24px;
+     width: 179px;
+    height: 50px;
+
+}
+
+.cadastroMercado{
+    width: 390px;
+    font-size: 20px;
+    height: 50px;
+    background-color: #FF7B00;
+    color: white;
+    border-radius: 5px;
+    margin-top: 80px;
+    border: none;
+    font-weight: 700;
+
+}
+
+.cadastroFuncionario{
+    width: 390px;
+    font-size: 20px;
+    height: 50px;
+    background-color: #FF7B00;
+    color: white;
+    border-radius: 5px;
+    margin-top: 80px;
+    border: none;
+    font-weight: 700;
+
+}

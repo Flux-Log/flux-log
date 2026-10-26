@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Dashboard FluxLog</title>
+</head>
+
+<body>
+    <header class="header">
+        <img src="./assets/logo-fluxlog-dashboard.png" alt="">
+    </header>
+    <main>
+        <div class="menu">
+            <span>GERAL</span>
+            <nav>
+                <a href="./dashboard.html">Início</a>
+                <a href="./mercados.html" class="active">Mercados</a>
+                <a href="./historico.html">Histórico</a>
+            </nav>
+        </div>
+        <div class="dash-kpis">
+            <div class="title-subtitle">
+                <h1>
+                    Olá, Gerente!
+                </h1>
+                <span>
+                    Veja agora quais setores estão com maior tempo de congestionamento nos respectivos mercados
+                </span>
+            </div>
+            <div class="kpis"> 
+                <div class="kpi-01">
+                    <span>Prolongado</span> 
+                    <div class="sector-amount">
+                        <h2 class="amount-danger">Mais que 5 minutos</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Atenção</span>
+                    <div class="sector-amount">
+                        <h2 class="amount-attention">Maior que 2 e menor que 5 minutos</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span>Normal</span>
+                    <div class="sector-amount">
+                        <h2 class="amount-success">Menor que 2 minutos</h2>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="markets-wrapper">
+
+                <div class="btn-wrapper">
+                    <button class="cadastroMercado" onclick="abrirModalMercado()">
+                        Cadastrar Mercado
+                    </button>
+
+                    <button class="cadastroFuncionario" onclick="abrirModalFuncionario()">
+                        Cadastrar Funcionário
+                    </button>
+                </div>
+
+                <div class="empty-state">
+                    <span>Você ainda não possui mercados cadastrados</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Mercado -->
+    <div id="modal_mercado" class="modal">
+        <div class="modal-content">
+            <div>
+                <button onclick="fecharModalMercado()">X</button>
+            </div>
+
+            <h2>Cadastrar Mercado</h2>
+
+            <label for="ipt_nomeMercado">Nome do mercado</label>
+            <input type="text" id="ipt_nomeMercado">
+
+            <label for="ipt_cnpj">CPNJ</label>
+            <input type="text" id="ipt_cnpj">
+
+            <label for="ipt_qtdSetores">Quantidade de setores</label>
+            <input type="text" id="ipt_qtdSetores">
+
+            <label for="ipt_endereco">Endereço</label>
+            <input type="text" id="ipt_endereco">
+
+            <label for="ipt_tempoAtencao">Tempo total em Atenção (min)</label>
+            <input type="text" id="ipt_tempoAtencao">
+
+            <label for="ipt_tempoAlerta">Tempo total em Alerta (min)</label>
+            <input type="text" id="ipt_tempoAlerta">
+
+            <label for="ipt_tempoNormal">Tempo total em Normal (min)</label>
+            <input type="text" id="ipt_tempoNormal">
+
+            <button onclick="cadastrarMercado()">Cadastrar</button>
+        </div>
+    </div>
+
+    <div>
+        <h1>Mercados cadastrados</h1>
+        <div id="div_mercados"></div>
+    </div>
+
+    <!-- Modal Funcionário -->
+    <div id="modal_funcionario" class="modal">
+        <div class="modal-content">
+            <div>
+                <button onclick="fecharModalFuncionario()">X</button>
+            </div>
+
+            <h2>Cadastrar Funcionário</h2>
+
+            <label for="ipt_nomeFuncionario">Nome completo</label>
+            <input type="text" id="ipt_nomeFuncionario">
+
+            <label for="ipt_emailFuncionario">Email</label>
+            <input type="text" id="ipt_emailFuncionario">
+
+            <label for="ipt_senhaFuncionario">Senha</label>
+            <input type="password" id="ipt_senhaFuncionario">
+
+            <label for="ipt_cargoFuncionario">Cargo</label>
+            <input type="text" id="ipt_cargoFuncionario">
+
+            <label for="ipt_mercado">Mercado</label>
+            <select id="ipt_mercado"></select>
+
+            <button onclick="cadastrarFuncionario()">Cadastrar</button>
+        </div>
+    </div>
+
+    <div>
+        <h1>Funcionarios cadastrados</h1>
+        <div id="div_funcionario"></div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    function abrirModalMercado() {
+        modal_mercado.style.display = "flex";
+    }
+
+    function fecharModalMercado() {
+        modal_mercado.style.display = "none";
+    }
+
+    function abrirModalFuncionario() {
+        modal_funcionario.style.display = "flex";
+    }
+
+    function fecharModalFuncionario() {
+        modal_funcionario.style.display = "none";
+    }
+
+    let mercados = [];
+    let funcionarios = [];
+
+    function cadastrarMercado() {
+        let nome = ipt_nomeMercado.value.trim();
+        let cnpj = ipt_cnpj.value.trim();
+        let qtdSetores = Number(ipt_qtdSetores.value.trim());
+        let endereco = ipt_endereco.value.trim();
+        let tempoAtencao = Number(ipt_tempoAtencao.value.trim());
+        let tempoAlerta = Number(ipt_tempoAlerta.value.trim());
+        let tempoNormal = Number(ipt_tempoNormal.value.trim());
+
+        let valido = true;
+
+        if (nome == "" || cnpj.length != 14  || qtdSetores <= 0 || endereco == "" || tempoAtencao <= 0 || tempoAlerta <= 0 || tempoNormal <= 0) {
+            alert("Preencha todos os campos corretamente.");
+            valido = false;
+        }
+
+        if (valido) {
+            let novoMercado = {
+                id: mercados.length + 1,
+                nome: nome,
+                cnpj: cnpj,
+                qtdSetores: qtdSetores,
+                endereco: endereco,
+                tempoAtencao: tempoAtencao,
+                tempoAlerta: tempoAlerta,
+                tempoNormal: tempoNormal
+            };
+
+            let novaLista = [];
+            let inserido = false;
+
+            let cont = 0;
+            while (cont < mercados.length) {
+                if (inserido == false && novoMercado.tempoAtencao > mercados[cont].tempoAtencao) {
+                    novaLista.push(novoMercado);
+                    inserido = true;
+                }
+                novaLista.push(mercados[cont]);
+                cont++;
+            }
+
+            if (inserido == false) {
+                novaLista.push(novoMercado);
+            }
+
+            mercados = novaLista;
+
+            div_mercados.innerHTML = "";
+
+            cont = 0;
+            while (cont < mercados.length) {
+                div_mercados.innerHTML += `${mercados[cont].nome} - ${mercados[cont].cnpj} - ${mercados[cont].qtdSetores} setores - Endereço: ${mercados[cont].endereco} - 
+                Atenção: ${mercados[cont].tempoAtencao} min - Alerta: ${mercados[cont].tempoAlerta} min - Normal: ${mercados[cont].tempoNormal} min <br>`;
+                cont++;
+            }
+
+            ipt_mercado.innerHTML = "";
+
+            cont = 0;
+            while (cont < mercados.length) {
+                ipt_mercado.innerHTML += `<option value="${mercados[cont].id}">${mercados[cont].nome}</option>`;
+                cont++;
+            }
+        }
+        if(valido){
+            fecharModalMercado();
+        }
+    }
+
+
+    function cadastrarFuncionario() {
+        let nome = ipt_nomeFuncionario.value.trim();
+        let email = ipt_emailFuncionario.value.trim();
+        let senha = ipt_senhaFuncionario.value.trim();
+        let cargo = ipt_cargoFuncionario.value.trim();
+        let idMercado = Number(ipt_mercado.value.trim());
+
+        let valido = true;
+
+        let simbolos = "!@#$%&*_-./";
+        let senhaValida = false;
+
+        let cont = 0;
+        while(cont < simbolos.length){
+            if(senha.includes(simbolos[cont])){
+                senhaValida = true;
+            }
+            cont++  
+        }
+
+        if (nome == "" || !email.includes("@") || senha.length < 8 || !senhaValida || cargo == "" || idMercado == 0) {
+            alert("Preencha todos os campos corretamente.");
+            valido = false;
+        }
+
+        if (valido) {
+            funcionarios.push({
+                id: funcionarios.length + 1,
+                nome: nome,
+                email: email,
+                senha: senha,
+                cargo: cargo,
+                idMercado: idMercado
+            });
+
+            div_funcionario.innerHTML = "";
+
+            cont = 0;
+            while (cont < funcionarios.length) {
+                let nomeMercado = "";
+                let busca = 0;
+                while (busca < mercados.length) {
+                    if (mercados[busca].id == funcionarios[cont].idMercado) {
+                        nomeMercado = mercados[busca].nome;
+                    }
+                    busca++;
+                }
+
+                div_funcionario.innerHTML += `<br> ${funcionarios[cont].nome} - ${funcionarios[cont].email} - ${funcionarios[cont].cargo} - Mercado: ${nomeMercado}`;
+                cont++;
+            }
+        }
+        if(valido){
+            fecharModalFuncionario();
+        }
+    }
+</script>
