@@ -90,7 +90,7 @@ a {
 
 .imagem {
     width: 50%;
-    background-image: url('imagens/armazem.png');
+    background-image: url('assets/armazem.png');
     background-size: cover;
     background-position: center;
 }

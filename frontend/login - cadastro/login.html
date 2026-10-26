@@ -13,8 +13,8 @@
 <div class="header">
     <div class="logos">
         <a href="../institucional/index.html">
-        <img src="imagens/logoCarrinho.png" class="logo" alt="FluxLog">
-        <img src="imagens/logoFluxoLog.png" class="logo" alt="FluxLog">
+        <img src="assets/logoCarrinho.png" class="logo" alt="FluxLog">
+        <img src="assets/logoFluxoLog.png" class="logo" alt="FluxLog">
         </a>
     </div>
     <div class="menu">
@@ -60,7 +60,7 @@
 
 <div class="footer">
     <div class="footer-topo">
-        <img src="imagens/logoBranco.png" class="logo" alt="FluxLog">
+        <img src="assets/logoBranco.png" class="logo" alt="FluxLog">
         <div class="footer-links">
             <a href="">Sobre Nós</a>
             <a href="">Redes Sociais</a>
@@ -92,13 +92,15 @@
         // Validação de campos vazios (não gasta tentativa)
         if (email == "") {
             alert("Email está vazio, preencha o campo.");
-        }
-        if (senha == "") {
+        } else if (senha == "") {
             alert("Senha está vazia, preencha o campo.");
         }
 
-        // Validação das credenciais
-        if (email == "fluxlog@email.com" && senha == "12345678") {
+        // Validação das credenciais 
+        if (email == "adm@email.com" && senha == "12345") { // ADM
+            alert("Login realizado com sucesso!")
+            location.href = "../dashboard/mercados.html"; // direciona para o mercado
+        } else if (email == "funcionario@email.com" && senha == "12345") { // Funcionário
             alert("Login realizado com sucesso!")
             location.href = "../dashboard/dashboard.html"; // direciona para a dashboard
         } else {
