@@ -250,6 +250,7 @@ p {
 
 .title-graph h1 {
     margin-bottom: 24px;
+
 }
 
 .graph-wrapper {
@@ -264,36 +265,87 @@ p {
     flex: 1;
 }
 
-.markets-wrapper {
+.grafico{
+    display: flex;
+    position: relative;
+    padding-top: 18px;
+    width: 700px;
+    height: 600px;
+}
+
+.graficos{
+    display: flex;
+    gap: 30px;
+    
+}
+
+.title-graph h3{
+    margin-bottom: 20px;
+}
+
+.grafico_linha{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--border-gray);
+}
+
+.grafico_barra{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--border-gray);
+}
+
+.grafico_pizza{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--border-gray);
+    width: 400px;
+}
+
+.markets-wrapper{
     display: flex;
     flex-direction: column;
-
-    margin-top: 64px;
+    margin-top: 32px;
 }
+.btn-wrapper{
+    border: var(--border-gray);
+    display: flex;
+    align-items: center;
+    gap: 24px;
 
-button {
-    background-color: #FF7B00;
-    border: none;
-    padding: 20px;
-    color: white;
-    border-radius: 5px;
-    font-size: 18px;
-    
-    transition: all 0.2s;
-}
-
-button:hover {
-    background-color: #c35e00;
 }
 
 .empty-state {
     margin-top: 24px;
 }
 
-.btn-wrapper {
-    display: flex;
-    gap: 16px;
+.cadastroMercado {
+    font-size: 18px;
+    background-color: #FF7B00;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    padding: 15px 15px;
+    cursor: pointer;
 }
+
+.cadastroFuncionario{
+    background-color: #243B4D;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+    padding: 15px 15px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+/* MODAIS */
 
 .modal {
     display: none;
@@ -302,25 +354,366 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.45);
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 
+/* CONTEÚDO DO MODAL */
+
 .modal-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    width: 400px;
-    max-width: 90%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
+    width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+    background-color: #ffffff;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    font-family: "Google Sans", sans-serif;
 }
 
-.modal-content input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+/* CABEÇALHO */
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.modal-header h2 {
+    margin: 0 0 8px;
+    color: #000000;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.modal-header p {
+    margin: 0;
+    color: #555555;
+    font-size: 14px;
+}
+
+/* BOTÃO FECHAR */
+
+.btn-fechar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+    color: #263b4b;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.btn-fechar:hover {
+    background-color: #e2e2e2;
+}
+
+/* FORMULÁRIO */
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formulario label {
+    margin-top: 8px;
+    color: #222222;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.formulario input,
+.formulario select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #222222;
+    font-family: "Google Sans", sans-serif;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.formulario input:focus,
+.formulario select:focus {
+    border-color: #ff7900;
+}
+
+.formulario input::placeholder {
+    color: #999999;
+}
+
+/* RODAPÉ */
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 5px;
+}
+
+.modal-footer button {
+    height: 42px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 4px;
+    font-family: "Google Sans", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* CANCELAR */
+
+.btn-cancelar {
+    background-color: #ffffff;
+    border: 1px solid #dedede !important;
+    color: #263b4b;
+}
+
+.btn-cancelar:hover {
+    background-color: #f2f2f2;
+}
+
+/* CADASTRAR */
+
+.btn-confirmar {
+    background-color: #ff7900;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-confirmar:hover {
+    background-color: #e66e00;
+}
+
+
+/* LISTA DE MERCADOS */
+
+.lista-cadastros {
+    margin-top: 62px;
+}
+
+.lista-cadastros h2 {
+    margin: 0 0 16px;
+    color: #17232e;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+/* GRADE DE MERCADOS */
+
+#div_mercados {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 8px;
+}
+
+/* CARD DO MERCADO */
+
+.card-mercado {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 380px;
+    max-width: 510px;
+    min-width: 0;
+    gap: 12px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* CABEÇALHO DO CARD */
+
+.card-mercado-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.card-mercado-header-nome {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+}
+
+.card-mercado-header-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* STATUS DO FUNCIONÁRIO NO CARD */
+
+.card-mercado-funcionario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.func-cadastrado {
+    background-color: var(--bg-success);
+    border: 1px solid var(--border-success);
+    color: var(--font-success);
+}
+
+.func-nao-cadastrado {
+    background-color: var(--bg-attention);
+    border: 1px solid var(--border-attention);
+    color: var(--font-attention);
+}
+
+/* STATUS DO MERCADO NO CARD */
+
+.card-mercado-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.status-congestionado {
+    background-color: var(--bg-danger);
+    border: 1px solid var(--border-danger);
+    color: var(--font-danger);
+}
+
+.status-atencao {
+    background-color: var(--bg-attention);
+    border: 1px solid var(--border-attention);
+    color: var(--font-attention);
+}
+
+.status-normal {
+    background-color: var(--bg-success);
+    border: 1px solid var(--border-success);
+    color: var(--font-success);
+}
+
+/* LEGENDA DOS STATUS DOS SETORES */
+
+.legenda-status {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.legenda-texto {
+    font-size: 14px;
+    font-weight: 700;
+    color: #555555;
+}
+
+/* BORDA LATERAL COLORIDA DO CARD */
+
+.card-cor-congestionado {
+    border-left: 6px solid var(--font-danger);
+}
+
+.card-cor-atencao {
+    border-left: 6px solid var(--font-attention);
+}
+
+.card-cor-normal {
+    border-left: 6px solid var(--font-success);
+}
+
+/* KPIs DO TOPO */
+
+.kpi-status {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 30px;
+}
+
+.kpi-faixa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+}
+
+.faixa-congestionado {
+    background-color: var(--font-danger);
+}
+
+.faixa-atencao {
+    background-color: var(--font-attention);
+}
+
+.faixa-normal {
+    background-color: var(--font-success);
+}
+
+.kpi-status-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.kpi-01 .kpi-titulo {
+    font-size: 22px;
+    font-weight: 700;
+    color: #263b4b;
+}
+
+.kpi-01 .kpi-contagem {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 5px;
+    background-color: var(--bg-gray);
+    font-size: 14px;
+    font-weight: 600;
+    color: #555555;
+}
+
+.kpi-contagem strong {
+    font-size: 22px;
+    font-weight: 700;
+    color: #263b4b;
+}
+
+.kpi-01 .kpi-descricao {
+    font-size: 13px;
+    font-weight: 400;
+    color: #888888;
+    line-height: 1.5;
 }

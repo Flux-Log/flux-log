@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Dashboard FluxLog</title>
+</head>
+
+<body>
+    <header class="header">
+        <img src="./assets/logo-fluxlog-dashboard.png" alt="">
+    </header>
+    <main>
+        <div class="menu">
+            <span>GERAL</span>
+            <nav>
+                <a href="" class="active">Início</a>
+                <a href="./mercados.html">Mercados</a>
+                <a href="./historico.html">Histórico</a>
+            </nav>
+        </div>
+        <div class="dash-kpis">
+            <div class="title-subtitle">
+                <h1 id="titulo_dashboard">
+                    Olá, Gestor!
+                </h1>
+                <span>
+                    Veja agora quais setores estão com maior tempo de congestionamento
+                </span>
+            </div>
+
+            <div class="kpis">
+
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-congestionado"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Prolongado</span>
+                        <h2 class="amount-danger">
+                            Mais que 5 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_congestionado">0</strong>
+                        setores nesse estado
+                    </div>
+                </div>
+
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-atencao"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Atenção</span>
+                        <h2 class="amount-attention">
+                            Maior que 2 e menor que 5 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_atencao">0</strong>
+                        setores nesse estado
+                    </div>
+                </div>
+
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-normal"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Normal</span>
+                        <h2 class="amount-success">
+                            Menor que 2 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_normal">0</strong>
+                        setores nesse estado
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sector-state">
+
+                <div class="kpi-states">
+                    <h3>Prolongados</h3>
+                    <div class="sector-danger">
+                        <p>Limite: 5 min</p>
+
+                        <span class="state-title">Setor - Alimentos</span>
+
+                        <span>Duração: 14:32</span>
+                    </div>
+
+                    
+                </div>
+
+                <div class="kpi-states">
+                    <h3>Atenção</h3>
+                    <div class="sector-attention">
+                        <p>Limite: Maior que 2 e menor que 5 min</p>
+
+                        <span class="state-title">Setor - Rotisseria</span>
+
+                        <span>Duração: 03:00</span>
+                    </div>
+                </div>
+
+                <div class="kpi-states">
+                    <h3>Normal</h3>
+                    <div class="sector-normal">
+                        <p>Limite: Abaixo de 2 min</p>
+
+                        <span class="state-title">Setor - Petshop</span>
+
+                        <span>Duração: 01:32</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+
+        // MOSTRAR O NOME DO SUPERMERCADO SELECIONADO
+        // NA PÁGINA DE DASHBOARD. SE NINGÚN MERCADO
+        // FOI SELECIONADO (PÁGINA ABERTA DIRECTAMENTE),
+        // MANTÉM-SE O SAÚDO PADRÃO.
+
+        let nomeMercado = localStorage.getItem("mercadoSelecionadoNome");
+
+        if (nomeMercado) {
+            document.getElementById("titulo_dashboard").innerHTML = nomeMercado;
+        }
+
+
+        // QUANTIDADE DE SETORES EM CADA ESTADO (DADOS
+        // DO PROTÓTIPO). A ESCRITA NOS KPIs É FEITA
+
+
+        let qtdSetoresProlongado = 1;
+        let qtdSetoresAtencao = 1;
+        let qtdSetoresNormal = 1;
+
+        kpi_count_congestionado.innerHTML = qtdSetoresProlongado;
+        kpi_count_atencao.innerHTML = qtdSetoresAtencao;
+        kpi_count_normal.innerHTML = qtdSetoresNormal;
+
+    </script>
+
+</body>
+
+</html>
