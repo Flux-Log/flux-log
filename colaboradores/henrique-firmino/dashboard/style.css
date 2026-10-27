@@ -41,7 +41,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    width: 280px;
+    width: 245px;
     gap: 32px;
     padding: 42px 46px;
     border-right: 1px solid var(--border-gray);
