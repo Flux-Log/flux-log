@@ -85,13 +85,13 @@ async function registrarFimEvento(idSensor) {
         let tempoExcedido = 0;
 
         if (duracaoSegundos > 900) {
-            classificacao = 'MUITO CRITICO';
+            classificacao = 'PROLONGADO';
             tempoExcedido = duracaoSegundos - 120;
         } else if (duracaoSegundos > 300) {
-            classificacao = 'CONGESTIONAMENTO';
+            classificacao = 'PROLONGADO';
             tempoExcedido = duracaoSegundos - 120;
         } else if (duracaoSegundos > 120) {
-            classificacao = 'ATENCAO';
+            classificacao = 'ATENCÃO';
             tempoExcedido = duracaoSegundos - 120;
         }
 

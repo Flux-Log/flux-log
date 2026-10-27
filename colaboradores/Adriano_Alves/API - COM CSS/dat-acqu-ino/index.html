@@ -1,764 +1,209 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111c24">
-  <title>FluxLog | Monitoramento de Fluxo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FluxLog - Monitoramento</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
-  <style>
-    :root {
-      --orange: #ff7900;
-      --dark: #feffff;
-      --text: #192832;
-      --muted: #78858e;
-      --background: #f5f7f8;
-      --border: #e7ebee;
-      --green: #16865a;
-      --red: #c9483b;
-    }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: var(--background);
-      color: var(--text);
-      font-family: Inter, Arial, sans-serif;
-    }
-
-    .header {
-      min-height: 76px;
-      padding: 16px clamp(20px, 5vw, 72px);
-      background: var(--dark);
-      border-bottom: 3px solid var(--orange);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .logo img {
-      display: block;
-      width: 166px;
-      max-width: 45vw;
-      height: auto;
-    }
-
-    .connection-label {
-      color: #d1d9de;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .connection-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #42d392;
-    }
-
-    main {
-      width: min(1240px, calc(100% - 40px));
-      margin: 36px auto 44px;
-    }
-
-    .page-heading {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 24px;
-      margin-bottom: 26px;
-    }
-
-    .eyebrow {
-      margin: 0 0 8px;
-      color: var(--orange);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(25px, 3vw, 34px);
-      letter-spacing: -1.2px;
-    }
-
-    .subtitle {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .unit-picker {
-      width: 280px;
-      max-width: 100%;
-      flex-shrink: 0;
-    }
-
-    .unit-picker label {
-      display: block;
-      margin-bottom: 8px;
-      color: #596771;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    select {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1px solid #dce2e6;
-      border-radius: 11px;
-      background: white;
-      color: var(--text);
-      font: inherit;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .summary-card,
-    .chart-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      box-shadow: 0 10px 28px rgba(18, 35, 45, 0.045);
-    }
-
-    .summary-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 19px;
-    }
-
-    .summary-icon {
-      display: grid;
-      place-items: center;
-      width: 44px;
-      height: 44px;
-      flex-shrink: 0;
-      border-radius: 13px;
-      background: #fff1e5;
-      color: var(--orange);
-      font-size: 21px;
-    }
-
-    .summary-label {
-      margin: 0 0 6px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .summary-value {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    .charts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .chart-card {
-      min-width: 0;
-      padding: 20px;
-    }
-
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .card-title {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .card-description {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 9px;
-      border-radius: 30px;
-      font-size: 10px;
-      font-weight: 800;
-    }
-
-    .status::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-
-    .status-wait {
-      background: #f0f2f4;
-      color: #697780;
-    }
-
-    .status-free {
-      background: #e7f6ef;
-      color: var(--green);
-    }
-
-    .status-detected {
-      background: #fff1e5;
-      color: #c76000;
-    }
-
-    .status-error {
-      background: #fff0ee;
-      color: var(--red);
-    }
-
-    .chart-wrap {
-      position: relative;
-      height: 220px;
-    }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 15px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .legend-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 3px;
-    }
-
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-      color: #87929a;
-      font-size: 11px;
-    }
-
-    .footer strong {
-      color: #5d6a73;
-    }
-
-    @media (max-width: 1000px) {
-      .charts-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .chart-card:last-child {
-        grid-column: 1 / -1;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .header {
-        min-height: 66px;
-        padding: 14px 20px;
-      }
-
-      .logo img {
-        width: 145px;
-      }
-
-      .connection-label {
-        font-size: 0;
-      }
-
-      main {
-        width: calc(100% - 28px);
-        margin-top: 26px;
-      }
-
-      .page-heading {
-        display: block;
-      }
-
-      .unit-picker {
-        width: 100%;
-        margin-top: 20px;
-      }
-
-      .summary-grid,
-      .charts-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .chart-card:last-child {
-        grid-column: auto;
-      }
-
-      .chart-wrap {
-        height: 220px;
-      }
-    }
-  </style>
+   
 </head>
 
 <body>
-  <header class="header">
-    <div class="logo">
-      <img
-        src="assets/logo-fluxlog-dashboard.png"
-        alt="FluxLog"
-      >
-    </div>
 
-    <div class="connection-label">
-      <span class="connection-dot"></span>
-      <span style="color: #000000; font-weight: 600;">Monitoramento em tempo real</span>
-    </div>
-  </header>
+    <header class="header">
+        <img src="./assets/logo-fluxlog-dashboard.png" alt="Logo FluxLog">
+    </header>
 
-  <main>
-    <section class="page-heading">
-      <div>
-        <p class="eyebrow">Painel de operação</p>
-        <h1>Monitoramento de fluxo</h1>
-        <p class="subtitle">
-          Acompanhe as leituras dos sensores por setor e unidade.
-        </p>
-      </div>
-
-      <div class="unit-picker">
-        <label for="selectEmpresa">UNIDADE MONITORADA</label>
-
-        <select id="selectEmpresa">
-          <option value="1">Assaí Atacadão — Matriz</option>
-          <option value="2">Assaí Atacadão — São Paulo</option>
-          <option value="3">Assaí Atacadão — Morumbi</option>
-        </select>
-      </div>
-    </section>
-
-    <section class="summary-grid">
-      <article class="summary-card">
-        <div class="summary-icon" aria-hidden="true">▤</div>
-        <div>
-          <p class="summary-label">Setores monitorados</p>
-          <p class="summary-value">03 setores</p>
-        </div>
-      </article>
-
-      <article class="summary-card">
-        <div class="summary-icon" aria-hidden="true">◷</div>
-        <div>
-          <p class="summary-label">Atualização</p>
-          <p class="summary-value">A cada segundo</p>
-        </div>
-      </article>
-
-      <article class="summary-card">
-        <div class="summary-icon" aria-hidden="true">⌁</div>
-        <div>
-          <p class="summary-label">Histórico exibido</p>
-          <p class="summary-value">20 leituras</p>
-        </div>
-      </article>
-    </section>
-
-    <section class="charts-grid">
-      <article class="chart-card">
-        <div class="card-top">
-          <div>
-            <h2 class="card-title">Setor Bebidas</h2>
-            <p class="card-description">Estado atual do sensor</p>
-          </div>
-          <span id="statusBebidas" class="status status-wait" role="status">
-            Aguardando leitura
-          </span>
+    <main>
+        <div class="menu">
+           
+            <nav>
+            
+                <a href="./index.html" class="active">Monitoramento</a>
+           
+            </nav>
         </div>
 
-        <div class="chart-wrap">
-          <canvas id="graficoBebidas" aria-label="Leituras de bebidas"></canvas>
+        <div class="dash-kpis">
+            <div class="title-subtitle">
+                <h1>Monitoramento de Fluxo</h1>
+                <span>Acompanhe em tempo real as leituras dos sensores por unidade e setor</span>
+            </div>
+
+            <div class="select-container">
+                <label for="selectEmpresa">UNIDADE MONITORADA:</label>
+                <select id="selectEmpresa" onchange="trocarUnidade()">
+                    <option value="1">Assaí Atacadão — Matriz</option>
+                    <option value="2">Assaí Atacadão — São Paulo</option>
+                    <option value="3">Assaí Atacadão — Morumbi</option>
+                </select>
+            </div>
+
+            <div class="charts-grid">
+                <!-- Card Setor Bebidas -->
+                <div class="kpi-01">
+                    <span>Setor Bebidas</span>
+                    <div style="margin-top: 12px;">
+                        <span id="statusBebidas" class="status-badge">Aguardando leitura...</span>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="graficoBebidas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Card Setor Alimentos -->
+                <div class="kpi-01">
+                    <span>Setor Alimentos</span>
+                    <div style="margin-top: 12px;">
+                        <span id="statusAlimentos" class="status-badge">Aguardando leitura...</span>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="graficoAlimentos"></canvas>
+                    </div>
+                </div>
+
+                <!-- Card Setor Limpeza -->
+                <div class="kpi-01">
+                    <span>Setor Limpeza</span>
+                    <div style="margin-top: 12px;">
+                        <span id="statusLimpeza" class="status-badge">Aguardando leitura...</span>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="graficoLimpeza"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
+    </main>
 
-        <div class="legend">
-          <span class="legend-item"><i class="legend-dot" style="background:#ff7900"></i>Objeto detectado</span>
-          <span class="legend-item"><i class="legend-dot" style="background:#16865a"></i>Setor livre</span>
-        </div>
-      </article>
-
-      <article class="chart-card">
-        <div class="card-top">
-          <div>
-            <h2 class="card-title">Setor Alimentos</h2>
-            <p class="card-description">Estado atual do sensor</p>
-          </div>
-          <span id="statusAlimentos" class="status status-wait" role="status">
-            Aguardando leitura
-          </span>
-        </div>
-
-        <div class="chart-wrap">
-          <canvas id="graficoAlimentos" aria-label="Leituras de alimentos"></canvas>
-        </div>
-
-        <div class="legend">
-          <span class="legend-item"><i class="legend-dot" style="background:#ff7900"></i>Objeto detectado</span>
-          <span class="legend-item"><i class="legend-dot" style="background:#16865a"></i>Setor livre</span>
-        </div>
-      </article>
-
-      <article class="chart-card">
-        <div class="card-top">
-          <div>
-            <h2 class="card-title">Setor Limpeza</h2>
-            <p class="card-description">Estado atual do sensor</p>
-          </div>
-          <span id="statusLimpeza" class="status status-wait" role="status">
-            Aguardando leitura
-          </span>
-        </div>
-
-        <div class="chart-wrap">
-          <canvas id="graficoLimpeza" aria-label="Leituras de limpeza"></canvas>
-        </div>
-
-        <div class="legend">
-          <span class="legend-item"><i class="legend-dot" style="background:#ff7900"></i>Objeto detectado</span>
-          <span class="legend-item"><i class="legend-dot" style="background:#16865a"></i>Setor livre</span>
-        </div>
-      </article>
-    </section>
-
-    <footer class="footer">
-      <span>© 2026 <strong>FluxLog</strong>. Todos os direitos reservados.</span>
-      <span id="lastUpdate">Aguardando conexão com os sensores…</span>
-    </footer>
-  </main>
-
-  <script>
-    const API_BASE_URL = "http://localhost:3300";
-    const INTERVALO_MS = 1000;
-    const MAX_LEITURAS = 20;
-
-    const setores = [
-      {
-        nome: "Bebidas",
-        canvas: "graficoBebidas",
-        status: "statusBebidas",
-        grafico: null
-      },
-      {
-        nome: "Alimentos",
-        canvas: "graficoAlimentos",
-        status: "statusAlimentos",
-        grafico: null
-      },
-      {
-        nome: "Limpeza",
-        canvas: "graficoLimpeza",
-        status: "statusLimpeza",
-        grafico: null
-      }
-    ];
-
-    let requisicaoEmAndamento = false;
-    let unidadeAtual = Number(
-      document.getElementById("selectEmpresa").value
-    );
-
-    function criarGrafico(canvasId, nomeSetor) {
-      const contexto = document
-        .getElementById(canvasId)
-        .getContext("2d");
-
-      return new Chart(contexto, {
-        type: "line",
-
-        data: {
-          labels: [],
-          datasets: [{
-            label: nomeSetor,
-            data: [],
-            stepped: "before",
-            borderColor: "#ff7900",
-            backgroundColor: "rgba(255, 121, 0, 0.12)",
-            pointBackgroundColor: "#ff7900",
-            pointBorderColor: "#ffffff",
-            pointBorderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            borderWidth: 2.5,
-            fill: true,
-            tension: 0
-          }]
-        },
-
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: false,
-
-          interaction: {
-            intersect: false,
-            mode: "index"
-          },
-
-          plugins: {
-            legend: {
-              display: false
-            },
-
-            tooltip: {
-              displayColors: false,
-              callbacks: {
-                label: item =>
-                  item.raw === 1
-                    ? " Objeto detectado"
-                    : " Setor livre"
-              }
-            }
-          },
-
-          scales: {
-            x: {
-              grid: {
-                display: false
-              },
-              border: {
-                display: false
-              },
-              ticks: {
-                color: "#8a969e",
-                maxTicksLimit: 5
-              },
-              title: {
-                display: true,
-                text: "Leituras recentes",
-                color: "#8a969e"
-              }
-            },
-
-            y: {
-              min: 0,
-              max: 1,
-              grid: {
-                color: "#edf0f2"
-              },
-              border: {
-                display: false
-              },
-              ticks: {
-                stepSize: 1,
-                color: "#8a969e",
-                callback: valor =>
-                  valor === 1 ? "Detectado" : "Livre"
-              }
-            }
-          }
-        }
-      });
-    }
-
-    function atualizarStatus(setor, tipo, mensagem) {
-      const elemento = document.getElementById(setor.status);
-
-      elemento.className = `status status-${tipo}`;
-      elemento.textContent = mensagem;
-    }
-
-    function registrarLeitura(setor, leitura) {
-  const grafico = setor.grafico;
-
-  const horario = new Date().toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
-
-  grafico.data.labels.push(horario);
-  grafico.data.datasets[0].data.push(leitura);
-
-  if (grafico.data.labels.length > MAX_LEITURAS) {
-    grafico.data.labels.shift();
-    grafico.data.datasets[0].data.shift();
-  }
-
-  // DINÂMICA DE CORES DA LINHA:
-  if (leitura === 1) {
-    // Objeto detectado -> Linha Laranja
-    grafico.data.datasets[0].borderColor = "#ff7900";
-    grafico.data.datasets[0].backgroundColor = "rgba(255, 121, 0, 0.12)";
-    grafico.data.datasets[0].pointBackgroundColor = "#ff7900";
-    atualizarStatus(setor, "detected", "Objeto detectado");
-  } else {
-    // Setor livre -> Linha Verde
-    grafico.data.datasets[0].borderColor = "#16865a";
-    grafico.data.datasets[0].backgroundColor = "rgba(22, 134, 90, 0.12)";
-    grafico.data.datasets[0].pointBackgroundColor = "#16865a";
-    atualizarStatus(setor, "free", "Setor livre");
-  }
-
-  grafico.update("none");
-
-      if (leitura === 1) {
-        atualizarStatus(setor, "detected", "Objeto detectado");
-      } else {
-        atualizarStatus(setor, "free", "Setor livre");
-      }
-    }
-
-    async function carregarDadosSensor(idSensor, setor) {
-      try {
-        const resposta = await fetch(
-          `${API_BASE_URL}/sensores/digital/${idSensor}`,
-          { cache: "no-store" }
-        );
-
-        if (!resposta.ok) {
-          throw new Error(`Erro HTTP ${resposta.status}`);
+    <script>
+        // Função auxiliar simples para instanciar os gráficos nos mesmos moldes do Henrique
+        function criarGrafico(idCanvas, titulo) {
+            return new Chart(
+                document.getElementById(idCanvas).getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: titulo,
+                            borderColor: '#009874',
+                            backgroundColor: '#009874',
+                            data: [],
+                            stepped: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Leituras'
+                                }
+                            },
+                            y: {
+                                min: 0,
+                                max: 1,
+                                ticks: {
+                                    stepSize: 1
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Estado do sensor'
+                                }
+                            }
+                        }
+                    }
+                }
+            );
         }
 
-        const sensor = await resposta.json();
-        const leitura = Number(sensor.digital);
+        var graficoBebidas = criarGrafico('graficoBebidas', 'Bebidas (0 = livre, 1 = detectado)');
+        var graficoAlimentos = criarGrafico('graficoAlimentos', 'Alimentos (0 = livre, 1 = detectado)');
+        var graficoLimpeza = criarGrafico('graficoLimpeza', 'Limpeza (0 = livre, 1 = detectado)');
 
-        if (leitura !== 0 && leitura !== 1) {
-          throw new Error("Valor digital inválido");
+        var tempo = 0;
+
+        function carregarSensor(idSensor, grafico, idStatus) {
+            fetch('http://localhost:3300/sensores/digital/' + idSensor)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao acessar a API');
+                    }
+                    return response.json();
+                })
+                .then(sensor => {
+                    var leitura = Number(sensor.digital);
+
+                    document.getElementById(idStatus).innerHTML =
+                        leitura === 1
+                            ? 'Objeto detectado!'
+                            : 'Setor Livre';
+
+                    // Altera a cor: verde (#009874) se for 0/false, laranja (#ff7900) se for 1/true
+                    var corLinha = (leitura === 0) ? '#009874' : '#ff7900';
+                    grafico.data.datasets[0].borderColor = corLinha;
+                    grafico.data.datasets[0].backgroundColor = corLinha;
+
+                    grafico.data.labels.push(tempo);
+                    grafico.data.datasets[0].data.push(leitura);
+
+                    if (grafico.data.labels.length > 20) {
+                        grafico.data.labels.shift();
+                        grafico.data.datasets[0].data.shift();
+                    }
+
+                    grafico.update();
+                })
+                .catch(error => {
+                    console.error('Erro ao obter dados do sensor ' + idSensor, error);
+                    document.getElementById(idStatus).innerHTML = 'Erro ao conectar com a API';
+                });
+        }
+   // função dos graficos de 3 em 3.
+        function obterDados() {
+            var unidade = Number(document.getElementById('selectEmpresa').value);
+            var sensorInicial = (unidade - 1) * 3 + 1;
+
+            carregarSensor(sensorInicial, graficoBebidas, 'statusBebidas');
+            carregarSensor(sensorInicial + 1, graficoAlimentos, 'statusAlimentos');
+            carregarSensor(sensorInicial + 2, graficoLimpeza, 'statusLimpeza');
+
+            tempo++;
         }
 
-        registrarLeitura(setor, leitura);
-        return true;
-
-      } catch (erro) {
-        console.error(
-          `Erro no sensor ${idSensor} (${setor.nome}):`,
-          erro
-        );
-
-        atualizarStatus(setor, "error", "Sem conexão");
-        return false;
-      }
-    }
-
-    async function obterDados() {
-      if (requisicaoEmAndamento) return;
-
-      requisicaoEmAndamento = true;
-
-      const unidade = Number(
-        document.getElementById("selectEmpresa").value
-      );
-
-      const sensorInicial = (unidade - 1) * 3 + 1;
-
-      try {
-        const resultados = await Promise.all(
-          setores.map((setor, indice) =>
-            carregarDadosSensor(sensorInicial + indice, setor)
-          )
-        );
-
-        // Não atualizar a informação de conexão de outra unidade
-        // caso o usuário tenha trocado a seleção durante a consulta.
-        if (unidade !== Number(
-          document.getElementById("selectEmpresa").value
-        )) {
-          return;
+        function limparGrafico(grafico, idStatus) {
+            grafico.data.labels = [];
+            grafico.data.datasets[0].data = [];
+            grafico.update();
+            document.getElementById(idStatus).innerHTML = 'Aguardando leitura...';
         }
 
-        const indicador = document.getElementById("lastUpdate");
-
-        if (resultados.every(Boolean)) {
-          indicador.textContent =
-            `Última atualização: ${
-              new Date().toLocaleTimeString("pt-BR")
-            }`;
-        } else {
-          indicador.textContent =
-            "Verifique a API e a conexão dos sensores.";
+        function trocarUnidade() {
+            limparGrafico(graficoBebidas, 'statusBebidas');
+            limparGrafico(graficoAlimentos, 'statusAlimentos');
+            limparGrafico(graficoLimpeza, 'statusLimpeza');
+            tempo = 0;
+            obterDados();
         }
 
-      } finally {
-        requisicaoEmAndamento = false;
-      }
-    }
+        obterDados();
+        setInterval(obterDados, 1000);
+    </script>
 
-    function trocarEmpresa() {
-      unidadeAtual = Number(
-        document.getElementById("selectEmpresa").value
-      );
-
-      setores.forEach(setor => {
-        setor.grafico.data.labels = [];
-        setor.grafico.data.datasets[0].data = [];
-        setor.grafico.update("none");
-
-        atualizarStatus(
-          setor,
-          "wait",
-          "Aguardando leitura"
-        );
-      });
-
-      document.getElementById("lastUpdate").textContent =
-        "Atualizando unidade selecionada…";
-
-      obterDados();
-    }
-
-    // Inicializa os gráficos.
-    setores.forEach(setor => {
-      setor.grafico = criarGrafico(
-        setor.canvas,
-        setor.nome
-      );
-    });
-
-    document
-      .getElementById("selectEmpresa")
-      .addEventListener("change", trocarEmpresa);
-
-    obterDados();
-    window.setInterval(obterDados, INTERVALO_MS);
-  </script>
 </body>
+
 </html>
