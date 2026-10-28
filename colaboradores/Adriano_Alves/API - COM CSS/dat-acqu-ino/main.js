@@ -1,3 +1,4 @@
+
 const express = require('express');
 const mysql = require('mysql2');
 const { SerialPort } = require('serialport');
@@ -7,74 +8,85 @@ const SERVIDOR_PORTA = 3300;
 const SERIAL_BAUD_RATE = 9600;
 const HABILITAR_OPERACAO_INSERIR = true;
 
-// Conexão com o banco de dados MySQL
+// Configuração do pool: força o driver a enviar a string exata sem converter para UTC
 const poolBancoDados = mysql.createPool({
     host: '127.0.0.1',
-    user: 'user',
-    password: 'insert1@fluxLog',
+    user: 'insert_fluxlog',
+    password: 'Insert@1',
     database: 'fluxlog',
-    port: 3307
+    port: 3307,
+    timezone: '+00:00', // Evita que o driver aplique o offset de -3h no momento do envio das variáveis ?
+    dateStrings: true
 }).promise();
 
-// Instância global para a porta do Arduino
 let conexaoArduino = null;
 
+// Formata timestamp em 'YYYY-MM-DD HH:MM:SS' na hora local
+function formatarDataLocal(timestampMs = Date.now()) {
+    const d = new Date(timestampMs);
+    const ano = d.getFullYear();
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
+    const horas = String(d.getHours()).padStart(2, '0');
+    const minutos = String(d.getMinutes()).padStart(2, '0');
+    const segundos = String(d.getSeconds()).padStart(2, '0');
+    return `${ano}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
+}
 
 const sensores = [];
 for (let i = 0; i < 9; i++) {
     sensores[i] = {
         id: i + 1,
         digital: 0,
-        ultimaLeitura: null,
         dataHoraInicioFixada: null,
         tempoPermanencia: 0,
         jaExecutouPrimeiraVez: false,
-        passoSequencia: 1 // Usado para controlar a sequência de tempos específicos
+        passoSequencia: 1,
+        dataHoraInicioTexto: null,
+        timestampInicioMs: null
     };
 }
 
-// 1º INSERT: Grava o início do evento usando apenas o MySQL (NOW e subtração por INTERVAL)
+// 1º INSERT: Grava o início do evento
 async function registrarInicioEvento(idSensor, segundosRetroativos = 0) {
     try {
+        const sensor = sensores[idSensor - 1];
+        
+        const agoraMs = Date.now();
+        const retroativoMs = segundosRetroativos * 1000;
+        
+        sensor.timestampInicioMs = agoraMs - retroativoMs;
+        sensor.dataHoraInicioTexto = formatarDataLocal(sensor.timestampInicioMs);
+
+        await poolBancoDados.execute(
+            `INSERT INTO evento (data_hora_inicio, status_evento, fk_sensor, classificacao)
+             VALUES (?, 'EM_ANDAMENTO', ?, 'EM_ANDAMENTO')`,
+            [sensor.dataHoraInicioTexto, idSensor]
+        );
+
         if (segundosRetroativos > 0) {
-            await poolBancoDados.execute(
-                `INSERT INTO evento (data_hora_inicio, status_evento, fk_sensor, classificacao)
-                 VALUES (NOW() - INTERVAL ? SECOND, 'EM_ANDAMENTO', ?, 'EM_ANDAMENTO')`,
-                [segundosRetroativos, idSensor]
-            );
-            console.log(`[SENSOR ${idSensor}] Início retroativo (${segundosRetroativos}s atrás) gravado via MySQL!`);
+            console.log(`[SENSOR ${idSensor}] Início retroativo (${segundosRetroativos}s atrás) gravado!`);
         } else {
-            await poolBancoDados.execute(
-                `INSERT INTO evento (data_hora_inicio, status_evento, fk_sensor, classificacao)
-                 VALUES (NOW(), 'EM_ANDAMENTO', ?, 'EM_ANDAMENTO')`,
-                [idSensor]
-            );
-            console.log(`[SENSOR ${idSensor}] Início em tempo real gravado com NOW()!`);
+            console.log(`[SENSOR ${idSensor}] Início em tempo real gravado!`);
         }
     } catch (erro) {
         console.error(`Erro ao gravar início do Sensor ${idSensor}:`, erro.message);
     }
 }
 
-// 2º INSERT: Grava a finalização calculando a duração via MySQL
+// 2º INSERT: Finaliza o evento reutilizando a string do início salva
 async function registrarFimEvento(idSensor) {
     try {
+        const sensor = sensores[idSensor - 1];
         let duracaoSegundos = 0;
-        let dataHoraInicioStr = null;
+        const agoraMs = Date.now();
+        const dataHoraFimStr = formatarDataLocal(agoraMs);
+        const dataHoraInicioStr = sensor.dataHoraInicioTexto || dataHoraFimStr;
 
-        const [calc] = await poolBancoDados.execute(
-            `SELECT TIMESTAMPDIFF(SECOND, data_hora_inicio, NOW()) AS duracao, data_hora_inicio
-             FROM evento 
-             WHERE fk_sensor = ? AND status_evento = 'EM_ANDAMENTO' 
-             ORDER BY id DESC LIMIT 1`,
-            [idSensor]
-        );
-
-        if (calc.length > 0) {
-            duracaoSegundos = calc[0].duracao || 0;
-            if (calc[0].data_hora_inicio) {
-                dataHoraInicioStr = calc[0].data_hora_inicio;
-            }
+        if (sensor.timestampInicioMs) {
+            duracaoSegundos = Math.floor((agoraMs - sensor.timestampInicioMs) / 1000);
+            sensor.timestampInicioMs = null;
+            sensor.dataHoraInicioTexto = null;
         }
 
         if (duracaoSegundos < 0) {
@@ -91,25 +103,16 @@ async function registrarFimEvento(idSensor) {
             classificacao = 'PROLONGADO';
             tempoExcedido = duracaoSegundos - 120;
         } else if (duracaoSegundos > 120) {
-            classificacao = 'ATENCÃO';
+            classificacao = 'ATENÇÃO';
             tempoExcedido = duracaoSegundos - 120;
         }
 
-        if (dataHoraInicioStr) {
-            await poolBancoDados.execute(
-                `INSERT INTO evento 
-                (data_hora_inicio, data_hora_fim, duracao_segundos, classificacao, tempo_excedido_segundos, status_evento, fk_sensor)
-                 VALUES (?, NOW(), ?, ?, ?, 'FINALIZADO', ?)`,
-                [dataHoraInicioStr, duracaoSegundos, classificacao, tempoExcedido, idSensor]
-            );
-        } else {
-            await poolBancoDados.execute(
-                `INSERT INTO evento 
-                (data_hora_inicio, data_hora_fim, duracao_segundos, classificacao, tempo_excedido_segundos, status_evento, fk_sensor)
-                 VALUES (NOW(), NOW(), ?, ?, ?, 'FINALIZADO', ?)`,
-                [duracaoSegundos, classificacao, tempoExcedido, idSensor]
-            );
-        }
+        await poolBancoDados.execute(
+            `INSERT INTO evento 
+            (data_hora_inicio, data_hora_fim, duracao_segundos, classificacao, tempo_excedido_segundos, status_evento, fk_sensor)
+             VALUES (?, ?, ?, ?, ?, 'FINALIZADO', ?)`,
+            [dataHoraInicioStr, dataHoraFimStr, duracaoSegundos, classificacao, tempoExcedido, idSensor]
+        );
 
         console.log(`[SENSOR ${idSensor}] Fim gravado! Duração: ${duracaoSegundos}s | Status: ${classificacao}`);
     } catch (erro) {
@@ -124,7 +127,7 @@ async function conectarArduino() {
         let portaArduino = null;
 
         for (let i = 0; i < portas.length; i++) {
-            if (portas[i].path === 'COM11' || portas[i].vendorId === '1a86') {
+            if (portas[i].path === 'COM10' || portas[i].vendorId === '1a86') {
                 portaArduino = portas[i];
                 break;
             }
@@ -151,10 +154,9 @@ async function conectarArduino() {
                 if (leitura !== 0 && leitura !== 1) return;
 
                 const sensor1 = sensores[0];
-                if (leitura === sensor1.ultimaLeitura) return;
+                if (leitura === sensor1.digital) return;
 
                 sensor1.digital = leitura;
-                sensor1.ultimaLeitura = leitura;
 
                 console.log(`[SENSOR 1 MUDOU ESTADO PARA]: ${leitura}`);
 
@@ -201,102 +203,53 @@ async function inserirDados() {
         let novoEstado = sensor.digital;
 
         // --- REGRAS DE TEMPOS PERSONALIZADAS PARA CADA SENSOR ---
-
-        // SENSOR 2: 4s no 0 -> 2s no 1 -> 2s no 0 -> 10s no 1
         if (sensor.id === 2) {
-            if (sensor.passoSequencia === 1) {
-                novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2;
-            } else if (sensor.passoSequencia === 2) {
-                novoEstado = 1; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3;
-            } else if (sensor.passoSequencia === 3) {
-                novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 4;
-            } else if (sensor.passoSequencia === 4) {
-                novoEstado = 1; sensor.tempoPermanencia = 7; sensor.passoSequencia = 1;
-            }
+            if (sensor.passoSequencia === 1) { novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2; }
+            else if (sensor.passoSequencia === 2) { novoEstado = 1; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3; }
+            else if (sensor.passoSequencia === 3) { novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 4; }
+            else if (sensor.passoSequencia === 4) { novoEstado = 1; sensor.tempoPermanencia = 7; sensor.passoSequencia = 1; }
         }
-        // SENSOR 3: 3s no 1 -> 1s no 0 -> 4 min (240s) no 1 -> 2s no 0
         else if (sensor.id === 3) {
-            if (sensor.passoSequencia === 1) {
-                novoEstado = 1; sensor.tempoPermanencia = 2; sensor.passoSequencia = 2;
-            } else if (sensor.passoSequencia === 2) {
-                novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3;
-            } else if (sensor.passoSequencia === 3) {
-                novoEstado = 1; sensor.tempoPermanencia = 160; sensor.passoSequencia = 4;
-            } else if (sensor.passoSequencia === 4) {
-                novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 1;
-            }
+            if (sensor.passoSequencia === 1) { novoEstado = 1; sensor.tempoPermanencia = 2; sensor.passoSequencia = 2; }
+            else if (sensor.passoSequencia === 2) { novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3; }
+            else if (sensor.passoSequencia === 3) { novoEstado = 1; sensor.tempoPermanencia = 7; sensor.passoSequencia = 4; }
+            else if (sensor.passoSequencia === 4) { novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 1; }
         }
-        // SENSOR 4: 10s no 0 -> 700s no 1 -> 20s no 0 -> 600s no 1
         else if (sensor.id === 4) {
-            if (sensor.passoSequencia === 1) {
-                novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 2;
-            } else if (sensor.passoSequencia === 2) {
-                novoEstado = 1; sensor.tempoPermanencia = 467; sensor.passoSequencia = 3;
-            } else if (sensor.passoSequencia === 3) {
-                novoEstado = 0; sensor.tempoPermanencia = 13; sensor.passoSequencia = 4;
-            } else if (sensor.passoSequencia === 4) {
-                novoEstado = 1; sensor.tempoPermanencia = 400; sensor.passoSequencia = 1;
-            }
+            if (sensor.passoSequencia === 1) { novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 2; }
+            else if (sensor.passoSequencia === 2) { novoEstado = 1; sensor.tempoPermanencia = 467; sensor.passoSequencia = 3; }
+            else if (sensor.passoSequencia === 3) { novoEstado = 0; sensor.tempoPermanencia = 13; sensor.passoSequencia = 4; }
+            else if (sensor.passoSequencia === 4) { novoEstado = 1; sensor.tempoPermanencia = 400; sensor.passoSequencia = 1; }
         }
-        // SENSOR 5: 5s no 0 -> 2s no 1 -> 2s no 0 -> 3s no 1
         else if (sensor.id === 5) {
-            if (sensor.passoSequencia === 1) {
-                novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2;
-            } else if (sensor.passoSequencia === 2) {
-                novoEstado = 1; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3;
-            } else if (sensor.passoSequencia === 3) {
-                novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 4;
-            } else if (sensor.passoSequencia === 4) {
-                novoEstado = 1; sensor.tempoPermanencia = 2; sensor.passoSequencia = 1;
-            }
+            if (sensor.passoSequencia === 1) { novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2; }
+            else if (sensor.passoSequencia === 2) { novoEstado = 1; sensor.tempoPermanencia = 1; sensor.passoSequencia = 3; }
+            else if (sensor.passoSequencia === 3) { novoEstado = 0; sensor.tempoPermanencia = 1; sensor.passoSequencia = 4; }
+            else if (sensor.passoSequencia === 4) { novoEstado = 1; sensor.tempoPermanencia = 2; sensor.passoSequencia = 1; }
         }
-        // SENSOR 6: 7s no 0 -> 20s no 1 -> 10s no 0 -> 300s no 1
         else if (sensor.id === 6) {
-            if (sensor.passoSequencia === 1) {
-                novoEstado = 0; sensor.tempoPermanencia = 5; sensor.passoSequencia = 2;
-            } else if (sensor.passoSequencia === 2) {
-                novoEstado = 1; sensor.tempoPermanencia = 13; sensor.passoSequencia = 3;
-            } else if (sensor.passoSequencia === 3) {
-                novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 4;
-            } else if (sensor.passoSequencia === 4) {
-                novoEstado = 1; sensor.tempoPermanencia = 200; sensor.passoSequencia = 1;
-            }
+            if (sensor.passoSequencia === 1) { novoEstado = 0; sensor.tempoPermanencia = 5; sensor.passoSequencia = 2; }
+            else if (sensor.passoSequencia === 2) { novoEstado = 1; sensor.tempoPermanencia = 13; sensor.passoSequencia = 3; }
+            else if (sensor.passoSequencia === 3) { novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 4; }
+            else if (sensor.passoSequencia === 4) { novoEstado = 1; sensor.tempoPermanencia = 200; sensor.passoSequencia = 1; }
         }
-        // SENSOR 7: 8s no 0 -> 100s no 1 -> 40s no 0 -> 250s no 1
         else if (sensor.id === 7) {
-            if (sensor.passoSequencia === 1) {
-                novoEstado = 0; sensor.tempoPermanencia = 5; sensor.passoSequencia = 2;
-            } else if (sensor.passoSequencia === 2) {
-                novoEstado = 1; sensor.tempoPermanencia = 67; sensor.passoSequencia = 3;
-            } else if (sensor.passoSequencia === 3) {
-                novoEstado = 0; sensor.tempoPermanencia = 27; sensor.passoSequencia = 4;
-            } else if (sensor.passoSequencia === 4) {
-                novoEstado = 1; sensor.tempoPermanencia = 167; sensor.passoSequencia = 1;
-            }
+            if (sensor.passoSequencia === 1) { novoEstado = 0; sensor.tempoPermanencia = 5; sensor.passoSequencia = 2; }
+            else if (sensor.passoSequencia === 2) { novoEstado = 1; sensor.tempoPermanencia = 67; sensor.passoSequencia = 3; }
+            else if (sensor.passoSequencia === 3) { novoEstado = 0; sensor.tempoPermanencia = 27; sensor.passoSequencia = 4; }
+            else if (sensor.passoSequencia === 4) { novoEstado = 1; sensor.tempoPermanencia = 167; sensor.passoSequencia = 1; }
         }
-        // SENSOR 8: 10s no 0 -> 60s no 1 -> 30s no 0 -> 300s no 1
         else if (sensor.id === 8) {
-            if (sensor.passoSequencia === 1) {
-                novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 2;
-            } else if (sensor.passoSequencia === 2) {
-                novoEstado = 1; sensor.tempoPermanencia = 40; sensor.passoSequencia = 3;
-            } else if (sensor.passoSequencia === 3) {
-                novoEstado = 0; sensor.tempoPermanencia = 20; sensor.passoSequencia = 4;
-            } else if (sensor.passoSequencia === 4) {
-                novoEstado = 1; sensor.tempoPermanencia = 200; sensor.passoSequencia = 1;
-            }
+            if (sensor.passoSequencia === 1) { novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 2; }
+            else if (sensor.passoSequencia === 2) { novoEstado = 1; sensor.tempoPermanencia = 40; sensor.passoSequencia = 3; }
+            else if (sensor.passoSequencia === 3) { novoEstado = 0; sensor.tempoPermanencia = 20; sensor.passoSequencia = 4; }
+            else if (sensor.passoSequencia === 4) { novoEstado = 1; sensor.tempoPermanencia = 200; sensor.passoSequencia = 1; }
         }
-        // SENSOR 9: 5s no 0 -> 60s no 1 -> 10s no 0 -> 450s no 1
         else if (sensor.id === 9) {
-            if (sensor.passoSequencia === 1) {
-                novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2;
-            } else if (sensor.passoSequencia === 2) {
-                novoEstado = 1; sensor.tempoPermanencia = 40; sensor.passoSequencia = 3;
-            } else if (sensor.passoSequencia === 3) {
-                novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 4;
-            } else if (sensor.passoSequencia === 4) {
-                novoEstado = 1; sensor.tempoPermanencia = 300; sensor.passoSequencia = 1;
-            }
+            if (sensor.passoSequencia === 1) { novoEstado = 0; sensor.tempoPermanencia = 3; sensor.passoSequencia = 2; }
+            else if (sensor.passoSequencia === 2) { novoEstado = 1; sensor.tempoPermanencia = 40; sensor.passoSequencia = 3; }
+            else if (sensor.passoSequencia === 3) { novoEstado = 0; sensor.tempoPermanencia = 7; sensor.passoSequencia = 4; }
+            else if (sensor.passoSequencia === 4) { novoEstado = 1; sensor.tempoPermanencia = 300; sensor.passoSequencia = 1; }
         }
 
         sensor.digital = novoEstado;
@@ -381,22 +334,9 @@ app.get('/sensores/digital/:id', (request, response) => {
 app.listen(SERVIDOR_PORTA, () => {
     console.log(`API executada com sucesso na porta ${SERVIDOR_PORTA}`);
 });
-// sigint usa para finalizar os em andamento apos encerrar a bash.
-process.once('SIGINT', async () => {
-    console.log('\n[API] Ctrl+C detectado! Finalizando eventos em andamento no banco...');
 
-    try {
-        for (let i = 0; i < sensores.length; i++) {
-            const sensor = sensores[i];
-            if (sensor.digital === 1 && sensor.dataHoraInicioFixada !== null) {
-                await registrarFimEvento(sensor.id);
-                console.log(`[SENSOR ${sensor.id}] Evento pendente encerrado com sucesso.`);
-            }
-        }
-    } catch (erro) {
-        console.error('Erro ao finalizar eventos no encerramento:', erro.message);
-    } finally {
-        console.log('[API] Aplicação encerrada com sucesso!');
-        process.exit(0);
-    }
+process.once('SIGINT', async () => {
+    console.log('\n[API] Ctrl+C detectado! Encerrando aplicação...');
+    console.log('[API] Aplicação encerrada com sucesso!');
+    process.exit(0);
 });
