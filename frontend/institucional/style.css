@@ -145,7 +145,7 @@ button {
 }
 
 .paragraph-hero {
- font-size: 20px;
+    font-size: 20px;
 }
 
 .frase-inicio {
@@ -286,6 +286,7 @@ label {
     font-size: 20px;
     margin-top: -5px;
 }
+
 .label4 {
     color: #FFFFFF;
     font-size: 20px;
@@ -420,7 +421,7 @@ label {
     align-items: center;
     flex-direction: column;
     background-color: #F2F9FF;
-    padding: 100px 190px;
+    padding: 100px 30px;
 }
 
 .dash-specification-title {
@@ -431,7 +432,8 @@ label {
 
 .dash-cards-and-solution {
     display: flex;
-    gap: 32px;
+    justify-content: center;
+    width: 100%;
 }
 
 .dash-solution-text {
@@ -474,19 +476,17 @@ label {
     display: flex;
 }
 
-.dash-cards {
-    border-radius: 5px;
-    margin-top: 52px;
-    display: flex;
-    gap: 32px;
-}
 
 .dash-cards-title {
     background-color: #0F1C26;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    padding: 50px;
+    padding: 30px;
+    width: 1150px;
+    max-width: 100%;
+    min-height: 1250px;
+    align-items: stretch;
 }
 
 .dash-cards-title span {
@@ -496,10 +496,86 @@ label {
     align-self: start;
 }
 
-.dash-card {
-    width: 240px;
+.visao-gerente {
+    color: white;
+    margin-top: 40px;
+
 }
 
+.frase-gerente {
+    color: white;
+    margin-top: 15px;
+    font-size: 18px;
+
+}
+
+.dash-cards {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.dash-card {
+    width: 32%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.dash-cards2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.dash-card2 {
+    width: 32%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.visao-gerente-img {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.dash-gerente {
+    width: 32%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.titulo-mercado-cadastrado{
+    color: white;
+    margin-top: 40px;
+}
+.mercado-cadastrado-img {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 40px;
+}
+.mercado-cadastrado {
+    width: 32%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+.frase-operaçao{
+    color: white;
+    font-size: 18px;
+    margin-top: 15px;
+}
 
 .imagemParte3-1 {
     width: 72px;
@@ -593,7 +669,7 @@ label {
 }
 
 .contact-call {
-    font-weight: 700; 
+    font-weight: 700;
     margin-bottom: 24px;
 
 }
@@ -663,6 +739,7 @@ label {
     padding: 0px 0px 0px 16px;
     border: none;
 }
+
 .contact-btn2 {
     align-self: center;
     background-color: #FF7B00;
@@ -711,6 +788,3 @@ label {
     border-top: 1px solid white;
     padding: 32px 0px 0px 0px;
 }
-
-
-

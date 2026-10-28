@@ -60,13 +60,13 @@
                 <label for="input_minutes" class="label1">Tempo de congestionamento no estoque (estimativa)</label>
                 <select class="input1" name="" id="input_minutes">
                     <option value="" selected disabled>Selecione um cenário</option>
-                     <option value="7">7 minutos</option>
+                    <option value="7">7 minutos</option>
                     <option value="10">10 minutos</option>
                     <option value="15">15 minutos</option>
                     <option value="20">20 minutos</option>
                     <option value="30">30 minutos</option>
-                     <option value="45">45 minutos</option>
-                      <option value="60">1 hora</option>
+                    <option value="45">45 minutos</option>
+                    <option value="60">1 hora</option>
                 </select>
                 <label for="input_hour" class="label2">Qual é o custo por hora de um funcionário? (R$)</label>
                 <input id="input_hour" class="input2" type="text" placeholder="Ex: 25">
@@ -74,8 +74,9 @@
                 <label for="input_qtt_worker" class="label3">Quantos funcionários trabalham no estoque?</label>
                 <input id="input_qtt_worker" class="input3" type="text" placeholder="Ex: 11">
 
-                <label for="ipt_media_congestionamento"class="label4">Qual é o limite de tempo para considerar um congestionamento prolongado?</label>
-                <input type="text" id="ipt_media_congestionamento" class="input4"  placeholder="Ex: 5">
+                <label for="ipt_media_congestionamento" class="label4">Qual é o limite de tempo para considerar um
+                    congestionamento prolongado?</label>
+                <input type="text" id="ipt_media_congestionamento" class="input4" placeholder="Ex: 5">
 
                 <button class="button-calculate" onclick="calculate()">
                     Calcular
@@ -86,7 +87,7 @@
                 <h1 class="title-result">Resultado:</h1>
 
                 <div class="result-wrapper" id="detail_result">
-                    <div class="result-phrase1" >
+                    <div class="result-phrase1">
                         <span>Preencha os dados para visualizar
                             o impacto estimado na sua produção</span>
                     </div>
@@ -96,32 +97,47 @@
         </div>
     </div>
     <div class="dash-specification" id="dashboard">
-        <h1 class="dash-specification-title">Mais visibilidade. Menos congestionamento no seu estoque.</h1>
+        <h1 class="dash-specification-title">Transforme tempo perdido em decisões inteligentes.</h1>
         <div class="dash-cards-and-solution">
             <div class="dash-cards-title">
-                <span>Visão geral dos setores</span>
+                <span>Onde sua operação perde tempo</span>
+                <h6 class="frase-operaçao">Identifique os setores com maior congestionamento:</h6>
+
                 <div class="dash-cards">
-                    <img class="dash-card" src="./assets/Group 18.png" alt="">
-
-                    <img class="dash-card" src="./assets/Group 20.png" alt="">
-
-                    <img class="dash-card" src="./assets/Group 22.png" alt="">
+                    <img class="dash-card" src="./assets/prolongado.png" alt="">
+                    <img class="dash-card" src="./assets/atenção.png" alt="">
+                    <img class="dash-card" src="./assets/normal.png" alt="">
                 </div>
+
+                <div class="dash-cards2">
+                    <img class="dash-card2" src="./assets/prolongado2.png" alt="">
+                    <img class="dash-card2" src="./assets/atenção2.png" alt="">
+                    <img class="dash-card2" src="./assets/normal2.png" alt="">
+                </div>
+
+                <h1 class="visao-gerente">Saiba onde agir, antes que o problema cresça</h1>
+                <h5 class="frase-gerente">Saiba quais mercados precisam de atenção:</h5>
+
+                <div class="visao-gerente-img">
+
+                    <img class="dash-gerente" src="./assets/gerente1.png" alt="">
+                    <img class="dash-gerente" src="./assets/gerente2.png" alt="">
+                    <img class="dash-gerente" src="./assets/gerente3.png" alt="">
+                </div>
+
+                <h1 class="titulo-mercado-cadastrado">Controle e inteligência para cada unidade.</h1>
+                <div class="mercado-cadastrado-img">
+
+                    <img class="mercado-cadastrado" src="./assets/mercado1.png" alt="">
+                    <img class="mercado-cadastrado" src="./assets/mercado2.png" alt="">
+                    <img class="mercado-cadastrado" src="./assets/mercado3.png" alt="">
+
+
+                </div>
+
             </div>
 
-            <div class="dash-solution-text">
-                <span class="solution-text-1">
-                    A FluxLog monitora a movimentação do seu estoque
-                </span>
-                <span class="solution-text-2">
-                    Identifica
-                    congestionamentos
-                    prolongados
-                </span>
-                <span class="solution-text-3">
-                    E transforma ocorrências em informações para apoiar decisões operacionais
-                </span>
-            </div>
+
         </div>
     </div>
     <div class="about-us" id="about-us">
