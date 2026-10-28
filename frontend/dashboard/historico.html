@@ -10,7 +10,10 @@
         href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
     <title>Dashboard FluxLog</title>
 </head>
@@ -23,8 +26,9 @@
         <div class="menu">
             <span>GERAL</span>
             <nav>
-                <a href="./dashboard.html">Início</a>
-                <a href="./historico.html" class="active">Histórico</a>
+                <a href="./dashboard.html">Setores do Mercado</a>
+                <a href="./mercados.html">Operações</a>
+                <a href="./historico.html" class="active">Gráficos</a>
             </nav>
         </div>
         <div class="dash-kpis">
@@ -41,29 +45,61 @@
                 <div class="kpi-01">
                     <span>Ocorrências</span>
                     <div class="sector-amount">
-                        <h2>Total:</h2>
+                        <h4>Junção :</h4>
                         <h2 class="amount-danger">32</h2>
                     </div>
                 </div>
 
                 <div class="kpi-01">
-                    <span>Tempo excedente:</span>
+                    <span>Total de ocorrências semanais</span>
                     <div class="sector-amount">
-                        <h2>Total:</h2>
-                        <h2 class="amount-danger">1h24min</h2>
+                        <h4>Junção total de todos os setores:</h4>
+                        <h2 class="amount-danger">132</h2>
                     </div>
                 </div>
             </div>
 
             <div class="title-graph">
-                <h1>Ocorrências por período</h1>
-                <div class="graphs">
-                    <div class="graph-wrapper">
-                        <canvas id="myChart"></canvas>
-                    </div>
+                <h1>
+                    Picos de Congestionamento (Acima do Limite)
+                </h1>
 
-                    <div class="graph-wrapper">
-                        <canvas id="myChart2"></canvas>
+                <h3>
+                    Ocorrências por hora que excederam o limite máximo estabelecido.
+                </h3>
+
+                <div class="grafico_linha">
+                    <canvas id="grafico_linha"></canvas>
+                </div>
+            </div>
+
+            <div class="graficos">
+
+                <div class="title-graph">
+                    <h1>
+                        Ocorrências Semanais: Setores em Alerta
+                    </h1>
+
+                    <h3>
+                        Total semanal de picos de congestionamento agrupados por setor operacional.
+                    </h3>
+
+                    <div class="grafico_barra">
+                        <canvas id="grafico_barra"></canvas>
+                    </div>
+                </div>
+
+                <div class="title-graph">
+                    <h1>
+                        Distribuição Percentual de Ocorrências (Semanal)
+                    </h1>
+
+                    <h3>
+                        Identificação dos setores com maior concentração de ocorrências críticas no período.
+                    </h3>
+
+                    <div class="grafico_pizza">
+                        <canvas id="grafico_pizza"></canvas>
                     </div>
                 </div>
             </div>
@@ -74,82 +110,136 @@
 </html>
 
 <script>
-    const ctx = document.getElementById('myChart');
-    const ctx2 = document.getElementById('myChart2');
+
+    const ctx = document.getElementById('grafico_linha');
 
     new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
-            labels: [
-                'Segunda',
-                'Terça',
-                'Quarta',
-                'Quinta',
-                'Sexta',
-                'Sábado',
-                'Domingo'
-            ],
+            labels: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '00:00'],
             datasets: [{
-                label: 'Setor de Limpeza',
+                label: 'Setor de bebidas',
+                data: [1, 1, 3, 4, 6, 9, 8, 5, 2, 1],
                 backgroundColor: 'rgb(15, 28, 38)',
+                borderWidth: 2,
                 borderColor: 'rgb(15, 28, 38)',
-                data: [4, 3, 5, 7, 8, 10, 12],
-                borderWidth: 1
+                tension: 0.3
             },
             {
-                label: 'Setor de Bebidas',
-                backgroundColor: 'rgb(255, 123, 0',
+                label: 'Setor alimentício',
+                data: [1, 2, 4, 5, 8, 10, 7, 4, 2, 1],
+                backgroundColor: 'rgb(255, 123, 0)',
+                borderWidth: 2,
                 borderColor: 'rgb(255, 123, 0)',
-                data: [6, 3, 4, 8, 10, 11, 9],
-                borderWidth: 1
+                tension: 0.3
             },
-            ]
+            {
+                label: 'Setor de higiene',
+                data: [1, 2, 2, 3, 5, 7, 6, 4, 2, 1],
+                backgroundColor: 'rgb(14, 165, 168)',
+                borderWidth: 2,
+                borderColor: 'rgb(14, 165, 168)',
+                tension: 0.3
+            }]
         },
         options: {
-            responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 2
+                    }
                 }
             }
         }
     });
 
-    new Chart(ctx2, {
-        type: 'line',
+    const ctx1 = document.getElementById('grafico_barra');
+
+    new Chart(ctx1, {
+        type: 'bar',
         data: {
-            labels: [
-                'Segunda',
-                'Terça',
-                'Quarta',
-                'Quinta',
-                'Sexta',
-                'Sábado',
-                'Domingo'
-            ],
+            labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
             datasets: [{
-                label: 'Setor de Limpeza',
+                label: 'Setor de bebidas',
+                data: [3, 2, 4, 5, 8, 12, 10],
                 backgroundColor: 'rgb(15, 28, 38)',
-                borderColor: 'rgb(15, 28, 38)',
-                data: [4, 3, 5, 7, 8, 10, 12],
-                borderWidth: 1
+                borderWidth: 1,
+                borderColor: 'rgb(15, 28, 38)'
             },
             {
-                label: 'Setor de Bebidas',
-                backgroundColor: 'rgb(255, 123, 0',
-                borderColor: 'rgb(255, 123, 0)',
-                data: [6, 3, 4, 8, 10, 11, 9],
-                borderWidth: 1
+                label: 'Setor alimentício',
+                data: [5, 4, 6, 7, 9, 14, 11],
+                backgroundColor: 'rgb(255, 123, 0)',
+                borderWidth: 1,
+                borderColor: 'rgb(255, 123, 0)'
             },
-            ]
+            {
+                label: 'Setor de higiene',
+                data: [2, 3, 2, 4, 6, 8, 7],
+                backgroundColor: 'rgb(14, 165, 168)',
+                borderWidth: 1,
+                borderColor: 'rgb(14, 165, 168)'
+            }]
         },
         options: {
-            responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 2
+                    }
                 }
             }
         }
     });
+
+    const ctx2 = document.getElementById('grafico_pizza');
+
+    new Chart(ctx2, {
+        type: 'pie',
+        data: {
+            labels: ['Setor de Bebidas', 'Setor Alimentício', 'Setor de Higiene'],
+            datasets: [{
+                label: 'Distribuição de Ocorrências',
+                data: [40, 45, 15],
+                backgroundColor: [
+                    'rgb(15, 28, 38)',
+                    'rgb(255, 123, 0)',
+                    'rgb(14, 165, 168)'
+                ],
+                hoverOffset: 4
+            }]
+        },
+        plugins: [ChartDataLabels],
+        options: {
+            plugins: {
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14.5
+                    },
+                    formatter: (value, context) => {
+                        const dataset = context.chart.data.datasets[context.datasetIndex];
+                        const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        return percentage + '%';
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            const dataset = context.chart.data.datasets[context.datasetIndex];
+                            const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                            const percentage = ((context.raw / total) * 100).toFixed(1);
+                            return context.label + ': ' + context.raw + ' (' + percentage + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
 </script>

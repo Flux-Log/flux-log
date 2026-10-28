@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Dashboard FluxLog - Mercados</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <img src="./assets/logo-fluxlog-dashboard.png" alt="FluxLog">
+    </header>
+
+    <main>
+        <div class="menu">
+            <span>GERAL</span>
+
+            <nav>
+                <a href="./dashboard.html">Setores do Mercado</a>
+                <a href="./mercados.html" class="active">Operações</a>
+                <a href="./historico.html">Gráficos</a>
+            </nav>
+        </div>
+
+        <div class="dash-kpis">
+
+            <div class="title-subtitle">
+                <h1>Olá, Gerente!</h1>
+
+                <span>
+                    Veja agora quais setores estão com maior tempo
+                    de congestionamento nos respectivos mercados.
+                </span>
+            </div>
+
+            <div class="kpis">
+
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-congestionado"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Prolongado</span>
+                        <h2 class="amount-danger">
+                            Mais que 5 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_congestionado">0</strong>
+                        mercado(s) nesse estado
+                    </div>
+                </div>
+
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-atencao"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Atenção</span>
+                        <h2 class="amount-attention">
+                            Maior que 2 e menor que 5 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_atencao">0</strong>
+                        mercado(s) nesse estado
+                    </div>
+                </div>
+
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-normal"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Normal</span>
+                        <h2 class="amount-success">
+                            Menor que 2 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_normal">0</strong>
+                        mercado(s) nesse estado
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="markets-wrapper">
+
+                <div class="btn-wrapper">
+                    <button class="cadastroMercado" onclick="abrirModalMercado()">
+                        Cadastrar Mercado
+                    </button>
+
+                    <button class="cadastroFuncionario" onclick="abrirModalFuncionario()">
+                        Cadastrar Funcionário
+                    </button>
+                </div>
+
+                <div class="lista-cadastros">
+                    <h2>Mercados cadastrados</h2>
+
+                    <div class="legenda-status">
+                        <span class="legenda-texto">
+                            Status dos setores:
+                        </span>
+
+                        <span class="card-mercado-status status-congestionado">
+                            Congestionado
+                        </span>
+
+                        <span class="card-mercado-status status-atencao">
+                            Atenção
+                        </span>
+
+                        <span class="card-mercado-status status-normal">
+                            Normal
+                        </span>
+                    </div>
+
+                    <div id="div_mercados"></div>
+                </div>
+
+                <div class="empty-state" id="empty_state">
+                    <span>
+                        Você ainda não possui mercados cadastrados.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL DE CADASTRO DE MERCADO -->
+
+    <div id="modal_mercado" class="modal">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <div>
+                    <h2>Cadastrar Mercado</h2>
+                    <p>Preencha os dados do estabelecimento.</p>
+                </div>
+
+                <button class="btn-fechar" onclick="fecharModalMercado()" aria-label="Fechar modal">
+                    ×
+                </button>
+            </div>
+
+            <div class="formulario">
+
+                <label for="ipt_nomeMercado">Nome do mercado</label>
+                <input type="text" id="ipt_nomeMercado" placeholder="Ex.: Mercado Central">
+
+                <label for="ipt_cnpj">CNPJ</label>
+                <input type="text" id="ipt_cnpj" placeholder="Digite os 14 números do CNPJ">
+
+                <label for="ipt_qtdSetores">Quantidade de setores</label>
+                <input type="number" id="ipt_qtdSetores" placeholder="Ex.: 8">
+
+                <label for="ipt_endereco">Endereço</label>
+                <input type="text" id="ipt_endereco" placeholder="Rua, número e bairro">
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancelar" onclick="fecharModalMercado()">
+                    Cancelar
+                </button>
+
+                <button class="btn-confirmar" onclick="cadastrarMercado()">
+                    Cadastrar mercado
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL DE CADASTRO DE FUNCIONÁRIO -->
+
+    <div id="modal_funcionario" class="modal">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <div>
+                    <h2>Cadastrar Funcionário</h2>
+                    <p>Preencha os dados do novo funcionário.</p>
+                </div>
+
+                <button class="btn-fechar" onclick="fecharModalFuncionario()" aria-label="Fechar modal">
+                    ×
+                </button>
+            </div>
+
+            <div class="formulario">
+
+                <label for="ipt_nomeFuncionario">Nome completo</label>
+                <input type="text" id="ipt_nomeFuncionario" placeholder="Digite o nome completo">
+
+                <label for="ipt_emailFuncionario">E-mail</label>
+                <input type="email" id="ipt_emailFuncionario" placeholder="exemplo@email.com">
+
+                <label for="ipt_senhaFuncionario">Senha</label>
+                <input type="password" id="ipt_senhaFuncionario" placeholder="Mínimo de 8 caracteres">
+
+                <label for="ipt_cargoFuncionario">Cargo</label>
+                <input type="text" id="ipt_cargoFuncionario" placeholder="Ex.: Gestor">
+
+                <label for="ipt_mercado">Mercado</label>
+                <select id="ipt_mercado">
+                    <option value="">
+                        Selecione um mercado
+                    </option>
+                </select>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancelar" onclick="fecharModalFuncionario()">
+                    Cancelar
+                </button>
+
+                <button class="btn-confirmar" onclick="cadastrarFuncionario()">
+                    Cadastrar funcionário
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+        // ABRIR E FECHAR OS MODAIS
+
+        function abrirModalMercado() {
+            modal_mercado.style.display = "flex";
+        }
+
+        function fecharModalMercado() {
+            modal_mercado.style.display = "none";
+        }
+
+        function abrirModalFuncionario() {
+            modal_funcionario.style.display = "flex";
+        }
+
+        function fecharModalFuncionario() {
+            modal_funcionario.style.display = "none";
+        }
+
+
+        // ARRAYS E VARIÁVEIS
+
+        // MERCADOS JÁ CADASTRADOS (MOCK PRA PRÉVIA)
+
+        let mercados = [
+            {
+                id: 1,
+                nome: "Mercado Central",
+                cnpj: "12345678000100",
+                qtdSetores: 17,
+                endereco: "Av. Paulista, 1000 - Bela Vista",
+                tempoAtencao: 0,
+                tempoAlerta: 0,
+                tempoNormal: 0,
+                status: "Congestionado"
+            },
+            {
+                id: 2,
+                nome: "Mercado Boa Vista",
+                cnpj: "23456789000100",
+                qtdSetores: 3,
+                endereco: "Rua das Flores, 250 - Centro",
+                tempoAtencao: 0,
+                tempoAlerta: 0,
+                tempoNormal: 0,
+                status: "Atenção",
+                link: "./mercado-boa-vista.html"
+            },
+            {
+                id: 3,
+                nome: "Mercado São João",
+                cnpj: "34567890000100",
+                qtdSetores: 3,
+                endereco: "Rua do Comércio, 45 - Jardim América",
+                tempoAtencao: 0,
+                tempoAlerta: 0,
+                tempoNormal: 0,
+                status: "Normal",
+                link: "./mercado-sao-joao.html"
+
+            },
+            {
+                id: 4,
+                nome: "Mercado Primavera",
+                cnpj: "45678901000100",
+                qtdSetores: 3,
+                endereco: "Av. das Palmeiras, 300 - Vila Nova",
+                tempoAtencao: 0,
+                tempoAlerta: 0,
+                tempoNormal: 0,
+                status: "Congestionado",
+                link: "./mercado-primavera.html"
+            }
+        ];
+
+        let funcionarios = [];
+        let mercadoSelecionado = 0;
+
+
+        // ORDENAR OS MERCADOS PELO STATUS
+
+        function ordenarMercados() {
+
+            let ordenado = false;
+
+            while (ordenado == false) {
+
+                ordenado = true;
+                let cont = 0;
+
+                while (cont < mercados.length - 1) {
+
+                    let prioridadeAtual = 1;
+                    let prioridadeProximo = 1;
+
+                    if (mercados[cont].status == "Congestionado") {
+                        prioridadeAtual = 3;
+                    } else if (mercados[cont].status == "Atenção") {
+                        prioridadeAtual = 2;
+                    }
+
+                    if (mercados[cont + 1].status == "Congestionado") {
+                        prioridadeProximo = 3;
+                    } else if (mercados[cont + 1].status == "Atenção") {
+                        prioridadeProximo = 2;
+                    }
+
+                    if (prioridadeAtual < prioridadeProximo) {
+                        let aux = mercados[cont];
+                        mercados[cont] = mercados[cont + 1];
+                        mercados[cont + 1] = aux;
+
+                        ordenado = false;
+                    }
+
+                    cont++;
+                }
+            }
+        }
+
+
+        // ATUALIZAR A CONTAGEM DOS KPIs
+
+        function atualizarKpis() {
+
+            let contCongestionado = 0;
+            let contAtencao = 0;
+            let contNormal = 0;
+            let cont = 0;
+
+            while (cont < mercados.length) {
+
+                if (mercados[cont].status == "Congestionado") {
+                    contCongestionado++;
+                } else if (mercados[cont].status == "Atenção") {
+                    contAtencao++;
+                } else {
+                    contNormal++;
+                }
+
+                cont++;
+            }
+
+            kpi_count_congestionado.innerHTML = contCongestionado;
+            kpi_count_atencao.innerHTML = contAtencao;
+            kpi_count_normal.innerHTML = contNormal;
+        }
+
+
+        // ATUALIZAR O SELECT DE MERCADOS DO MODAL
+
+        function atualizarSelectMercados() {
+
+            ipt_mercado.innerHTML = `
+                <option value="">Selecione um mercado</option>
+            `;
+
+            let cont = 0;
+
+            while (cont < mercados.length) {
+
+                ipt_mercado.innerHTML += `
+                    <option value="${mercados[cont].id}">
+                        ${mercados[cont].nome}
+                    </option>
+                `;
+
+                cont++;
+            }
+        }
+
+
+        // EXIBIR OS MERCADOS AO ABRIR A PÁGINA
+
+        ordenarMercados();
+        renderizarMercados();
+        atualizarSelectMercados();
+        atualizarKpis();
+
+
+        // RENDERIZAR OS CARDS DOS MERCADOS
+
+        function renderizarMercados() {
+
+            div_mercados.innerHTML = "";
+
+            let cont = 0;
+
+            while (cont < mercados.length) {
+
+                // VERIFICAR SE O MERCADO TEM FUNCIONÁRIO
+
+                let nomeFuncionario = "";
+                let busca = 0;
+
+                while (busca < funcionarios.length) {
+
+                    if (
+                        funcionarios[busca].idMercado ==
+                        mercados[cont].id
+                    ) {
+                        nomeFuncionario = funcionarios[busca].nome;
+                    }
+
+                    busca++;
+                }
+
+                let statusFuncionario = `
+                    <span class="card-mercado-funcionario
+                        func-nao-cadastrado">
+                        Funcionário: ainda não cadastrado
+                    </span>
+                `;
+
+                if (nomeFuncionario != "") {
+                    statusFuncionario = `
+                        <span class="card-mercado-funcionario
+                            func-cadastrado">
+                            Funcionário: ${nomeFuncionario}
+                        </span>
+                    `;
+                }
+
+                // STATUS DO MERCADO (CONGESTIONADO, ATENÇÃO OU NORMAL)
+
+                let corCard = "card-cor-normal";
+                let badgeStatus = `
+                    <span class="card-mercado-status
+                        status-normal">
+                        Normal
+                    </span>
+                `;
+
+                if (mercados[cont].status == "Congestionado") {
+                    corCard = "card-cor-congestionado";
+
+                    badgeStatus = `
+                        <span class="card-mercado-status
+                            status-congestionado">
+                            Congestionado
+                        </span>
+                    `;
+                } else if (mercados[cont].status == "Atenção") {
+                    corCard = "card-cor-atencao";
+
+                    badgeStatus = `
+                        <span class="card-mercado-status
+                            status-atencao">
+                            Atenção
+                        </span>
+                    `;
+                }
+
+                // PEGAR O LINK PRÓPRIO DO MERCADO SE EXISTIR
+
+                let hrefMercado = "./dashboard.html";
+
+                if (mercados[cont].link) {
+                    hrefMercado = mercados[cont].link;
+                }
+
+                div_mercados.innerHTML += `
+                    <a class="card-mercado ${corCard}"
+                        href="${hrefMercado}"
+                        onclick="selecionarMercado()"
+                        data-id="${mercados[cont].id}">
+
+                        <div class="card-mercado-header">
+                            <div class="card-mercado-header-nome">
+                                <h3>${mercados[cont].nome}</h3>
+
+                                <span class="card-mercado-acessar">
+                                    Acessar mercado →
+                                </span>
+                            </div>
+
+                            <div class="card-mercado-header-status">
+                                ${badgeStatus}
+                            </div>
+                        </div>
+
+                        <div class="card-mercado-info">
+                            <span>
+                                <strong>CNPJ:</strong>
+                                ${mercados[cont].cnpj}
+                            </span>
+
+                            <span>
+                                <strong>Endereço:</strong>
+                                ${mercados[cont].endereco}
+                            </span>
+                        </div>
+
+                        <div class="card-mercado-setores">
+                            ${mercados[cont].qtdSetores}
+                            setores cadastrados
+                        </div>
+
+                        ${statusFuncionario}
+                    </a>
+                `;
+
+                cont++;
+            }
+
+            if (mercados.length > 0) {
+                empty_state.style.display = "none";
+            }
+        }
+
+
+        // CADASTRAR MERCADO
+
+        function cadastrarMercado() {
+
+            let nome = ipt_nomeMercado.value.trim();
+            let cnpj = ipt_cnpj.value.trim();
+            let qtdSetores = Number(ipt_qtdSetores.value);
+            let endereco = ipt_endereco.value.trim();
+
+            // TEMPO EM ATENÇÃO/ALERTA/NORMAL ZERADO POR ENQUANTO
+
+            let tempoAtencao = 0;
+            let tempoAlerta = 0;
+            let tempoNormal = 0;
+
+            let valido = true;
+
+            if (
+                nome == "" ||
+                cnpj.length != 14 ||
+                qtdSetores <= 0 ||
+                endereco == ""
+            ) {
+                alert("Preencha todos os campos corretamente.");
+                valido = false;
+            }
+
+            if (valido) {
+
+                let novoMercado = {
+                    id: mercados.length + 1,
+                    nome: nome,
+                    cnpj: cnpj,
+                    qtdSetores: qtdSetores,
+                    endereco: endereco,
+                    tempoAtencao: tempoAtencao,
+                    tempoAlerta: tempoAlerta,
+                    tempoNormal: tempoNormal,
+                    status: "Normal"
+                };
+
+                // ORDENAR PELO STATUS
+
+                mercados.push(novoMercado);
+                ordenarMercados();
+
+                // EXIBIR OS MERCADOS CADASTRADOS
+
+                renderizarMercados();
+
+                // ATUALIZAR O SELECT DE MERCADOS
+
+                atualizarSelectMercados();
+
+                // ATUALIZAR A CONTAGEM DOS KPIs
+
+                atualizarKpis();
+
+                // LIMPAR O FORMULÁRIO
+
+                ipt_nomeMercado.value = "";
+                ipt_cnpj.value = "";
+                ipt_qtdSetores.value = "";
+                ipt_endereco.value = "";
+
+                fecharModalMercado();
+            }
+        }
+
+
+        // SELECIONAR MERCADO SEM PARÂMETROS
+
+        function selecionarMercado() {
+
+            let id = Number(event.currentTarget.dataset.id);
+            mercadoSelecionado = id;
+
+            // BUSCAR O NOME DO MERCADO SELECIONADO
+
+            let nome = "";
+            let cont = 0;
+
+            while (cont < mercados.length) {
+
+                if (mercados[cont].id == id) {
+                    nome = mercados[cont].nome;
+                }
+
+                cont++;
+            }
+
+            // GUARDAR NO LOCALSTORAGE ANTES DE NAVEGAR
+
+            localStorage.setItem("mercadoSelecionado", id);
+            localStorage.setItem("mercadoSelecionadoNome", nome);
+        }
+
+
+        // CADASTRAR FUNCIONÁRIO
+
+        function cadastrarFuncionario() {
+
+            let nome = ipt_nomeFuncionario.value.trim();
+            let email = ipt_emailFuncionario.value.trim();
+            let senha = ipt_senhaFuncionario.value;
+            let cargo = ipt_cargoFuncionario.value.trim();
+            let idMercado = Number(ipt_mercado.value);
+
+            let valido = true;
+            let simbolos = "!@#$%&*_-./";
+            let senhaValida = false;
+            let cont = 0;
+
+            while (cont < simbolos.length) {
+
+                if (senha.includes(simbolos[cont])) {
+                    senhaValida = true;
+                }
+
+                cont++;
+            }
+
+            if (
+                nome == "" ||
+                !email.includes("@") ||
+                senha.length < 8 ||
+                !senhaValida ||
+                cargo == "" ||
+                idMercado == 0
+            ) {
+                alert(
+                    "Preencha todos os campos corretamente. " +
+                    "A senha precisa ter pelo menos 8 caracteres " +
+                    "e um símbolo especial."
+                );
+
+                valido = false;
+            }
+
+            if (valido) {
+
+                funcionarios.push({
+                    id: funcionarios.length + 1,
+                    nome: nome,
+                    email: email,
+                    senha: senha,
+                    cargo: cargo,
+                    idMercado: idMercado
+                });
+
+                // ATUALIZAR O STATUS DO FUNCIONÁRIO NOS CARDS
+
+                renderizarMercados();
+
+                ipt_nomeFuncionario.value = "";
+                ipt_emailFuncionario.value = "";
+                ipt_senhaFuncionario.value = "";
+                ipt_cargoFuncionario.value = "";
+                ipt_mercado.value = "";
+
+                fecharModalFuncionario();
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -21,13 +21,14 @@
         <div class="menu">
             <span>GERAL</span>
             <nav>
-                <a href="" class="active">Início</a>
-                <a href="./historico.html">Histórico</a>
+                <a href="" class="active">Setores do Mercado</a>
+                <a href="./mercados.html">Operações</a>
+                <a href="./historico.html">Gráficos</a>
             </nav>
         </div>
         <div class="dash-kpis">
             <div class="title-subtitle">
-                <h1>
+                <h1 id="titulo_dashboard">
                     Olá, Gestor!
                 </h1>
                 <span>
@@ -37,27 +38,51 @@
 
             <div class="kpis">
 
-                <div class="kpi-01">
-                    <span>Prolongado</span>
-                    <div class="sector-amount">
-                        <h2>Setores:</h2>
-                        <h2 class="amount-danger">5</h2>
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-congestionado"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Prolongado</span>
+                        <h2 class="amount-danger">
+                            Mais que 5 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_congestionado">0</strong>
+                        setores nesse estado
                     </div>
                 </div>
 
-                <div class="kpi-01">
-                    <span>Atenção</span>
-                    <div class="sector-amount">
-                        <h2>Setores:</h2>
-                        <h2 class="amount-attention">5</h2>
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-atencao"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Atenção</span>
+                        <h2 class="amount-attention">
+                            Maior que 2 e menor que 5 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_atencao">0</strong>
+                        setores nesse estado
                     </div>
                 </div>
 
-                <div class="kpi-01">
-                    <span>Normal</span>
-                    <div class="sector-amount">
-                        <h2>Setores:</h2>
-                        <h2 class="amount-success">5</h2>
+                <div class="kpi-01 kpi-status">
+                    <div class="kpi-faixa faixa-normal"></div>
+
+                    <div class="kpi-status-info">
+                        <span class="kpi-titulo">Status Normal</span>
+                        <h2 class="amount-success">
+                            Menor que 2 minutos
+                        </h2>
+                    </div>
+
+                    <div class="kpi-contagem">
+                        <strong id="kpi_count_normal">0</strong>
+                        setores nesse estado
                     </div>
                 </div>
 
@@ -72,7 +97,7 @@
 
                         <span class="state-title">Setor - Bebidas</span>
 
-                        <span>Duração: 08:32</span>
+                        <span>Duração: 14:32</span>
                     </div>
 
                     <div class="sector-danger">
@@ -102,7 +127,7 @@
                     <div class="sector-danger">
                         <p>Limite: 5 min</p>
 
-                        <span class="state-title">Setor - Bebidas</span>
+                        <span class="state-title">Setor - Confeitaria</span>
 
                         <span>Duração: 08:32</span>
                     </div>
@@ -110,16 +135,16 @@
                     <div class="sector-danger">
                         <p>Limite: 5 min</p>
 
-                        <span class="state-title">Setor - Bebidas</span>
+                        <span class="state-title">Setor - Peixaria</span>
 
-                        <span>Duração: 08:32</span>
+                        <span>Duração: 09:50</span>
                     </div>
                 </div>
 
                 <div class="kpi-states">
                     <h3>Atenção</h3>
                     <div class="sector-attention">
-                        <p>Limite: 5 min</p>
+                        <p>Limite: Maior que 2 e menor que 5 min</p>
 
                         <span class="state-title">Setor - Mercearia</span>
 
@@ -127,15 +152,15 @@
                     </div>
 
                     <div class="sector-attention">
-                        <p>Limite: 5 min</p>
+                        <p>Limite: Maior que 2 e menor que 5 min</p>
 
                         <span class="state-title">Setor - Recebidos</span>
 
-                        <span>Duração: 05:04</span>
+                        <span>Duração: 03:33</span>
                     </div>
 
                     <div class="sector-attention">
-                        <p>Limite: 5 min</p>
+                        <p>Limite: Maior que 2 e menor que 5 min</p>
 
                         <span class="state-title">Setor - Expedição</span>
 
@@ -143,76 +168,105 @@
                     </div>
 
                     <div class="sector-attention">
-                        <p>Limite: 5 min</p>
+                        <p>Limite: Maior que 2 e menor que 5 min</p>
 
                         <span class="state-title">Setor - Açougue</span>
 
-                        <span>Duração: 05:04</span>
+                        <span>Duração: 04:04</span>
                     </div>
 
                     <div class="sector-attention">
-                        <p>Limite: 5 min</p>
+                        <p>Limite: Maior que 2 e menor que 5 min</p>
 
                         <span class="state-title">Setor - Recebidos</span>
 
-                        <span>Duração: 05:04</span>
+                        <span>Duração: 04:44</span>
                     </div>
                 </div>
 
                 <div class="kpi-states">
                     <h3>Normal</h3>
                     <div class="sector-normal">
-                        <p>Limite: <br>Abaixo de 2 min</p>
+                        <p>Limite: Abaixo de 2 min</p>
 
-                        <span class="state-title">Setor - Bebidas</span>
+                        <span class="state-title">Setor - Petshop</span>
 
-                        <span>Duração: 08:32</span>
+                        <span>Duração: 01:32</span>
                     </div>
 
                     <div class="sector-normal">
-                        <p>Limite: <br>Abaixo de 2 min</p>
+                        <p>Limite: Abaixo de 2 min</p>
 
-                        <span class="state-title">Setor - Bebidas</span>
+                        <span class="state-title">Setor - Papelaria</span>
 
-                        <span>Duração: 08:32</span>
+                        <span>Duração: 01:11</span>
                     </div>
 
                     <div class="sector-normal">
-                        <p>Limite: <br>Abaixo de 2 min</p>
+                        <p>Limite: Abaixo de 2 min</p>
 
-                        <span class="state-title">Setor - Bebidas</span>
+                        <span class="state-title">Setor - Vestuário</span>
 
-                        <span>Duração: 08:32</span>
+                        <span>Duração: 01:01</span>
                     </div>
 
                     <div class="sector-normal">
-                        <p>Limite: <br>Abaixo de 2 min</p>
+                        <p>Limite: Abaixo de 2 min</p>
 
-                        <span class="state-title">Setor - Bebidas</span>
+                        <span class="state-title">Setor - Eletroeletrônicos</span>
 
-                        <span>Duração: 08:32</span>
+                        <span>Duração: 01:42</span>
                     </div>
 
                     <div class="sector-normal">
-                        <p>Limite: <br>Abaixo de 2 min</p>
+                        <p>Limite: Abaixo de 2 min</p>
 
-                        <span class="state-title">Setor - Bebidas</span>
+                        <span class="state-title">Setor - Rotisseria</span>
 
-                        <span>Duração: 08:32</span>
+                        <span>Duração: 01:33</span>
                     </div>
 
                     <div class="sector-normal">
-                        <p>Limite: <br>Abaixo de 2 min</p>
+                        <p>Limite: Abaixo de 2 min</p>
 
-                        <span class="state-title">Setor - Bebidas</span>
+                        <span class="state-title">Setor - Bazar</span>
 
-                        <span>Duração: 08:32</span>
+                        <span>Duração: 01:55</span>
                     </div>
                 </div>
             </div>
 
         </div>
     </main>
+
+    <script>
+
+        // MOSTRAR O NOME DO SUPERMERCADO SELECIONADO
+        // NA PÁGINA DE DASHBOARD. SE NINGÚN MERCADO
+        // FOI SELECIONADO (PÁGINA ABERTA DIRECTAMENTE),
+        // MANTÉM-SE O SAÚDO PADRÃO.
+
+        let nomeMercado = localStorage.getItem("mercadoSelecionadoNome");
+
+        if (nomeMercado) {
+            document.getElementById("titulo_dashboard").innerHTML = nomeMercado;
+        }
+
+
+        // QUANTIDADE DE SETORES EM CADA ESTADO (DADOS
+        // DO PROTÓTIPO). A ESCRITA NOS KPIs É FEITA
+
+
+        let qtdSetoresProlongado = 6;
+        let qtdSetoresAtencao = 5;
+        let qtdSetoresNormal = 6;
+
+        kpi_count_congestionado.innerHTML = qtdSetoresProlongado;
+        kpi_count_atencao.innerHTML = qtdSetoresAtencao;
+        kpi_count_normal.innerHTML = qtdSetoresNormal;
+
+    </script>
+
 </body>
 
 </html>
