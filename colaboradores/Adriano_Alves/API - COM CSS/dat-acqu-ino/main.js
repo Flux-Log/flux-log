@@ -8,14 +8,13 @@ const SERVIDOR_PORTA = 3300;
 const SERIAL_BAUD_RATE = 9600;
 const HABILITAR_OPERACAO_INSERIR = true;
 
-// Configuração do pool: força o driver a enviar a string exata sem converter para UTC
+
 const poolBancoDados = mysql.createPool({
     host: '127.0.0.1',
     user: 'insert_fluxlog',
     password: 'Insert@1',
     database: 'fluxlog',
     port: 3307,
-    timezone: '+00:00', // Evita que o driver aplique o offset de -3h no momento do envio das variáveis ?
     dateStrings: true
 }).promise();
 
@@ -293,7 +292,7 @@ setInterval(async () => {
     }
 }, 1500);
 
-// Servidor Express
+
 const app = express();
 
 app.use((request, response, next) => {
