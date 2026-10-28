@@ -239,18 +239,18 @@ p {
 
 .title-graph {
     margin-top: 32px;
+    display: flex;
+    flex-direction: column;
 }
 
 .graphs {
     display: flex;
     width: 100%;
-
     gap: 24px;
 }
 
 .title-graph h1 {
     margin-bottom: 24px;
-
 }
 
 .graph-wrapper {
@@ -275,8 +275,7 @@ p {
 
 .graficos{
     display: flex;
-    gap: 30px;
-    
+    gap: 40px; 
 }
 
 .title-graph h3{
@@ -302,7 +301,8 @@ p {
     padding: 20px;
     border-radius: 5px;
     border: 1px solid var(--border-gray);
-    width: 400px;
+    width: 300px;
+    margin-left: 70px;
 }
 
 .markets-wrapper{
