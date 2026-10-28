@@ -43,18 +43,18 @@
 
             <div class="kpis">
                 <div class="kpi-01">
-                    <span>Ocorrências</span>
-                    <div class="sector-amount">
-                        <h4>Junção :</h4>
-                        <h2 class="amount-danger">32</h2>
-                    </div>
-                </div>
-
-                <div class="kpi-01">
                     <span>Total de ocorrências semanais</span>
                     <div class="sector-amount">
                         <h4>Junção total de todos os setores:</h4>
                         <h2 class="amount-danger">132</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-01">
+                    <span></span>
+                    <div class="sector-amount">
+                        <h4></h4>
+                        <h2 class="amount-danger"></h2>
                     </div>
                 </div>
             </div>
@@ -148,12 +148,29 @@
                     beginAtZero: true,
                     ticks: {
                         stepSize: 2
+                    },
+                    title: {
+                        display: true,
+                        text: 'Número de Ocorrências',
+                        font: {
+                            weight: 'bold',
+                            size: 13
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Horas do Dia', 
+                        font: {
+                            weight: 'bold',
+                            size: 13
+                        }
                     }
                 }
             }
         }
     });
-
     const ctx1 = document.getElementById('grafico_barra');
 
     new Chart(ctx1, {
