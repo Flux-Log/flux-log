@@ -631,16 +631,17 @@ label {
     background-color: white;
     border: 1px solid #ff7b007b;
     border-radius: 8px;
-    padding: 50px 50px 100px 50px;
+    padding: 50px 60px 100px 50px;
     gap: 20px;
+    white-space: nowrap;
 }
 
 .team-member img {
-    background-color: #162937;
-    border-radius: 8px;
-    padding: 10px;
-    width: 130px;
+    width: auto;
     height: 130px;
+    max-width: 130px;
+    border-radius: 8px;
+    padding: 0;
 }
 
 .contact-us {

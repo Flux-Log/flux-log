@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
     <title>Dashboard FluxLog</title>
 </head>
@@ -34,7 +36,7 @@
         <div class="dash-kpis">
             <div class="title-subtitle">
                 <h1>
-                   Insights sobre os dados coletados
+                    Insights sobre os dados coletados
                 </h1>
                 <span>
                     Registro de ocorrências de congestionamento prolongado
@@ -43,19 +45,19 @@
 
             <div class="kpis">
                 <div class="kpi-01">
-                    <span>Total de ocorrências semanais</span>
+                    <span>Total de ocorrências semanais (todos os setores)</span>
                     <div class="sector-amount">
-                        <h4>Junção total de todos os setores:</h4>
+                        <h4>Junção total de ocorrências que passaram de 5 minutos:</h4>
                         <h2 class="amount-danger">132</h2>
                     </div>
                 </div>
 
                 <div class="kpi-01">
-                    <span>Dia da semana com maior 
+                    <span>Dia da semana com maior
                         número de ocorrências:</span>
                     <div class="sector-amount">
                         <h2 class="amount-danger">Sábado</h2>
-                        <h4>34 corrências prolongadas</h4>
+                        <h4>34 ocorrências prolongadas</h4>
 
                     </div>
                 </div>
@@ -63,45 +65,45 @@
 
             <div class="graficos-layout">
 
-            
-            <div class="title-graph">
-                <h1>
-                    Picos de Congestionamento (Acima do Limite)
-                </h1>
-
-                <h3>
-                    Ocorrências por hora que excederam o limite máximo estabelecido.
-                </h3>
-
-                <div class="grafico_linha">
-                    <canvas id="grafico_linha"></canvas>
-                </div>
-            </div>
-
-            <div class="graficos">
 
                 <div class="title-graph">
                     <h1>
-                        Ocorrências Semanais: Setores em Alerta
+                        Picos de Congestionamento (Acima do Limite)
                     </h1>
 
                     <h3>
-                        Total semanal de picos de congestionamento agrupados por setor operacional.
+                        Ocorrências por hora que excederam o limite máximo estabelecido.
                     </h3>
 
-                    <div class="grafico_barra">
-                        <canvas id="grafico_barra"></canvas>
+                    <div class="grafico_linha">
+                        <canvas id="grafico_linha"></canvas>
                     </div>
                 </div>
 
-                <div class="title-graph">
-                    <h1>
-                        Distribuição Percentual de Ocorrências (Semanal)
-                    </h1>
+                <div class="graficos">
 
-                    <h3>
-                        Identificação dos setores com maior concentração de ocorrências críticas no período.
-                    </h3>
+                    <div class="title-graph">
+                        <h1>
+                            Ocorrências Semanais: Setores em Alerta
+                        </h1>
+
+                        <h3>
+                            Total semanal de picos de congestionamento agrupados por setor operacional.
+                        </h3>
+
+                        <div class="grafico_barra">
+                            <canvas id="grafico_barra"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="title-graph">
+                        <h1>
+                            Distribuição Percentual de Ocorrências (Semanal)
+                        </h1>
+
+                        <h3>
+                            Identificação dos setores com maior concentração de ocorrências críticas no período.
+                        </h3>
 
                         <div class="grafico_pizza">
                             <canvas id="grafico_pizza"></canvas>
@@ -149,6 +151,8 @@
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -167,7 +171,7 @@
                 x: {
                     title: {
                         display: true,
-                        text: 'Horas do Dia', 
+                        text: 'Horas do Dia',
                         font: {
                             weight: 'bold',
                             size: 13
@@ -206,6 +210,8 @@
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -236,6 +242,8 @@
         },
         plugins: [ChartDataLabels],
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 datalabels: {
                     display: true,
