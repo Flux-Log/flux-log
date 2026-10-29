@@ -305,6 +305,7 @@ p {
     padding: 20px;
     border-radius: 5px;
     border: 1px solid var(--border-gray);
+    width: 900px;
 }
 
 .grafico_pizza{
@@ -312,8 +313,8 @@ p {
     padding: 20px;
     border-radius: 5px;
     border: 1px solid var(--border-gray);
-    width: 100%;
-    margin-left: 0;
+    width: 300px;
+    margin-left: 150px;
 }
 
 .markets-wrapper{
@@ -737,20 +738,4 @@ p {
     align-items: start;
     height: auto;
 
-}
-
-.graficos-layout .title-graph {
-    margin-top: 0;
-    min-width: 0;
-}
-
-.graficos-layout .grafico_linha {
-    width: 100%;
-    height: 400px;
-}
-
-.graficos-layout .grafico_barra,
-.graficos-layout .grafico_pizza {
-    width: 100%;
-    height: 190px;
 }
