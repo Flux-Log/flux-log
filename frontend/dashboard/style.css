@@ -296,6 +296,7 @@ p {
     padding: 20px;
     border-radius: 5px;
     border: 1px solid var(--border-gray);
+    width: 900px;
 }
 
 .grafico_pizza{
@@ -303,8 +304,7 @@ p {
     padding: 20px;
     border-radius: 5px;
     border: 1px solid var(--border-gray);
-    width: 300px;
-    margin-left: 150px;
+    width: 472px;
 }
 
 .markets-wrapper{
@@ -728,4 +728,8 @@ p {
     align-items: start;
     height: auto;
 
+}
+
+.barra_subtitulo {
+    margin-bottom: 80px;
 }
