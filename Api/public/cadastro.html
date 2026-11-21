@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style_login_cadastro.css">
+</head>
+
+<body>
+
+    <!--header inicio-->
+    <div class="header">
+        <div class="logos">
+            <a href="../institucional/index.html">
+                <img src="./assets/logoCarrinho.png" class="logo" alt="FluxLog">
+                <img src="assets/logoFluxoLog.png" class="logo_escrita" alt="FluxLog">
+            </a>
+        </div>
+        <div class="menu">
+            <a href="../institucional/index.html">Home</a>
+            <a href="../institucional/index.html#calculator">Calculadora</a>
+            <a href="../institucional/index.html#about-us">Sobre nós</a>
+            <a href="../institucional/index.html#contact">Contato</a>
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="" class="btn-cadastro">Cadastro</a>
+        </div>
+    </div>
+    <!--header fim-->
+
+    <div class="principal">
+        <div class="imagem"></div>
+
+        <div class="formulario">
+            <div class="caixa">
+                <h1>Faça seu cadastro!</h1>
+                <p class="subtitulo">Registre-se com os seus dados</p>
+
+                <label for="ipt_nomeCompleto">Nome Completo:</label>
+                <input type="text" id="ipt_nomeCompleto" placeholder="Seu Nome Completo">
+
+                <label for="ipt_email">Email:</label>
+                <input type="text" id="ipt_email" placeholder="meuemail@provedor.com">
+
+                <label for="ipt_nomeFantasia">Nome Fantasia:</label>
+                <input type="text" id="ipt_nomeFantasia" placeholder="Nome Empresa">
+
+                <label for="ipt_razaoSocial">Razão Social:</label>
+                <input type="text" id="ipt_razaoSocial" placeholder="Razão Social">
+
+                <label for="ipt_cnpj">CNPJ:</label>
+                <input type="text" id="ipt_cnpj" placeholder="00000000000000">
+
+                <div class="linha-endereco">
+                    <div class="linha-enderecoCep">
+                        <label for="ipt_cep">CEP:</label>
+                        <input type="text" id="ipt_cep" placeholder="00000000">
+                    </div>
+                    <div class="linha-enderecoLogradouro">
+                        <label for="ipt_logradouro">Logradouro:</label>
+                        <input type="text" id="ipt_logradouro" placeholder="Rua Haddock Lobo 595">
+                    </div>
+                </div>
+
+                <div class="linha-senhas">
+                    <div>
+                        <label for="ipt_senha">Senha:</label>
+                        <input type="password" id="ipt_senha" placeholder="********">
+                    </div>
+                    <div>
+                        <label for="ipt_confirmarSenha">Confirmar senha:</label>
+                        <input type="password" id="ipt_confirmarSenha" placeholder="********">
+                    </div>
+                </div>
+
+                <button onclick="cadastrar()">Criar Conta</button>
+            </div>
+        </div>
+    </div>
+
+    <!--footer inicio-->
+    <div class="footer">
+        <div class="footer-topo">
+            <img src="./assets/logoBranco.png" class="logo" alt="FluxLog">
+            <div class="footer-links">
+                <a href="">Sobre Nós</a>
+                <a href="">Redes Sociais</a>
+                <a href="">Contate o Suporte</a>
+            </div>
+        </div>
+        <div class="footer-base">
+            <span>© 2026 FluxLog, Todos os direitos reservados</span>
+            <span>
+                <a href="">Política de Privacidade</a>
+                <a href="">Termos de Serviço</a>
+            </span>
+        </div>
+    </div>
+    <!--footer fim-->
+
+    <script>
+        function cadastrar() {
+            let nomeCompleto = ipt_nomeCompleto.value;
+            let email = ipt_email.value;
+            let nomeFantasia = ipt_nomeFantasia.value;
+            let razaoSocial = ipt_razaoSocial.value;
+            let cnpj = ipt_cnpj.value;
+            let cep = ipt_cep.value;
+            let logradouro = ipt_logradouro.value;
+            let senha = ipt_senha.value;
+            let confirmarSenha = ipt_confirmarSenha.value;
+
+            // Verificando se há algum campo em branco ou inválido
+            if (nomeCompleto == "") {
+                alert("Nome Completo está vazio, preencha o campo.");
+            } else if (email == "" || !email.includes('@') || !email.includes('.com') || email.includes(' ') || email.length < 7) {
+                alert("Email está vazio ou incorreto, digite um email válido.");
+            } else if (nomeFantasia == "") {
+                alert("Nome Fantasia está vazio, preencha o campo.");
+            } else if (razaoSocial == "") {
+                alert("Razão Social está vazia, preencha o campo.");
+            } else if (cnpj.length != 14 || isNaN(cnpj) || cnpj.includes(' ')) {
+                alert("CNPJ está vazio ou incorreto, digite um CNPJ válido.");
+            } else if (cep.length != 8 || isNaN(cep) || cep.includes(' ')) {
+                alert("CEP está vazio ou incorreto, digite um CEP válido.");
+            } else if (logradouro == "") {
+                alert("Logradouro está vazio, preencha o campo.");
+            } else if (senha == "" || senha.length < 8) {
+                alert("Senha está vazia ou não atende os requisitos (mínimo 8 caracteres).");
+            } else if (senha != confirmarSenha) {
+                alert("As senhas não são as mesmas.");
+            } else {
+                alert("Conta cadastrada com sucesso!");
+                location.href = "login.html";
+            }
+            fetch("/empresas/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+                    nomeFantasiaServer: nomeFantasia,
+                    cnpjServer: cnpj,
+                    razaoSocialServer: razaoSocial,
+                    logradouroServer: logradouro,
+                    cepServer: cep,
+                    nomeServer: nomeCompleto,
+                    emailServer: email,
+                    senhaServer: senha
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+                        cardErro.style.display = "block";
+
+                        mensagem_erro.innerHTML =
+                            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+
+                        setTimeout(() => {
+                            window.location = "login.html";
+                        }, "2000");
+
+                        limparFormulario();
+                        finalizarAguardar();
+                    } else {
+                        throw "Houve um erro ao tentar realizar o cadastro!";
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                    finalizarAguardar();
+                });
+
+            return false;
+        }
+
+    </script>
+</body>
+
+</html>
